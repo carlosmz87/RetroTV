@@ -1,0 +1,31 @@
+.contenedor_header{
+    height: 25%;
+    width: 100%;
+}
+
+.contenedor_navbar{
+    height: 5%;
+    width: 100%;
+    background-color:antiquewhite
+}
+
+.contenedor_sidenav{
+    height: 65%;
+    width: 15%;
+    background-color:antiquewhite;
+    float:left;
+}
+
+.contenedor_body{
+    height: 65%;
+    width: 85%;
+    background-color: whitesmoke;
+    float: left;
+}
+
+.contenedor_footer{
+    height: 5%;
+    width: 100%;
+    background-color: rgb(78, 9, 41);
+    clear: both;
+}

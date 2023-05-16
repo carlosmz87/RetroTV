@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModuloPrincipalModule } from './componentes/principal/modulo-principal.module';
 import { ModuloRegistroModule } from './componentes/registro/modulo-registro.module';
 import { ModuloLoginModule } from './componentes/login/modulo-login.module';
+import { ModuloGenericosModule } from './componentes/genericos/modulo-genericos.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ModuloLoginModule } from './componentes/login/modulo-login.module';
     BrowserAnimationsModule,
     ModuloPrincipalModule,
     ModuloRegistroModule,
-    ModuloLoginModule
+    ModuloLoginModule,
+    ModuloGenericosModule
   ],
   providers: [],
   bootstrap: [AppComponent]

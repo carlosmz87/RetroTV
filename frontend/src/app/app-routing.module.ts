@@ -5,12 +5,11 @@ import { ModuloLoginModule } from './componentes/login/modulo-login.module';
 import { ModuloRegistroModule } from './componentes/registro/modulo-registro.module';
 import { VistaRegistroComponent } from './componentes/registro/vistas/vista-registro.component';
 import { VistaLoginComponent } from './componentes/login/vistas/vista-login.component';
-import { VistaPrincipalComponent } from './componentes/principal/vistas/vista-principal.component';
-
+import { VistaInicioComponent } from './componentes/principal/vistas/vista-inicio.component';
 const routes: Routes = [
   {
     path: '',
-    component: VistaPrincipalComponent,
+    component: VistaInicioComponent,
     pathMatch: 'full'
   },
   {
