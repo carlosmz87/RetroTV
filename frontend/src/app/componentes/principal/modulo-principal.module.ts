@@ -4,11 +4,15 @@ import { VistaPrincipalComponent } from './vistas/vista-principal.component';
 import { ModuloGenericosModule } from '../genericos/modulo-genericos.module';
 import { RouterModule } from '@angular/router';
 import { VistaInicioComponent } from './vistas/vista-inicio.component';
+import { VistaAboutComponent } from './vistas/vista-about.component';
+import { VistaSuscripcionesComponent } from './vistas/vista-suscripciones.component';
 
 @NgModule({
   declarations: [
     VistaPrincipalComponent,
-    VistaInicioComponent
+    VistaInicioComponent,
+    VistaAboutComponent,
+    VistaSuscripcionesComponent
   ],
   imports: [
     CommonModule,
@@ -17,7 +21,9 @@ import { VistaInicioComponent } from './vistas/vista-inicio.component';
   ],
   exports: [
     VistaPrincipalComponent,
-    VistaInicioComponent
+    VistaInicioComponent,
+    VistaAboutComponent,
+    VistaSuscripcionesComponent
   ]
 })
 export class ModuloPrincipalModule { }

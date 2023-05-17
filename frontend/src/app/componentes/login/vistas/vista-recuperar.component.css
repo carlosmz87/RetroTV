@@ -1,0 +1,75 @@
+.recuperar{
+    width: 70%;
+    height: 65%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2%;
+    margin:auto;
+}
+
+.formulario{
+    width: 100%;
+    height: 100%;
+}
+
+.card{
+    width: 100%;
+    height: 100%;
+}
+
+.cardheader{
+    justify-content: center;
+    padding: 1%;
+}
+
+.cardtitle{
+    text-align: center;
+    font-size:xx-large;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+}
+
+.cardsubtitle{
+    text-align: left;
+    font-size:smaller;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.cardcontent{
+    font-size:medium;
+    font-family: 'Open Sans', sans-serif;
+    height: 60%;
+    width: 98%;
+    display:flex;
+    align-items: left;
+    justify-content: left;
+    margin-left: 23%;
+    margin-top: 5%;
+}
+
+.contenedor_boton{
+    justify-content: center;
+}
+
+.cardbutton{
+    font-size:larger;
+    font-family: 'Open Sans', sans-serif;
+    background-color: darkgoldenrod;
+    height: 100%;
+    width: 30%;
+    margin-bottom: 5%;
+}
+
+.cardbutton:hover{
+    background-color: goldenrod;
+    cursor:pointer;
+}
+
+.campo{
+    font-size:small;
+    font-family: 'Open Sans', sans-serif;
+    height: 50%;
+    width: 50%;
+    margin:1%;
+}

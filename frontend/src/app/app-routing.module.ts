@@ -7,6 +7,9 @@ import { VistaRegistroComponent } from './componentes/registro/vistas/vista-regi
 import { VistaLoginComponent } from './componentes/login/vistas/vista-login.component';
 import { VistaInicioComponent } from './componentes/principal/vistas/vista-inicio.component';
 import { VistaRecuperarComponent } from './componentes/login/vistas/vista-recuperar.component';
+import { VistaAboutComponent } from './componentes/principal/vistas/vista-about.component';
+import { VistaSuscripcionesComponent } from './componentes/principal/vistas/vista-suscripciones.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -24,6 +27,14 @@ const routes: Routes = [
   {
     path: 'recuperar',
     component: VistaRecuperarComponent
+  },
+  {
+    path: 'about',
+    component: VistaAboutComponent
+  },
+  {
+    path: 'suscripciones',
+    component: VistaSuscripcionesComponent
   },
   { 
     path: '**',
