@@ -1,1 +1,71 @@
-<p>vista-registro works!</p>
+<div class="registro">
+  <form class="formulario" [formGroup]="FormularioRegistroCliente" (ngSubmit)="RegistrarCliente()">
+    <mat-card class="card">
+      <mat-card-header class="cardheader">
+        <mat-card-title class="cardtitle">REGISTRAR USUARIO</mat-card-title>
+        <mat-card-subtitle class="cardsubtitle">COMPLETA TODOS LOS CAMPOS DEL FORMULARIO DE
+          REGISTRO</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content class="cardcontent">
+        <div class="contenedor_datosp">
+          <mat-form-field class="campo">
+            <mat-label>NOMBRE</mat-label>
+            <input formControlName="nombre" matInput required/>
+          </mat-form-field>
+          <mat-form-field class="campo">
+            <mat-label>CORREO</mat-label>
+            <input formControlName="correo" placeholder="pat@example.com" matInput required/>
+          </mat-form-field>
+          <mat-form-field hintLabel="Max 10 caracteres" class="campo">
+            <mat-label>USUARIO</mat-label>
+            <input formControlName="usuario" #input maxlength="10" matInput required/>
+            <mat-hint align="end">{{input.value.length}}/10</mat-hint>
+          </mat-form-field>
+          <mat-form-field class="campo">
+            <mat-label>CONTRASEÑA</mat-label>
+            <input formControlName="contrasena" [type]="hide ? 'password' : 'text'" matInput required/>
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Ocultar'" [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+          <mat-form-field class="campo">
+            <mat-label>CONFIRMAR CONTRASEÑA</mat-label>
+            <input formControlName="conf_contrasena" [type]="hide ? 'password' : 'text'" matInput required/>
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Ocultar'" [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <div class="contenedor_datoss">
+          <mat-form-field appearance="fill" hintLabel="Max 10 caracteres en E.E.U.U y 11 en Latinoamerica" class="campo">
+            <mat-label>TELEFONO</mat-label>
+            <mat-icon matPrefix>phone</mat-icon>
+            <input matInput type="text" formControlName="telefono" #input maxlength="13" required (change)="formatPhone()">
+          </mat-form-field>
+          <mat-form-field class="campo">
+            <mat-label>GENERO</mat-label>
+            <mat-select formControlName="genero" required>
+              <mat-option value="M">M</mat-option>
+              <mat-option value="F">F</mat-option>
+            </mat-select>
+            <mat-hint align="end">Selecciona tu genero ^</mat-hint>
+          </mat-form-field>
+          <mat-form-field class="campo">
+            <mat-label>FECHA DE NACIMIENTO</mat-label>
+            <input matInput [matDatepicker]="picker" placeholder="Seleccione una fecha" formControlName="fecha" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-hint align="end">MM/DD/YYYY</mat-hint>
+          </mat-form-field>
+          <div class="contenedor_checkbox">
+            <mat-label>SUSCRIPCION</mat-label>
+            <mat-checkbox formControlName="suscripcion" class="campo">Selecciona la casilla si deseas solicitar una suscripcion mensual.</mat-checkbox>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions class="contenedor_boton">
+        <button mat-button type="submit" class="cardbutton">ACEPTAR</button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>
