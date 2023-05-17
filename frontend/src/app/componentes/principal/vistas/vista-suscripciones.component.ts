@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./vista-suscripciones.component.css']
 })
 export class VistaSuscripcionesComponent {
-
+  EnviarSolicitudSuscripcion(){
+    console.log("SE ENVIARA SOLICITUD DE SUSCRIPCION");
+  }
 }

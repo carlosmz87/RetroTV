@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { VistaInicioComponent } from './vistas/vista-inicio.component';
 import { VistaAboutComponent } from './vistas/vista-about.component';
 import { VistaSuscripcionesComponent } from './vistas/vista-suscripciones.component';
+import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { VistaSuscripcionesComponent } from './vistas/vista-suscripciones.compon
   imports: [
     CommonModule,
     ModuloGenericosModule,
-    RouterModule
+    RouterModule,
+    MatButtonModule
   ],
   exports: [
     VistaPrincipalComponent,
