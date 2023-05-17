@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {FormGroup, FormControl, Validators, Form} from '@angular/forms';
+import {FormGroup, FormControl, Validators} from '@angular/forms';
 
 
 @Component({

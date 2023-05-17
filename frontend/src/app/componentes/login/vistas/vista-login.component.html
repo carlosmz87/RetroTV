@@ -1,1 +1,29 @@
-<p>vista-login works!</p>
+<div class="login">
+    <form class="formulario" [formGroup]="formularioLogin" (ngSubmit)="IniciarSesion()">
+        <mat-card class="card">
+            <mat-card-header class="cardheader">
+                <mat-card-title class="cardtitle">INICIAR SESION</mat-card-title>
+                <img src="../assets/sesion.png" alt="Imagen de inicio de sesion" class="imagen">
+              </mat-card-header>
+              <mat-card-content class="cardcontent">
+                <mat-form-field class="campo">
+                    <mat-label>USUARIO</mat-label>
+                    <input formControlName="usuario" matInput required/>
+                  </mat-form-field>
+                  <mat-form-field class="campo">
+                    <mat-label>CONTRASEÑA</mat-label>
+                    <input formControlName="contrasena" [type]="hide ? 'password' : 'text'" matInput required/>
+                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Ocultar'" [attr.aria-pressed]="hide">
+                      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                  </mat-form-field>
+                  <div class="recuperacion">
+                    <a [routerLink]="['/recuperar']">¿Olvidaste tu contraseña?</a>
+                  </div>
+              </mat-card-content>
+              <mat-card-actions class="contenedor_boton">
+                <button mat-button type="submit" class="cardbutton">ACEPTAR</button>
+              </mat-card-actions>
+        </mat-card>
+    </form>
+</div>

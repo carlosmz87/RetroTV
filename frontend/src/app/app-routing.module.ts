@@ -6,6 +6,7 @@ import { ModuloRegistroModule } from './componentes/registro/modulo-registro.mod
 import { VistaRegistroComponent } from './componentes/registro/vistas/vista-registro.component';
 import { VistaLoginComponent } from './componentes/login/vistas/vista-login.component';
 import { VistaInicioComponent } from './componentes/principal/vistas/vista-inicio.component';
+import { VistaRecuperarComponent } from './componentes/login/vistas/vista-recuperar.component';
 const routes: Routes = [
   {
     path: '',
@@ -19,6 +20,10 @@ const routes: Routes = [
   {
     path: 'login',
     component:  VistaLoginComponent
+  },
+  {
+    path: 'recuperar',
+    component: VistaRecuperarComponent
   },
   { 
     path: '**',
