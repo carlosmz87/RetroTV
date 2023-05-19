@@ -1,4 +1,6 @@
 from conexion import obtener_conexion
+from werkzeug.security import check_password_hash
+
 
 #Controlador para registrar usuarios en la base de datos
 def RegistrarUsuario(nombre, usuario, correo, contrasena_encriptada, telefono, genero, fecha):
@@ -20,3 +22,25 @@ def RegistrarUsuario(nombre, usuario, correo, contrasena_encriptada, telefono, g
         finally:
             conexion.close()
 
+#Funcion para autenticar el usuario registrado
+def Autenticar(username, password):
+    try:
+        # Obtener conexión a la base de datos
+        conexion = obtener_conexion()
+        # Consultar el usuario en la base de datos
+        with conexion.cursor() as cursor:
+            query = "SELECT USU_ID, USUARIO, CONTRASENA, ROL FROM USUARIO WHERE USUARIO = %s"
+            cursor.execute(query, (username,))
+            user = cursor.fetchone()
+        # Verificar las credenciales del usuario
+        if user and check_password_hash(user[2], password):
+            return {'id': user[0], 'username': user[1], 'rol': user[3]}
+        else:
+            return None
+    except:
+        return None
+    finally:
+        conexion.close()
+
+
+    
