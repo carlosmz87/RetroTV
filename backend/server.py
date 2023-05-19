@@ -46,9 +46,9 @@ def admin_required():
                     return fn(*args, **kwargs)
                 else:
                     return make_response(jsonify({"RetroTV":"ACCESO DENEGADO, UNICAMENTE EL ADMINISTRADOR PUEDE INGRESAR"}), 403)
-            except jwt.ExpiredSignatureError:
+            except ExpiredSignatureError:
                 return make_response(jsonify({'RetroTV': 'EL TOKEN DE AUTENTICACION HA EXPIRADO'}), 400)
-            except jwt.InvalidTokenError:
+            except InvalidTokenError:
                 return make_response(jsonify({'RetroTV': 'TOKEN DE AUTENTICACION NO ES VALIDO'}), 400)
         return decorator
 
@@ -97,6 +97,7 @@ def index():
         conn_smtp.conectar()
         conn_smtp.desconectar()
         print("CONEXION EXITOSA")
+        print(generate_password_hash("admin"))
         response = make_response(jsonify({'RetroTV': "CONEXION EXITOSA"}))
         response.status_code = 200
         return response
