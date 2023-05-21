@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import {FormGroup, FormControl, Validators} from '@angular/forms';
-
+import { Validators, FormBuilder} from '@angular/forms';
+import { ServicioRegistroService } from '../servicios/servicio-registro.service';
+import { RegistroInterface } from '../modelos/registro.interface';
 
 @Component({
   selector: 'app-vista-registro',
@@ -8,17 +9,22 @@ import {FormGroup, FormControl, Validators} from '@angular/forms';
   styleUrls: ['./vista-registro.component.css']
 })
 export class VistaRegistroComponent {
-  FormularioRegistroCliente = new FormGroup({
-    nombre: new FormControl('', [Validators.required, Validators.pattern('[A-Za-z]+')]),
-    usuario: new FormControl('',[Validators.required, Validators.maxLength(10)]),
-    correo: new FormControl('', [Validators.required, Validators.email]),
-    contrasena: new FormControl('', [Validators.required]),
-    conf_contrasena: new FormControl('', [Validators.required]),
-    telefono: new FormControl('', [Validators.required, Validators.pattern('^(\\d{3}-\\d{3}-\\d{4})|(\\d{3}-\\d{4}-\\d{4})$')]),
-    genero: new FormControl('', [Validators.required]),
-    fecha: new FormControl('', [Validators.required]),
-    suscripcion: new FormControl(false)
-  });
+
+  constructor(private servicio:ServicioRegistroService, private fb: FormBuilder){
+    this.FormularioRegistroCliente = fb.nonNullable.group({
+      nombre: fb.nonNullable.control('', [Validators.required, Validators.pattern('[A-Za-z ñÑ]+')]),
+      usuario: fb.nonNullable.control('', [Validators.required, Validators.maxLength(10)]),
+      correo: fb.nonNullable.control('', [Validators.required, Validators.email]),
+      contrasena: fb.nonNullable.control('', [Validators.required]),
+      conf_contrasena: fb.nonNullable.control('', [Validators.required]),
+      telefono: fb.nonNullable.control('', [Validators.required,Validators.pattern('^(\\d{3}-\\d{3}-\\d{4})|(\\d{3}-\\d{4}-\\d{4})$')]),
+      genero: fb.nonNullable.control('', [Validators.required]),
+      fecha: fb.nonNullable.control('', [Validators.required]),
+      suscripcion: fb.nonNullable.control(false, [Validators.required])})
+  }
+
+  FormularioRegistroCliente!: RegistroInterface;
+
   hide = true;
   
   formatPhone() {
@@ -38,6 +44,18 @@ export class VistaRegistroComponent {
   }
   
   RegistrarCliente(){
-    console.log(this.FormularioRegistroCliente.value)
+    if (this.FormularioRegistroCliente.valid) {
+      this.servicio.RegisterByForm(this.FormularioRegistroCliente)
+        .subscribe(
+          response => {
+            // Manejar la respuesta del backend en caso de éxito
+            console.log(response);
+          },
+          error => {
+            // Manejar el error en caso de fallo
+            console.error(error);
+          }
+        );
+    }
   }
 }

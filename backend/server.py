@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 import json
 
 app = Flask(__name__)
-cors = CORS(app)
+cors = CORS(app, resources={r"/*": {"origins": ["http://localhost:4200"]}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SECRET_KEY'] = os.environ.get('RetroTV_API_KEY')
 load_dotenv()
@@ -112,7 +112,7 @@ def index():
 @app.route('/RegistrarUsuario', methods=['POST'])
 def RegistrarUsuario():
     try:
-        info = request.json
+        info = request.get_json()
         nombre = info['nombre']
         usuario = info['usuario']
         correo = info['correo']
@@ -127,7 +127,7 @@ def RegistrarUsuario():
             contrasena_encriptada = generate_password_hash(contrasena)
             if controlador.RegistrarUsuario(nombre,usuario,correo,contrasena_encriptada,telefono,genero,fecha):
                 #en este entorno enviar solicitud de suscripcion
-                if suscripcion =="true":
+                if suscripcion == True:
                     print("SE CREARA LA SOLICITUD DE SUSCRIPCION")
                     try:
                         conn_smtp.conectar()
@@ -158,7 +158,7 @@ def RegistrarUsuario():
             response.status_code = 400
             return response
     except:
-        response = make_response(jsonify({"RetroTV":"ERROR DE COMUNICACION"}))
+        response = make_response(jsonify({"RetroTV":"ERROR DE COMUNICACION" }))
         response.status_code = 500
         return response
 
@@ -180,11 +180,11 @@ def login():
             response.status_code = 200
             return response
         else:
-            response = jsonify({'RetroTV': 'LAS CREDENCIALES INGRESADAS NO SON VALIDAS'})
+            response = jsonify({'RetroTV': 'LAS CREDENCIALES INGRESADAS NO SON VALIDAS', 'auth_token': ""})
             response.status_code = 400
             return response
     except:
-        response = jsonify({'RetroTV': 'ERROR DE COMUNICACION'})
+        response = jsonify({'RetroTV': 'ERROR DE COMUNICACION', 'auth_token': ""})
         response.status_code = 500
         return response
 

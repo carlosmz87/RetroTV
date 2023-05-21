@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { VistaRecuperarComponent } from './vistas/vista-recuperar.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { VistaRecuperarComponent } from './vistas/vista-recuperar.component';
     MatInputModule,
     ReactiveFormsModule,
     MatIconModule,
-    RouterModule
+    RouterModule,
+    HttpClientModule
   ],
   exports:[
     VistaLoginComponent,
