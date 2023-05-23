@@ -1,0 +1,14 @@
+<div class="contenedor_notificador">
+    <mat-card class="card" [ngClass]="cardClass">
+      <mat-card-header class="card_header">
+        <mat-card-title class="card_title">{{ data.status | titlecase }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="card_body">
+        <p class="mensaje">{{ data.message }}</p>
+      </mat-card-content>
+      <mat-card-actions class="contenedor_boton">
+        <button mat-raised-button color="accent" (click)="SnackBarRef.dismiss()">{{ data.action }}</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  

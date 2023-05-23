@@ -10,6 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { VistaRecuperarComponent } from './vistas/vista-recuperar.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ModuloGenericosModule } from '../genericos/modulo-genericos.module';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -24,14 +26,16 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     MatIconModule,
     RouterModule,
-    HttpClientModule
+    HttpClientModule,
+    ModuloGenericosModule
   ],
   exports:[
     VistaLoginComponent,
     VistaRecuperarComponent
   ],
   providers: [
-    ServicioLoginService
+    ServicioLoginService,
+    CookieService
   ]
 })
 export class ModuloLoginModule { }

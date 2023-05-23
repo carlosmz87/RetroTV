@@ -8,25 +8,32 @@ import { ServicioGenericosService } from './servicios/servicio-genericos.service
 import {MatMenuModule} from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
+import { CustomNotificadorComponent } from './notificador/custom-notificador.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
     CustomFooterComponent,
     CustomHeaderComponent,
     CustomNavbarComponent,
-    CustomSidenavComponent
+    CustomSidenavComponent,
+    CustomNotificadorComponent
   ],
   imports: [
     CommonModule,
     MatMenuModule,
     MatIconModule,
-    RouterModule
+    RouterModule,
+    MatSnackBarModule,
+    MatCardModule
   ],
   exports: [
     CustomFooterComponent,
     CustomHeaderComponent,
     CustomNavbarComponent,
-    CustomSidenavComponent
+    CustomSidenavComponent,
+    CustomNotificadorComponent
   ],
   providers: [
     ServicioGenericosService

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Validators, FormBuilder} from '@angular/forms';
 import { ServicioRegistroService } from '../servicios/servicio-registro.service';
 import { RegistroInterface } from '../modelos/registro.interface';
+import { ServicioGenericosService } from '../../genericos/servicios/servicio-genericos.service';
 
 @Component({
   selector: 'app-vista-registro',
@@ -10,7 +11,7 @@ import { RegistroInterface } from '../modelos/registro.interface';
 })
 export class VistaRegistroComponent {
 
-  constructor(private servicio:ServicioRegistroService, private fb: FormBuilder){
+  constructor(private servicio:ServicioRegistroService, private fb: FormBuilder, private servicio_genericos:ServicioGenericosService){
     this.FormularioRegistroCliente = fb.nonNullable.group({
       nombre: fb.nonNullable.control('', [Validators.required, Validators.pattern('[A-Za-z ñÑ]+')]),
       usuario: fb.nonNullable.control('', [Validators.required, Validators.maxLength(10)]),
@@ -49,11 +50,12 @@ export class VistaRegistroComponent {
         .subscribe(
           response => {
             // Manejar la respuesta del backend en caso de éxito
-            console.log(response);
+            this.servicio_genericos.ConfigNotification(response.RetroTV, 'OK', response.status);
+            this.FormularioRegistroCliente.reset();
           },
           error => {
             // Manejar el error en caso de fallo
-            console.error(error);
+            this.servicio_genericos.ConfigNotification(error.error.RetroTV, 'OK', error.error.status);
           }
         );
     }
