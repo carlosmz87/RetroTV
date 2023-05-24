@@ -12,6 +12,7 @@ import { VistaRecuperarComponent } from './vistas/vista-recuperar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ModuloGenericosModule } from '../genericos/modulo-genericos.module';
 import { CookieService } from 'ngx-cookie-service';
+import { ServicioAuthService } from './servicios/servicio-auth.service';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { CookieService } from 'ngx-cookie-service';
   ],
   providers: [
     ServicioLoginService,
+    ServicioAuthService,
     CookieService
   ]
 })

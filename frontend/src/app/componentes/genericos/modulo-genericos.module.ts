@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
 import { CustomNotificadorComponent } from './notificador/custom-notificador.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { MatCardModule } from '@angular/material/card';
     CustomHeaderComponent,
     CustomNavbarComponent,
     CustomSidenavComponent,
-    CustomNotificadorComponent
+    CustomNotificadorComponent,
+    UnauthorizedComponent
   ],
   imports: [
     CommonModule,
@@ -33,7 +35,8 @@ import { MatCardModule } from '@angular/material/card';
     CustomHeaderComponent,
     CustomNavbarComponent,
     CustomSidenavComponent,
-    CustomNotificadorComponent
+    CustomNotificadorComponent,
+    UnauthorizedComponent
   ],
   providers: [
     ServicioGenericosService

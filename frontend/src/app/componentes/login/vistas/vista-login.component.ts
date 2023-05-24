@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import { ServicioGenericosService } from '../../genericos/servicios/servicio-genericos.service';
 import { LoginInterface } from '../modelos/login.interface';
-import { ServicioLoginService } from '../servicios/servicio-login.service';
-import { CookieService } from 'ngx-cookie-service';
+
+import { ServicioAuthService } from '../servicios/servicio-auth.service';
+import { __values } from 'tslib';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vista-login',
@@ -13,7 +15,7 @@ import { CookieService } from 'ngx-cookie-service';
 export class VistaLoginComponent {
   hide = true;
   
-  constructor(private fb: FormBuilder, private servicio_genericos: ServicioGenericosService, private servicio: ServicioLoginService, private cookieService: CookieService){
+  constructor(private fb: FormBuilder, private authService: ServicioAuthService, private servicio_genericos: ServicioGenericosService, private router:Router){
     this.formularioLogin = fb.nonNullable.group({
       username: fb.nonNullable.control('',[Validators.required]),
       contrasena: fb.nonNullable.control('',[Validators.required])
@@ -24,17 +26,16 @@ export class VistaLoginComponent {
 
   IniciarSesion(){
     if (this.formularioLogin.valid){
-      this.servicio.LoginByForm(this.formularioLogin)
+      this.authService.login(this.formularioLogin)
       .subscribe(
         response => {
           this.servicio_genericos.ConfigNotification(response.RetroTV, 'OK', response.status);
-          this.cookieService.set('token', response.auth_token);
-          console.log(response)
+          this.router.navigate(['/about'])
         },
         error => {
           this.servicio_genericos.ConfigNotification(error.error.RetroTV, 'OK', error.error.status);
         }
-      );      
+      );    
     }
   }
 }

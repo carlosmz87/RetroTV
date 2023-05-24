@@ -9,12 +9,16 @@ import { VistaInicioComponent } from './componentes/principal/vistas/vista-inici
 import { VistaRecuperarComponent } from './componentes/login/vistas/vista-recuperar.component';
 import { VistaAboutComponent } from './componentes/principal/vistas/vista-about.component';
 import { VistaSuscripcionesComponent } from './componentes/principal/vistas/vista-suscripciones.component';
+import { UnauthorizedComponent } from './componentes/genericos/unauthorized/unauthorized.component';
+import { RoleGuard } from './role.guard';
+
 
 const routes: Routes = [
   {
     path: '',
     component: VistaInicioComponent,
     pathMatch: 'full'
+    
   },
   {
     path: 'registro',
@@ -30,11 +34,19 @@ const routes: Routes = [
   },
   {
     path: 'about',
-    component: VistaAboutComponent
+    component: VistaAboutComponent,
+    canActivate: [RoleGuard],
+    data: {
+      roleDisponible: ['ADMINISTRADOR','USUARIO']
+    }
   },
   {
     path: 'suscripciones',
     component: VistaSuscripcionesComponent
+  },
+  {
+    path: 'unauthorized',
+    component: UnauthorizedComponent
   },
   { 
     path: '**',

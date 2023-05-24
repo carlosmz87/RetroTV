@@ -8,6 +8,9 @@ import { ModuloPrincipalModule } from './componentes/principal/modulo-principal.
 import { ModuloRegistroModule } from './componentes/registro/modulo-registro.module';
 import { ModuloLoginModule } from './componentes/login/modulo-login.module';
 import { ModuloGenericosModule } from './componentes/genericos/modulo-genericos.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from './jwt.interceptor';
+import { ServicioAuthService } from './componentes/login/servicios/servicio-auth.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,14 @@ import { ModuloGenericosModule } from './componentes/genericos/modulo-genericos.
     ModuloLoginModule,
     ModuloGenericosModule
   ],
-  providers: [],
+  providers: [
+    ServicioAuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
