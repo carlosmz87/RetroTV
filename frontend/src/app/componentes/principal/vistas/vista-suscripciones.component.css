@@ -1,0 +1,22 @@
+.suscripciones{
+    width: 95%;
+    height: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin:1%;
+    flex-direction: column;
+}
+
+img{
+    height: 100%;
+    width: 60%;
+    margin:1%;
+}
+
+.boton{
+    height: 10%;
+    width: 30%;
+    font-family: 'Open Sans', sans-serif;
+    font-size: large;
+}

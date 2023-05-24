@@ -1,0 +1,20 @@
+<div class="recuperar">
+    <form class="formulario" [formGroup]="formularioRecuperacion" (ngSubmit)="RecuperarCuenta()">
+      <mat-card class="card">
+        <mat-card-header class="cardheader">
+          <mat-card-title class="cardtitle">RECUPERAR CUENTA</mat-card-title>
+          <mat-card-subtitle class="cardsubtitle">INGRESA EL CORREO ELECTRONICO CON EL QUE TE REGISTRASTE EN LA APLICACION PARA ENVIARTE TUS CREDENCIALES</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="cardcontent">
+          <mat-form-field class="campo">
+            <mat-label>CORREO</mat-label>
+            <input formControlName="correo" placeholder="pat@example.com" matInput required />
+          </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions class="contenedor_boton">
+          <button mat-button type="submit" class="cardbutton">ACEPTAR</button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+  </div>
+  

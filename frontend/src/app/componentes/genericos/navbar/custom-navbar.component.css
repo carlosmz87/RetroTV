@@ -1,0 +1,11 @@
+.mat-button{
+    height: 100%;
+    width: 15%;
+    background-color:darkgoldenrod;
+    font-size: large;
+
+}
+
+.mat-menu-item:hover{
+    background-color: rgb(106, 176, 216);
+}

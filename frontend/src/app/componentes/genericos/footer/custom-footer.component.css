@@ -1,0 +1,18 @@
+.footer{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: right;
+    align-items: right;
+}
+
+.footer a{
+    height: 100%;
+    width: 3%;
+    margin: 0.01%;
+}
+
+.footer img{
+    height: 100%;
+    width: 100%;
+}

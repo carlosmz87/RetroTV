@@ -1,0 +1,54 @@
+.contenedor_notificador{
+    width: 100%;
+    height: 100%;
+}
+
+.card{
+    width: 100%;
+    height: 100%;
+}
+
+
+.card_header{
+    justify-content: center;
+    text-align: center;
+}
+
+.card_title{
+    font-size:small;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.card_body{
+    text-align: left;
+    justify-content: left;
+}
+
+
+.mensaje{
+    font-size:x-small;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.contenedor_boton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+button{
+    border: none;
+    width: 35%;
+    text-align: center;
+}
+
+.error-card {
+    background-color: rgb(168, 38, 38);
+    color: white;
+  }
+  
+  .success-card {
+    background-color: rgb(33, 179, 45);
+    color: white;
+  }
