@@ -140,7 +140,7 @@ def RegistrarUsuario():
                         return response
                     except:
                         response = make_response(jsonify({'status':'success',"RetroTV":"USUARIO REGISTRADO EN EL SISTEMA EXITOSAMENTE PERO LA NOTIFICACION DE CORREO ELECTRONICO AL ADMINISTRADOR NO SE HA ENVIADO CORRECTAMENTE"}))
-                        response.status_code = 200
+                        response.status_code = 500
                         return response
                     finally:    
                         conn_smtp.desconectar()
@@ -180,15 +180,45 @@ def login():
             response.status_code = 200
             return response
         else:
-            response = jsonify({'status':'error','RetroTV': 'LAS CREDENCIALES INGRESADAS NO SON VALIDAS', 'auth_token': ""})
+            response = make_response(jsonify({'status':'error','RetroTV': 'LAS CREDENCIALES INGRESADAS NO SON VALIDAS', 'auth_token': ""}))
             response.status_code = 400
             return response
     except:
-        response = jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION', 'auth_token': ""})
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION', 'auth_token': ""}))
         response.status_code = 500
         return response
 
-
+#Endpoint para recuperar las credenciales del usuario
+@app.route('/recover', methods=['POST'])
+def recover():
+    try:
+        info = request.get_json()
+        correo = info['correo']
+        recover_data = controlador.recover(correo)
+        if recover_data is not None:
+            try:
+                conn_smtp.conectar()
+                destinatario = correo
+                asunto = 'RECUPERACION DE CREDENCIALES RetroTV'
+                contenido = 'HAS SOLICITADO RECUPERAR TUS CREDENCIALES, SE RECOMIENTA CAMBIAR LA CONTRASEÑA AL INICIAR SESION NUEVAMENTE. TU USUARIO ES: ' + str(recover_data['username']) + " TU CONTRASEÑA TEMPORAL GENERADA POR EL SISTEMA ES: " + str(recover_data['contrasena']) + "\nCUALQUIER INCONVENIENTE PONTE EN CONTACTO CON NOSOTROS."
+                conn_smtp.enviar_correo(destinatario, asunto, contenido) 
+                response = make_response(jsonify({'status':'success',"RetroTV":"SE HA ENVIADO UN CORREO CON ELECTRONICO AL USUARIO " + str(recover_data['username']) + " CON CREDENCIALES TEMPORALES ASIGNADAS POR EL SISTEMA"}))
+                response.status_code = 200
+                return response
+            except:
+                response = make_response(jsonify({'status':'success',"RetroTV":"NO HA SIDO POSIBLE ENVIAR EL CORREO ELECTRONICO CON LAS CREDENCIALES DE RECUPERACION, INTENTA NUEVAMENTE."}))
+                response.status_code = 500
+                return response
+            finally:    
+                conn_smtp.desconectar()
+        else:
+            response = make_response(jsonify({'status':'error','RetroTV': 'NO SE HAN PODIDO OBTENER LOS DATOS DE RECUPERACION, POSIBLEMENTE INGRESASTE UN CORREO ELECTRONICO QUE NO ESTA REGISTRADO, INTENTA NUEVAMENTE'}))
+            response.status_code = 500
+            return response
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION'}))
+        response.status_code = 500
+        return response
 
 if __name__ == '__main__':
     print("SERVIDOR INICIADO EN EL PUERTO: 5000")

@@ -16,6 +16,11 @@ import { VistaPromocionesComponent } from './componentes/principal/vistas/vista-
 import { VistaReportesComponent } from './componentes/principal/vistas/vista-reportes.component';
 import { VistaGestionContenidoComponent } from './componentes/principal/vistas/vista-gestion-contenido.component';
 import { VistaGestionClientesComponent } from './componentes/principal/vistas/vista-gestion-clientes.component';
+import { VistaPerfilAdministradorComponent } from './componentes/principal/vistas/vista-perfil-administrador.component';
+import { VistaPerfilUsuarioComponent } from './componentes/principal/vistas/vista-perfil-usuario.component';
+import { VistaFavoritosComponent } from './componentes/principal/vistas/vista-favoritos.component';
+import { VistaCanalesComponent } from './componentes/principal/vistas/vista-canales.component';
+import { VistaVideosComponent } from './componentes/principal/vistas/vista-videos.component';
 
 
 const routes: Routes = [
@@ -24,6 +29,14 @@ const routes: Routes = [
     component: VistaInicioComponent,
     pathMatch: 'full'
     
+  },
+  {
+    path: 'canales',
+    component: VistaCanalesComponent
+  },
+  {
+    path: 'videos',
+    component: VistaVideosComponent
   },
   {
     path: 'registro',
@@ -40,6 +53,30 @@ const routes: Routes = [
   {
     path: 'about',
     component: VistaAboutComponent
+  },
+  {
+    path: 'favoritos',
+    component: VistaFavoritosComponent,
+    canActivate: [RoleGuard],
+    data: {
+      roleDisponible: ['USUARIO']
+    }
+  },
+  {
+    path: 'profile',
+    component: VistaPerfilUsuarioComponent,
+    canActivate: [RoleGuard],
+    data: {
+      roleDisponible: ['USUARIO']
+    }
+  },
+  {
+    path: 'admin',
+    component: VistaPerfilAdministradorComponent,
+    canActivate: [RoleGuard],
+    data: {
+      roleDisponible: ['ADMINISTRADOR']
+    }
   },
   {
     path: 'dashboard',
@@ -83,11 +120,7 @@ const routes: Routes = [
   },
   {
     path: 'suscripciones',
-    component: VistaSuscripcionesComponent,
-    canActivate: [RoleGuard],
-    data: {
-      roleDisponible: ['ADMINISTRADOR','USUARIO']
-    }
+    component: VistaSuscripcionesComponent
   },
   {
     path: 'unauthorized',

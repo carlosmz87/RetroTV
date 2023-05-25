@@ -1,5 +1,7 @@
+import random
+import string
 from conexion import obtener_conexion
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
 
 #Controlador para registrar usuarios en la base de datos
@@ -42,5 +44,50 @@ def Autenticar(username, password):
     finally:
         conexion.close()
 
+#Funcion para recuperar las credenciales del usuario
+def recover(correo):
+    try:
+        # Obtener conexión a la base de datos
+        conexion = obtener_conexion()
+        # Consultar el usuario en la base de datos
+        with conexion.cursor() as cursor:
+            query = "SELECT USUARIO FROM USUARIO WHERE CORREO = %s"
+            cursor.execute(query, (correo,))
+            user = cursor.fetchone()
+        # Verificar las credenciales del usuario
+        if user is not None:
+            new_pass = generar_contrasena_temporal(user[0])
+            if new_pass is not None:
+                return {'username': user[0], 'contrasena': new_pass}
+            else:
+                return None
+        else:
+            return None
+    except:
+        return None
+    finally:
+        conexion.close()
+
+#Funcion para generar una contraseña temporal
+def generar_contrasena_temporal(username, longitud=8):
+    caracteres = string.ascii_letters + string.digits + string.punctuation
+    contrasena_temporal = ''.join(random.choice(caracteres) for _ in range(longitud))
+    contrasena_encriptada = generate_password_hash(contrasena_temporal)
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = "UPDATE USUARIO SET CONTRASENA = %s WHERE USUARIO = %s"
+            cursor.execute(query,(contrasena_encriptada, username))
+            if cursor.rowcount > 0:
+                # La actualización se realizó correctamente
+                conexion.commit()
+                return contrasena_temporal
+            else:
+                # No se realizó la actualización
+                return None
+    except:
+        return None
+    finally:
+        conexion.close()
 
     

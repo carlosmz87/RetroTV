@@ -12,6 +12,11 @@ import { VistaPromocionesComponent } from './vistas/vista-promociones.component'
 import { VistaReportesComponent } from './vistas/vista-reportes.component';
 import { VistaGestionContenidoComponent } from './vistas/vista-gestion-contenido.component';
 import { VistaGestionClientesComponent } from './vistas/vista-gestion-clientes.component';
+import { VistaPerfilUsuarioComponent } from './vistas/vista-perfil-usuario.component';
+import { VistaPerfilAdministradorComponent } from './vistas/vista-perfil-administrador.component';
+import { VistaFavoritosComponent } from './vistas/vista-favoritos.component';
+import { VistaVideosComponent } from './vistas/vista-videos.component';
+import { VistaCanalesComponent } from './vistas/vista-canales.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +28,12 @@ import { VistaGestionClientesComponent } from './vistas/vista-gestion-clientes.c
     VistaPromocionesComponent,
     VistaReportesComponent,
     VistaGestionContenidoComponent,
-    VistaGestionClientesComponent
+    VistaGestionClientesComponent,
+    VistaPerfilUsuarioComponent,
+    VistaPerfilAdministradorComponent,
+    VistaFavoritosComponent,
+    VistaVideosComponent,
+    VistaCanalesComponent
   ],
   imports: [
     CommonModule,
@@ -40,7 +50,12 @@ import { VistaGestionClientesComponent } from './vistas/vista-gestion-clientes.c
     VistaPromocionesComponent,
     VistaReportesComponent,
     VistaGestionClientesComponent,
-    VistaGestionContenidoComponent
+    VistaGestionContenidoComponent,
+    VistaPerfilUsuarioComponent,
+    VistaPerfilAdministradorComponent,
+    VistaFavoritosComponent,
+    VistaVideosComponent,
+    VistaCanalesComponent
   ]
 })
 export class ModuloPrincipalModule { }
