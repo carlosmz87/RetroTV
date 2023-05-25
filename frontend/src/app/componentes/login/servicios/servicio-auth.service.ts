@@ -11,7 +11,7 @@ import jwt_decode from 'jwt-decode';
 export class ServicioAuthService {
   private readonly TOKEN_KEY = 'token';
   private _isLoggedIn$ = new BehaviorSubject<boolean>(false);
-  public isLoogedIn$ = this._isLoggedIn$.asObservable();
+  public isLogedIn$ = this._isLoggedIn$.asObservable();
   private _userRole$ = new BehaviorSubject<string>('');
   public userRole$ = this._userRole$.asObservable();
   constructor(private servicio: ServicioLoginService, private cookieService: CookieService) {

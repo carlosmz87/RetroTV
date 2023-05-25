@@ -11,6 +11,11 @@ import { VistaAboutComponent } from './componentes/principal/vistas/vista-about.
 import { VistaSuscripcionesComponent } from './componentes/principal/vistas/vista-suscripciones.component';
 import { UnauthorizedComponent } from './componentes/genericos/unauthorized/unauthorized.component';
 import { RoleGuard } from './role.guard';
+import { VistaDashboardComponent } from './componentes/principal/vistas/vista-dashboard.component';
+import { VistaPromocionesComponent } from './componentes/principal/vistas/vista-promociones.component';
+import { VistaReportesComponent } from './componentes/principal/vistas/vista-reportes.component';
+import { VistaGestionContenidoComponent } from './componentes/principal/vistas/vista-gestion-contenido.component';
+import { VistaGestionClientesComponent } from './componentes/principal/vistas/vista-gestion-clientes.component';
 
 
 const routes: Routes = [
@@ -34,15 +39,55 @@ const routes: Routes = [
   },
   {
     path: 'about',
-    component: VistaAboutComponent,
+    component: VistaAboutComponent
+  },
+  {
+    path: 'dashboard',
+    component: VistaDashboardComponent,
     canActivate: [RoleGuard],
     data: {
-      roleDisponible: ['ADMINISTRADOR','USUARIO']
+      roleDisponible: ['ADMINISTRADOR']
+    }
+  },
+  {
+    path: 'gestion-contenido',
+    component: VistaGestionContenidoComponent,
+    canActivate: [RoleGuard],
+    data: {
+      roleDisponible: ['ADMINISTRADOR']
+    }
+  },
+  {
+    path: 'gestion-clientes',
+    component: VistaGestionClientesComponent,
+    canActivate: [RoleGuard],
+    data: {
+      roleDisponible: ['ADMINISTRADOR']
+    }
+  },
+  {
+    path: 'promociones',
+    component: VistaPromocionesComponent,
+    canActivate: [RoleGuard],
+    data: {
+      roleDisponible: ['ADMINISTRADOR']
+    }
+  },
+  {
+    path: 'reportes',
+    component: VistaReportesComponent,
+    canActivate: [RoleGuard],
+    data: {
+      roleDisponible: ['ADMINISTRADOR']
     }
   },
   {
     path: 'suscripciones',
-    component: VistaSuscripcionesComponent
+    component: VistaSuscripcionesComponent,
+    canActivate: [RoleGuard],
+    data: {
+      roleDisponible: ['ADMINISTRADOR','USUARIO']
+    }
   },
   {
     path: 'unauthorized',

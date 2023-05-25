@@ -7,7 +7,13 @@
   <button mat-menu-item class="mat-menu-item" [routerLink]="['/about']">ACERCA DE</button>
   <button mat-menu-item class="mat-menu-item" [routerLink]="['/suscripciones']">SUSCRIPCIONES</button>
   <button mat-menu-item class="mat-menu-item">PERFIL</button>
-  <button mat-menu-item class="mat-menu-item" [routerLink]="['/login']">INICIAR SESION</button>
+  <button mat-menu-item *ngIf="!(isLoggedIn)" class="mat-menu-item" [routerLink]="['/login']">INICIAR SESION</button>
+  <button mat-menu-item *ngIf="isLoggedIn" class="mat-menu-item" (click)="CerrarSesion()">CERRAR SESION</button>
   <button mat-menu-item class="mat-menu-item" [routerLink]="['/registro']">REGISTRAR USUARIO</button>
+  <button mat-menu-item *ngIf="userRole == 'ADMINISTRADOR'" class="mat-menu-item" [routerLink]="['/dashboard']">DASHBOARD</button>
+  <button mat-menu-item *ngIf="userRole == 'ADMINISTRADOR'" class="mat-menu-item" [routerLink]="['/gestion-contenido']">GESTIONAR CONTENIDO</button>
+  <button mat-menu-item *ngIf="userRole == 'ADMINISTRADOR'" class="mat-menu-item" [routerLink]="['/gestion-clientes']">GESTIONAR CLIENTES</button>
+  <button mat-menu-item *ngIf="userRole == 'ADMINISTRADOR'" class="mat-menu-item" [routerLink]="['/promociones']">PROMOCIONES</button>
+  <button mat-menu-item *ngIf="userRole == 'ADMINISTRADOR'" class="mat-menu-item" [routerLink]="['/reportes']">REPORTES</button>
 </mat-menu>
 
