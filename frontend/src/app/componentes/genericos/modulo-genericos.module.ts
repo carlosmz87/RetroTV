@@ -12,6 +12,8 @@ import { CustomNotificadorComponent } from './notificador/custom-notificador.com
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+import { ServicioAuthService } from '../login/servicios/servicio-auth.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
     UnauthorizedComponent
   ],
   providers: [
-    ServicioGenericosService
+    ServicioGenericosService,
+    ServicioAuthService,
+    CookieService
   ]
 })
 export class ModuloGenericosModule { }

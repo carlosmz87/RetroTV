@@ -30,10 +30,19 @@ export class VistaLoginComponent {
       .subscribe(
         response => {
           this.servicio_genericos.ConfigNotification(response.RetroTV, 'OK', response.status);
-          this.router.navigate(['/about'])
+          let userRole: string = "";
+          this.authService.userRole$.subscribe(role => {
+            userRole = role;
+          });
+          if(userRole  == "ADMINISTRADOR"){
+            this.router.navigate(['/dashboard']);
+          }else if (userRole == 'USUARIO'){
+            this.router.navigate(['/'])
+          }
         },
         error => {
           this.servicio_genericos.ConfigNotification(error.error.RetroTV, 'OK', error.error.status);
+          this.formularioLogin.reset();
         }
       );    
     }

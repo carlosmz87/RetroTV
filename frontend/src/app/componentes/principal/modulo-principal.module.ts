@@ -7,13 +7,23 @@ import { VistaInicioComponent } from './vistas/vista-inicio.component';
 import { VistaAboutComponent } from './vistas/vista-about.component';
 import { VistaSuscripcionesComponent } from './vistas/vista-suscripciones.component';
 import {MatButtonModule} from '@angular/material/button';
+import { VistaDashboardComponent } from './vistas/vista-dashboard.component';
+import { VistaPromocionesComponent } from './vistas/vista-promociones.component';
+import { VistaReportesComponent } from './vistas/vista-reportes.component';
+import { VistaGestionContenidoComponent } from './vistas/vista-gestion-contenido.component';
+import { VistaGestionClientesComponent } from './vistas/vista-gestion-clientes.component';
 
 @NgModule({
   declarations: [
     VistaPrincipalComponent,
     VistaInicioComponent,
     VistaAboutComponent,
-    VistaSuscripcionesComponent
+    VistaSuscripcionesComponent,
+    VistaDashboardComponent,
+    VistaPromocionesComponent,
+    VistaReportesComponent,
+    VistaGestionContenidoComponent,
+    VistaGestionClientesComponent
   ],
   imports: [
     CommonModule,
@@ -25,7 +35,12 @@ import {MatButtonModule} from '@angular/material/button';
     VistaPrincipalComponent,
     VistaInicioComponent,
     VistaAboutComponent,
-    VistaSuscripcionesComponent
+    VistaSuscripcionesComponent,
+    VistaDashboardComponent,
+    VistaPromocionesComponent,
+    VistaReportesComponent,
+    VistaGestionClientesComponent,
+    VistaGestionContenidoComponent
   ]
 })
 export class ModuloPrincipalModule { }
