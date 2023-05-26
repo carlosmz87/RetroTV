@@ -219,7 +219,65 @@ def recover():
         response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION'}))
         response.status_code = 500
         return response
-
+    
+#Endpoint para retornar todos los usuarios registrados
+@app.route('/ListarClientes', methods=['GET'])
+@admin_required()
+def ListarCliente():
+    try:
+        usuarios = controlador.ListarClientes()
+        if usuarios is not None:
+            response = make_response(jsonify({'status':'success','RetroTV': 'SE HAN MOSTRADO LOS USUARIOS EXITOSAMENTE','usuarios':usuarios}))
+            response.status_code = 200
+            return response
+        else:
+            response = make_response(jsonify({'status':'error','RetroTV': 'ERROR AL MOSTRAR LOS USUARIOS','usuarios':None}))
+            response.status_code = 400
+            return response
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION','usuarios':None}))
+        response.status_code = 500
+        return response
+    
+#Endpoint para Activar una suscripcion
+@app.route('/ActivarSuscripcion/<id>', methods=['POST'])
+@admin_required()
+def ActivarSuscripcion(id):
+    try:
+        respuesta = controlador.ActivarSuscripcion(id)
+        if respuesta is not None:
+            response = make_response(jsonify({'status':'success','RetroTV': 'SE EJECUTO EL PROCEDIMIENTO ActivarSolicitud','respuesta':respuesta}))
+            response.status_code = 200
+            return response 
+        else:
+            response = make_response(jsonify({'status':'error','RetroTV': 'ERROR AL ACTIVAR LA SUSCRIPCION','respuesta':None}))
+            response.status_code = 400
+            return response 
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION','respuesta':None}))
+        response.status_code = 500
+        return response  
+    
+#Endpoint para Cancelar una suscripcion
+@app.route('/CancelarSuscripcion/<id>', methods=['POST'])
+@admin_required()
+def CancelarSuscripcion(id):
+    try:
+        respuesta = controlador.CancelarSuscripcion(id)
+        if respuesta is not None:
+            response = make_response(jsonify({'status':'success','RetroTV': 'SE EJECUTO EL PROCEDIMIENTO CancelarSolicitud','respuesta':respuesta}))
+            response.status_code = 200
+            return response 
+        else:
+            response = make_response(jsonify({'status':'error','RetroTV': 'ERROR AL CANCELAR LA SUSCRIPCION','respuesta':None}))
+            response.status_code = 400
+            return response 
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION','respuesta':None}))
+        response.status_code = 500
+        return response
+    
+    
 if __name__ == '__main__':
     print("SERVIDOR INICIADO EN EL PUERTO: 5000")
     app.run(host="0.0.0.0", port=5000, debug=True)

@@ -90,4 +90,72 @@ def generar_contrasena_temporal(username, longitud=8):
     finally:
         conexion.close()
 
+#Funcion para retornar todos los usuarios registrados
+def ListarClientes():
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = "SELECT USU_ID, NOMBRE, CORREO, USUARIO, GENERO, FECHA_NACIMIENTO, TELEFONO, ESTADO AS SUSCRIPCION FROM USUARIO WHERE ROL = 'USUARIO'"
+            cursor.execute(query)
+            usuarios = cursor.fetchall()
+            
+            if len(usuarios) == 0:
+                return None
+            
+            usuarios_obj = []
+            
+            for usuario in usuarios:
+                usuario_obj = {
+                    "id": usuario[0],
+                    "nombre": usuario[1],
+                    "correo": usuario[2],
+                    "usuario": usuario[3],
+                    "genero": usuario[4],
+                    "fecha_nacimiento": usuario[5],
+                    "telefono": usuario[6],
+                    "suscripcion": usuario[7]
+                }
+                usuarios_obj.append(usuario_obj)
+            
+            return usuarios_obj
+    except:
+        return None
+    finally:
+        conexion.close()
+
+# Función para llamar al procedimiento ActivarSuscripcion(id: int)
+def ActivarSuscripcion(id):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            salida = ""
+            resultado = cursor.callproc("ActivarSuscripcion", (id, salida))
+            print(resultado)
+            conexion.commit()  
+            if resultado:
+                return resultado[1]
+            else:
+                return None
+    except:
+        return None
+    finally:
+        conexion.close()
+
+# Función para llamar al procedimiento CancelarSuscripcion(id: int)
+def CancelarSuscripcion(id):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            salida = ""
+            resultado = cursor.callproc("CancelarSuscripcion", (id, salida))
+            print(resultado)
+            conexion.commit()
+            if resultado:
+                return resultado[1]
+            else:
+                return None
+    except:
+        return None
+    finally:
+        conexion.close()
     

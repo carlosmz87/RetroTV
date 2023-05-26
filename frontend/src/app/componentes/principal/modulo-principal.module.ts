@@ -17,6 +17,15 @@ import { VistaPerfilAdministradorComponent } from './vistas/vista-perfil-adminis
 import { VistaFavoritosComponent } from './vistas/vista-favoritos.component';
 import { VistaVideosComponent } from './vistas/vista-videos.component';
 import { VistaCanalesComponent } from './vistas/vista-canales.component';
+import { ServicioGestionClientesService } from './servicios/clientes/servicio-gestion-clientes.service';
+import { ServicioGestionContenidoService } from './servicios/contenido/servicio-gestion-contenido.service';
+import { HttpClientModule } from '@angular/common/http';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSortModule } from '@angular/material/sort';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -39,7 +48,14 @@ import { VistaCanalesComponent } from './vistas/vista-canales.component';
     CommonModule,
     ModuloGenericosModule,
     RouterModule,
-    MatButtonModule
+    MatButtonModule,
+    HttpClientModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSortModule,
+    MatIconModule
   ],
   exports: [
     VistaPrincipalComponent,
@@ -56,6 +72,10 @@ import { VistaCanalesComponent } from './vistas/vista-canales.component';
     VistaFavoritosComponent,
     VistaVideosComponent,
     VistaCanalesComponent
+  ],
+  providers: [
+    ServicioGestionClientesService,
+    ServicioGestionContenidoService
   ]
 })
 export class ModuloPrincipalModule { }
