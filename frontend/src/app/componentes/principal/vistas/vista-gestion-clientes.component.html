@@ -45,7 +45,7 @@
       <ng-container matColumnDef="activarSuscripcion">
         <mat-header-cell *matHeaderCellDef>activar suscripcion</mat-header-cell>
         <mat-cell *matCellDef="let usuario">
-          <button mat-icon-button color="primary" (click)="activarSuscripcion(usuario.id)">
+          <button mat-icon-button color="primary" (click)="confirmarActivarSuscripcion(usuario.id)">
             <mat-icon>play_arrow</mat-icon>
           </button>
         </mat-cell>
@@ -53,7 +53,7 @@
       <ng-container matColumnDef="cancelarSuscripcion">
         <mat-header-cell *matHeaderCellDef>cancelar suscripcion</mat-header-cell>
         <mat-cell *matCellDef="let usuario">
-          <button mat-icon-button color="warn" (click)="cancelarSuscripcion(usuario.id)">
+          <button mat-icon-button color="warn" (click)="confirmarCancelarSuscripcion(usuario.id)">
             <mat-icon>cancel</mat-icon>
           </button>
         </mat-cell>
@@ -61,7 +61,7 @@
       <ng-container matColumnDef="eliminar">
         <mat-header-cell *matHeaderCellDef>eliminar</mat-header-cell>
         <mat-cell *matCellDef="let usuario">
-          <button mat-icon-button color="warn" (click)="eliminarUsuario(usuario.id)">
+          <button mat-icon-button color="warn" (click)="confirmarEliminarUsuario(usuario.id)">
             <mat-icon>delete</mat-icon>
           </button>
         </mat-cell>

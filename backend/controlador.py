@@ -130,7 +130,6 @@ def ActivarSuscripcion(id):
         with conexion.cursor() as cursor:
             salida = ""
             resultado = cursor.callproc("ActivarSuscripcion", (id, salida))
-            print(resultado)
             conexion.commit()  
             if resultado:
                 return resultado[1]
@@ -148,12 +147,31 @@ def CancelarSuscripcion(id):
         with conexion.cursor() as cursor:
             salida = ""
             resultado = cursor.callproc("CancelarSuscripcion", (id, salida))
-            print(resultado)
             conexion.commit()
             if resultado:
                 return resultado[1]
             else:
                 return None
+    except:
+        return None
+    finally:
+        conexion.close()
+
+# Funcion para eliminar un usuario por id
+def EliminarUsuario(id):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = "DELETE FROM USUARIO WHERE USU_ID = %s"
+            cursor.execute(query, (id,))
+            if cursor.rowcount > 0:
+                # La actualización se realizó correctamente
+                conexion.commit()
+                return "SE HA ELIMINADO CORRECTAMENTE EL USUARIO"
+            else:
+                # No se realizó la actualización
+                return None
+
     except:
         return None
     finally:

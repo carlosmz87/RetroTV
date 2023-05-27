@@ -56,16 +56,71 @@ export class VistaGestionClientesComponent implements OnInit {
   }
 
   eliminarUsuario(id:Number){
-    console.log(id);
+    this.servicio.EliminarCliente(id)
+    .subscribe(
+      response => {
+        this.servicios_genericos.ConfigNotification(response.RetroTV, 'OK', response.status);
+        this.ListarClientes();
+      },
+      error => {
+        this.servicios_genericos.ConfigNotification(error.error.RetroTV, 'OK', error.error.status);
+      }
+    )
   }
 
   activarSuscripcion(id:Number){
-    console.log(id);
+    this.servicio.ActivarSuscripcion(id)
+    .subscribe(
+      response => {
+        if(response.respuesta.includes("EXITOSAMENTE")){
+          this.servicios_genericos.ConfigNotification(response.respuesta, 'OK', response.status);
+          this.ListarClientes();
+        }else if(response.respuesta.includes("ERROR")){
+          this.servicios_genericos.ConfigNotification(response.respuesta, 'OK', 'error');
+        }     
+      },
+      error => {
+        this.servicios_genericos.ConfigNotification(error.error.RetroTV, 'OK', error.error.status);
+      }
+    );
   }
 
   cancelarSuscripcion(id:Number){
-    console.log(id)
+    this.servicio.CancelarSuscripcion(id)
+    .subscribe(
+      response => {
+        if(response.respuesta.includes("EXITOSAMENTE")){
+          this.servicios_genericos.ConfigNotification(response.respuesta, 'OK', response.status);
+          this.ListarClientes();
+        }else if(response.respuesta.includes("ERROR")){
+          this.servicios_genericos.ConfigNotification(response.respuesta, 'OK', 'error');
+        } 
+      },
+      error => {
+        this.servicios_genericos.ConfigNotification(error.error.RetroTV, 'OK', error.error.status);
+      }
+    );
   }
 
+  confirmarActivarSuscripcion(id: number) {
+    const confirmacion = confirm('¿ESTAS SEGURO QUE DESEAS ACTIVAR LA SUSCRIPCION AL USUARIO?');
+    if (confirmacion) {
+      this.activarSuscripcion(id);
+    }
+  }
+  
+  confirmarCancelarSuscripcion(id: number) {
+    const confirmacion = confirm('¿ESTAS SEGURO QUE DESEAS CANCELAR LA SUSCRIPCION AL USUARIO?');
+    if (confirmacion) {
+      this.cancelarSuscripcion(id);
+    }
+  }
+  
+  confirmarEliminarUsuario(id: number) {
+    const confirmacion = confirm('¿ESTAS SEGURO QUE DESEAS ELIMINAR AL USUARIO?');
+    if (confirmacion) {
+      this.eliminarUsuario(id);
+    }
+  }
 
 }

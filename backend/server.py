@@ -77,6 +77,28 @@ def user_required():
 
     return wrapper
 
+#Decorador personalizado para validar usuario o admin logueado
+def auth_required():
+    def wrapper(fn):
+        @wraps(fn)
+        def decorator(*args, **kwargs):
+            try:
+                token = request.headers.get('Authorization')
+                if not token:
+                    return make_response(jsonify({'status':'error','RetroTV': 'NO HA ENVIADO EL TOKEN DE AUTENTICACION'}), 400)
+                verify_jwt_in_request()
+                claims = get_jwt()
+                if claims["rol"] == "USUARIO" or claims["rol"] == "ADMINISTRADOR":
+                    return fn(*args, **kwargs)
+                else:
+                    return make_response(jsonify({'status':'error','RetroTV':'ACCESO DENEGADO, UNICAMENTE LOS USUARIOS O ADMINISTRADOR CON SESION ACTIVA PUEDEN INGRESAR'}), 403)
+            except ExpiredSignatureError:
+                return make_response(jsonify({'status':'error','RetroTV': 'EL TOKEN DE AUTENTICACION HA EXPIRADO'}), 400)
+            except InvalidTokenError:
+                return make_response(jsonify({'status':'error','RetroTV': 'TOKEN DE AUTENTICACION NO ES VALIDO'}), 400)
+        return decorator
+
+    return wrapper
 
 @app.route("/protected_admin", methods=["GET"])
 @admin_required()
@@ -241,7 +263,7 @@ def ListarCliente():
     
 #Endpoint para Activar una suscripcion
 @app.route('/ActivarSuscripcion/<id>', methods=['POST'])
-@admin_required()
+@auth_required()
 def ActivarSuscripcion(id):
     try:
         respuesta = controlador.ActivarSuscripcion(id)
@@ -260,7 +282,7 @@ def ActivarSuscripcion(id):
     
 #Endpoint para Cancelar una suscripcion
 @app.route('/CancelarSuscripcion/<id>', methods=['POST'])
-@admin_required()
+@auth_required()
 def CancelarSuscripcion(id):
     try:
         respuesta = controlador.CancelarSuscripcion(id)
@@ -277,6 +299,26 @@ def CancelarSuscripcion(id):
         response.status_code = 500
         return response
     
+
+#Enpoint para Eliminar un usuario
+@app.route('/EliminarUsuario/<id>', methods=['DELETE'])
+@auth_required()
+def EliminarUsuario(id):
+    try:
+        respuesta = controlador.EliminarUsuario(id)
+        if respuesta is not None:
+            response = make_response(jsonify({'status':'success','RetroTV': respuesta}))
+            response.status_code = 200
+            return response 
+        else:
+            response = make_response(jsonify({'status':'error','RetroTV': 'ERROR AL ELIMINAR USUARIO'}))
+            response.status_code = 400
+            return response
+
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION'}))
+        response.status_code = 500
+        return response      
     
 if __name__ == '__main__':
     print("SERVIDOR INICIADO EN EL PUERTO: 5000")
