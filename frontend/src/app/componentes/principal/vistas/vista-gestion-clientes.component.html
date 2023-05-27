@@ -1,1 +1,81 @@
-<p>vista-gestion-clientes works!</p>
+<h1 class="texto">GESTION DE USUARIOS</h1>
+<div class="mat-table-container">
+    <div class="filter-container">
+      <mat-form-field class="filter-field">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Roberto" #input>
+      </mat-form-field>
+    </div>
+    
+    <div class="table-container">
+      <mat-table [dataSource]="dataSource" matSort>
+        <!-- Columnas de la tabla -->
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>id</mat-header-cell>
+        <mat-cell *matCellDef="let usuario">{{ usuario.id }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="nombre">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>nombre</mat-header-cell>
+        <mat-cell *matCellDef="let usuario">{{ usuario.nombre }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="usuario">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>usuario</mat-header-cell>
+        <mat-cell *matCellDef="let usuario">{{ usuario.usuario }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="correo">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>correo</mat-header-cell>
+        <mat-cell *matCellDef="let usuario">{{ usuario.correo }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="telefono">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>telefono</mat-header-cell>
+        <mat-cell *matCellDef="let usuario">{{ usuario.telefono }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="fecha_nacimiento">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>fecha de nacimiento</mat-header-cell>
+        <mat-cell *matCellDef="let usuario">{{ usuario.fecha_nacimiento }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="genero">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>genero</mat-header-cell>
+        <mat-cell *matCellDef="let usuario">{{ usuario.genero }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="suscripcion">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>suscripcion</mat-header-cell>
+        <mat-cell *matCellDef="let usuario">{{ usuario.suscripcion }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="activarSuscripcion">
+        <mat-header-cell *matHeaderCellDef>activar suscripcion</mat-header-cell>
+        <mat-cell *matCellDef="let usuario">
+          <button mat-icon-button color="primary" (click)="confirmarActivarSuscripcion(usuario.id)">
+            <mat-icon>play_arrow</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="cancelarSuscripcion">
+        <mat-header-cell *matHeaderCellDef>cancelar suscripcion</mat-header-cell>
+        <mat-cell *matCellDef="let usuario">
+          <button mat-icon-button color="warn" (click)="confirmarCancelarSuscripcion(usuario.id)">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="eliminar">
+        <mat-header-cell *matHeaderCellDef>eliminar</mat-header-cell>
+        <mat-cell *matCellDef="let usuario">
+          <button mat-icon-button color="warn" (click)="confirmarEliminarUsuario(usuario.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Definición de las columnas visibles -->
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </div>
+    <div class="paginator-container">
+    <button mat-raised-button color="primary" class="boton_agregar" [routerLink]="['/registro']">Agregar</button>
+      <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+      
+    </div>
+  </div>
+
