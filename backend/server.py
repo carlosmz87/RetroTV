@@ -263,7 +263,7 @@ def ListarCliente():
     
 #Endpoint para Activar una suscripcion
 @app.route('/ActivarSuscripcion/<id>', methods=['POST'])
-@auth_required()
+@admin_required()
 def ActivarSuscripcion(id):
     try:
         respuesta = controlador.ActivarSuscripcion(id)

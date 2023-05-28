@@ -12,6 +12,7 @@ export class CustomNavbarComponent {
   private readonly TOKEN_KEY = 'token';
   userRole: string = "";
   isLoggedIn: boolean = false;
+  userId: Number = 0;
   constructor(public authService: ServicioAuthService, private coockieService: CookieService, private router:Router){
     this.authService.userRole$.subscribe(role => {
       this.userRole = role;
@@ -19,12 +20,16 @@ export class CustomNavbarComponent {
     this.authService.isLogedIn$.subscribe(isLogged => {
       this.isLoggedIn = isLogged;
     });
+    this.authService.userId$.subscribe(usr => {
+      this.userId = usr;
+    });
   }
   
   CerrarSesion(){
     this.coockieService.delete(this.TOKEN_KEY);
     this.userRole = "";
     this.isLoggedIn = false;
+    this.userId = 0;
     this.router.navigate(['/login']);
   }
 
