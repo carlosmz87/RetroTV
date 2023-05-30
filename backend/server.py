@@ -263,7 +263,7 @@ def ListarCliente():
     
 #Endpoint para Activar una suscripcion
 @app.route('/ActivarSuscripcion/<id>', methods=['POST'])
-@auth_required()
+@admin_required()
 def ActivarSuscripcion(id):
     try:
         respuesta = controlador.ActivarSuscripcion(id)
@@ -318,7 +318,181 @@ def EliminarUsuario(id):
     except:
         response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION'}))
         response.status_code = 500
-        return response      
+        return response  
+
+#Endpoint para obtener los datos del administrador
+@app.route('/PerfilAdministrador/<id>', methods=['GET'])
+@admin_required()
+def PerfilAdministrador(id):    
+    try:
+        datos = controlador.PerfilAdministrador(id)
+        if datos is not None:
+            response = make_response(jsonify({'status':'success', 'RetroTV':'DATOS OBTENIDOS EXITOSAMENTE', 'datos':datos}))
+            response.status_code = 200
+            return response
+        else:
+            response = make_response(jsonify({'status':'error','RetroTV': 'ERROR AL OBTENER LA INFORMACION DEL ADMINISTRADOR', 'datos':None}))
+            response.status_code = 400
+            return response   
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION','datos':None}))
+        response.status_code = 500
+        return response  
+
+#Endpoint para obtener los datos del usuario
+@app.route('/PerfilUsuario/<id>', methods=['GET'])
+@user_required()
+def PerfilUsuario(id):    
+    try:
+        datos = controlador.PerfilUsuario(id)
+        if datos is not None:
+            response = make_response(jsonify({'status':'success', 'RetroTV':'DATOS OBTENIDOS EXITOSAMENTE', 'datos':datos}))
+            response.status_code = 200
+            return response
+        else:
+            response = make_response(jsonify({'status':'error','RetroTV': 'ERROR AL OBTENER LA INFORMACION DEL USUARIO', 'datos':None}))
+            response.status_code = 400
+            return response   
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION','datos':None}))
+        response.status_code = 500
+        return response  
+
+#Endpoint para crear una nueva clasificacion de videos
+@app.route('/CrearClasificacion', methods=['POST'])
+@admin_required()
+def CrearClasificacion():
+    try:
+        datos = request.get_json()
+        nombre = datos['nombre']
+        resp = controlador.CrearClasificacion(nombre)
+        if resp:
+            response = make_response(jsonify({'status':'success', 'RetroTV':"LA NUEVA CLASIFICACION SE HA AGREGADO EXITOSAMENTE"}))
+            response.status_code = 200
+            return response
+        else:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'ERROR AL CREAR UNA NUEVA CLASIFICACION'}))
+            response.status_code = 400
+            return response
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION'}))
+        response.status_code = 500
+        return response  
+
+#Endpoint para listar todas las clasificaciones existentes
+@app.route('/ListarClasificaciones', methods=['GET'])
+def ListarClasificaciones():
+    try:
+        clasificaciones = controlador.ListarClasificaciones()
+        if clasificaciones is not None:
+            response = make_response(jsonify({'status':'success', 'RetroTV':'SE HAN OBTENIDO LAS CLASIFICACIONES EXITOSAMENTE', 'clasificaciones':clasificaciones}))
+            response.status_code = 200
+            return response
+        else:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'ERROR AL OBTENER LAS CLASIFICACIONES', 'clasificaciones': None}))
+            response.status_code = 400
+            return response  
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION', 'clasificaciones':None}))
+        response.status_code = 500
+        return response
+    
+#Enpoint para Eliminar una clasificacion
+@app.route('/EliminarClasificacion', methods=['DELETE'])
+@admin_required()
+def EliminarClasificacion():
+    try:
+        data = request.get_json()
+        nombre = data['nombre']
+        respuesta = controlador.EliminarClasificacion(nombre)
+        if respuesta is not None:
+            response = make_response(jsonify({'status':'success','RetroTV': respuesta}))
+            response.status_code = 200
+            return response 
+        else:
+            response = make_response(jsonify({'status':'error','RetroTV': 'ERROR AL ELIMINAR LA CLASIFICACION'}))
+            response.status_code = 400
+            return response
+
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION'}))
+        response.status_code = 500
+        return response 
+
+#Endpoint para actualizar el correo electronico de los usuarios
+@app.route('/ActualizarCorreo', methods={'PUT'})
+@auth_required()
+def ActualizarCorreo():
+    try:
+        data = request.get_json()
+        correo = data['correo']
+        id = data['id']
+        res = controlador.ActualizarCorreo(correo, id)
+        if res is not None:
+            response = make_response(jsonify({'status':'success','RetroTV': res}))
+            response.status_code = 200
+            return response 
+        else:
+            response = make_response(jsonify({'status':'error','RetroTV': 'ERROR AL ACTUALIZAR TU CORREO ELECTRONICO'}))
+            response.status_code = 400
+            return response
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION'}))
+        response.status_code = 500
+        return response   
+
+#Endpoint para actualizar el telefono de los usuarios
+@app.route('/ActualizarTelefono', methods={'PUT'})
+@auth_required()
+def ActualizarTelefono():
+    try:
+        data = request.get_json()
+        telefono = data['telefono']
+        id = data['id']
+        res = controlador.ActualizarTelefono(telefono,id)
+        if res is not None:
+            response = make_response(jsonify({'status':'success','RetroTV': res}))
+            response.status_code = 200
+            return response 
+        else:
+            response = make_response(jsonify({'status':'error','RetroTV': 'ERROR AL ACTUALIZAR TU NUMERO DE TELEFONO'}))
+            response.status_code = 400
+            return response
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION'}))
+        response.status_code = 500
+        return response    
+
+#Endpoint para actualizar la contrasena de los usuarios
+@app.route('/ActualizarContrasena', methods={'PUT'})
+@auth_required()
+def ActualizarContrasena():
+    try:
+        data = request.get_json()
+        contrasena = data['contrasena']
+        conf_contrasena =data['conf_contrasena']
+        id = data['id']
+        if contrasena == conf_contrasena:
+            contrasena_encriptada = generate_password_hash(contrasena)
+            res = controlador.ActualizarContrasena(contrasena_encriptada,id)
+            if res is not None:
+                response = make_response(jsonify({'status':'success','RetroTV': res}))
+                response.status_code = 200
+                return response 
+            else:
+                response = make_response(jsonify({'status':'error','RetroTV': 'ERROR AL ACTUALIZAR TU CONTRASEÑA'}))
+                response.status_code = 400
+                return response
+        else:
+            response = make_response(jsonify({'status':'error','RetroTV': 'ERROR AL ACTUALIZAR TU CONTRASEÑA, DEBE COINCIDIR EN AMBOS CAMPOS'}))
+            response.status_code = 400
+            return response
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION'}))
+        response.status_code = 500
+        return response
+    
+     
     
 if __name__ == '__main__':
     print("SERVIDOR INICIADO EN EL PUERTO: 5000")

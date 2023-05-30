@@ -1,1 +1,70 @@
-<p>vista-perfil-usuario works!</p>
+<h1 class="titulo">PERFIL DE USUARIO</h1>
+<div class="contenedor_principal">
+    <div class="contenedor_datosperfil">
+        <img src="../assets/camara.png" alt="Camara RetroTV">
+        <mat-card class="card">
+            <mat-card-header class="card_header">
+                <mat-card-title class="titulo"> DATOS PERSONALES </mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="card_body">
+                <mat-label class="dato">NOMBRE: {{datos_perfil.datos.nombre}}</mat-label>
+                <mat-label class="dato">USUARIO: {{datos_perfil.datos.usuario}}</mat-label>
+                <mat-label class="dato">CORREO: {{datos_perfil.datos.correo}}</mat-label>
+                <mat-label class="dato">TELEFONO: {{datos_perfil.datos.telefono}}</mat-label>
+                <mat-label class="dato">SUSCRIPCION: {{datos_perfil.datos.suscripcion}}</mat-label>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="contenedor_actualizacion">
+        <h3 class="titulo">ACTUALIZAR DATOS</h3>
+        <form class="formCorreo" [formGroup]="formularioCorreo" (ngSubmit)="ActualizarCorreo()">
+            <mat-form-field class="campo">
+                <mat-label>CORREO</mat-label>
+                <input formControlName="correo" placeholder="pat@example.com" matInput required/>
+            </mat-form-field>
+            <button mat-raised-button type="submit" color="primary" class="boton">Actualizar correo</button>
+        </form> 
+        <form class="formTelefono" [formGroup]="formularioTelefono" (ngSubmit)="ActualizarTelefono()">
+            <mat-form-field appearance="fill" hintLabel="Max 10 caracteres en E.E.U.U y 11 en Latinoamerica" class="campo">
+                <mat-label>TELEFONO</mat-label>
+                <mat-icon matPrefix>phone</mat-icon>
+                <input matInput type="text" formControlName="telefono" #input maxlength="13" required (change)="formatPhone()">
+            </mat-form-field> 
+            <button mat-raised-button type="submit" color="primary" class="boton">Actualizar telefono</button>
+        </form>
+        <form class="formularioContrasena" [formGroup]="formularioContrasena" (ngSubmit)="ActualizarContrasena()">
+            <mat-form-field class="campo">
+                <mat-label>CONTRASEÑA</mat-label>
+                <input formControlName="contrasena" [type]="hide ? 'password' : 'text'" matInput required/>
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Ocultar'" [attr.aria-pressed]="hide">
+                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+              </mat-form-field>
+              <mat-form-field class="campo">
+                <mat-label>CONFIRMAR CONTRASEÑA</mat-label>
+                <input formControlName="conf_contrasena" [type]="hide ? 'password' : 'text'" matInput required/>
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Ocultar'" [attr.aria-pressed]="hide">
+                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+              </mat-form-field>
+              <button mat-raised-button type="submit" color="primary" class="boton">Actualizar contraseña</button>
+        </form>
+    </div>
+    <div class="contenedor_opciones">
+        <p class="parrafo">Al solicitar tu suscripción el administrador será notificado, te enviará un correo electrónico con un enlace de pago.
+            Deberás realizar tu pago y responder el correo electrónico con un comprobante de tu pago para que el administrador
+            active tu suscripción. Cuando la suscripción este activa, se te notificará por correo electrónico y tendrá una 
+            duración de un mes a partir de la fecha de activación.
+        </p>
+        <button mat-raised-button color="primary" class="boton">SOLICITAR SUSCRIPCION</button>
+        <p class="parrafo">Al cancelar tu suscripción, automáticamente se inhabilita al usuario el acceso al contenido (canales y videos). 
+            Para volver a tener acceso, deberá volver a solicitar una suscripción y realizar nuevamente el pago correspondiente.
+        </p>
+        <button mat-raised-button color="warn" class="boton" (click)="CancelarSuscripcion()">CANCELAR SUSCRIPCION</button>
+        <p class="parrafo">Al eliminar la cuenta, ya no tendra acceso al sistema, unicamente se podran visualizar las páginas disponibles
+            a todo público. Puede volver a crear una cuenta en cualquier momento sin ningún problema.
+        </p>
+        <button mat-raised-button color="warn" class="boton" (click)="EliminarCuenta()">ELIMINAR CUENTA</button>
+    </div>
+</div>
+

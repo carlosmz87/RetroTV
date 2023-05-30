@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ServicioAuthService } from '../../login/servicios/servicio-auth.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { ServicioGenericosService } from '../servicios/servicio-genericos.service';
 
 @Component({
   selector: 'app-custom-navbar',
@@ -12,12 +13,22 @@ export class CustomNavbarComponent {
   private readonly TOKEN_KEY = 'token';
   userRole: string = "";
   isLoggedIn: boolean = false;
-  constructor(public authService: ServicioAuthService, private coockieService: CookieService, private router:Router){
+  userId: Number = 0;
+  constructor(public authService: ServicioAuthService, private coockieService: CookieService, private router:Router, private genericos_service:ServicioGenericosService){
     this.authService.userRole$.subscribe(role => {
       this.userRole = role;
     });
     this.authService.isLogedIn$.subscribe(isLogged => {
       this.isLoggedIn = isLogged;
+    });
+    this.authService.userId$.subscribe(usr => {
+      this.userId = usr;
+    });
+  }
+
+  ngOnInit(){
+    this.genericos_service.recargarComponente$.subscribe(() => {
+      this.resetearVariables();
     });
   }
   
@@ -25,7 +36,14 @@ export class CustomNavbarComponent {
     this.coockieService.delete(this.TOKEN_KEY);
     this.userRole = "";
     this.isLoggedIn = false;
+    this.userId = 0;
     this.router.navigate(['/login']);
+  }
+
+  private resetearVariables() {
+    this.userRole = "";
+    this.isLoggedIn = false;
+    this.userId = 0;
   }
 
 }

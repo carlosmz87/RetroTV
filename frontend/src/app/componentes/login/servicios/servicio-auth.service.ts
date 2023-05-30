@@ -14,10 +14,13 @@ export class ServicioAuthService {
   public isLogedIn$ = this._isLoggedIn$.asObservable();
   private _userRole$ = new BehaviorSubject<string>('');
   public userRole$ = this._userRole$.asObservable();
+  private _userId$ = new BehaviorSubject<Number>(0);
+  public userId$ = this._userId$.asObservable();
   constructor(private servicio: ServicioLoginService, private cookieService: CookieService) {
     const token = this.cookieService.get(this.TOKEN_KEY);
     this.validateTokenExpiration(token);
     this.getUserRoleFromToken(token);
+    this.getUserIdFromToken(token);
   }
   
   login(form:LoginInterface){
@@ -25,6 +28,7 @@ export class ServicioAuthService {
       tap(response =>{
         this.validateTokenExpiration(response.auth_token);
         this.getUserRoleFromToken(response.auth_token);
+        this.getUserIdFromToken(response.auth_token);
         this.cookieService.set(this.TOKEN_KEY, response.auth_token);
       })
     );
@@ -65,6 +69,21 @@ export class ServicioAuthService {
       }
     } else {
       this._userRole$.next('');
+    }
+  }
+
+  private getUserIdFromToken(token: string){
+    if(token){
+      try{
+        const decodedToken: any = jwt_decode(token);
+        const userId = decodedToken.sub;
+        this._userId$.next(userId);
+      }catch(error){
+        console.error('Error al decodificar el token: ', error);
+        this._userId$.next(0);
+      }
+    }else{
+      this._userId$.next(0);
     }
   }
 

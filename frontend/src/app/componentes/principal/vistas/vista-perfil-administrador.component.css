@@ -1,0 +1,72 @@
+.contenedor_principal {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+}
+
+.contenedor_principal img {
+    display: block; /* Asegura que la imagen sea un elemento de bloque */
+    margin: 0 auto; /* Centra horizontalmente la imagen utilizando margen automático */
+    margin-bottom: 10%;
+}
+
+.contenedor_datosperfil,
+.contenedor_clasificacion {
+    margin: 2%;
+}
+  
+.contenedor_actualizacion,
+.contenedor_eliminar_clasificacion {
+    margin: 2%;
+}
+  
+.card_header,
+.card_header_clasificacion
+.card_header_eliminar_clasificacion {
+    display: flex;
+    justify-content: center;
+}
+  
+.titulo {
+    text-align: center;
+}
+  
+.card_body {
+    display: flex;
+    flex-direction: column;
+}
+  
+.dato {
+    margin-top: 2%;
+    margin-left: 2%;
+    margin-bottom: 3%;
+}
+  
+.campo {
+    margin: 2%;
+    font-size: small;
+    width: 60%;
+}
+  
+.formularioContrasena,
+.formTelefono,
+.formCorreo,
+.formulario_clasificacion 
+.formulario_eliminar_clasificacion{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    margin-top: 5%;
+}
+  
+.boton {
+    width: 40%;
+    margin-top: 1%;
+    margin-left: auto;
+    margin-right: auto;
+}
+  
+img{
+    margin:5%;
+}
