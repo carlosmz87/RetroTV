@@ -2,13 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ClasificacionInterface } from '../../modelos/clasificacion/clasificacion.interface';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { ClasificacionesInterface, RespuestaClasificacionInterface, RespuestaListaClasificacionInterface } from '../../modelos/clasificacion/respuesta-clasificacion.interface';
+import { ListaClasificacionesInterface, RespuestaClasificacionInterface, RespuestaListaClasificacionInterface } from '../../modelos/clasificacion/respuesta-clasificacion.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServicioClasificacionService {
-  private _clasificaciones$ = new BehaviorSubject<ClasificacionesInterface[]>([]);
+  private _clasificaciones$ = new BehaviorSubject<ListaClasificacionesInterface[]>([]);
   public clasificaciones$ = this._clasificaciones$.asObservable();
   constructor(private http:HttpClient) { 
 
@@ -17,12 +17,12 @@ export class ServicioClasificacionService {
 
   CrearClasificacion(form:ClasificacionInterface):Observable<RespuestaClasificacionInterface>{
     let dir = this.url + 'CrearClasificacion';
-    return this.http.post<RespuestaClasificacionInterface>(dir, {...form});
+    return this.http.post<RespuestaClasificacionInterface>(dir, {...form.value});
   }
 
   EliminarClasificacion(form:ClasificacionInterface):Observable<RespuestaClasificacionInterface>{
     let dir = this.url + 'EliminarClasificacion';
-    return this.http.request<RespuestaClasificacionInterface>('delete',dir, {body:form});
+    return this.http.request<RespuestaClasificacionInterface>('delete',dir, {body:form.value});
   }
 
   ListarClasificaciones():Observable<RespuestaListaClasificacionInterface>{

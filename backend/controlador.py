@@ -167,7 +167,7 @@ def EliminarUsuario(id):
             if cursor.rowcount > 0:
                 # La actualización se realizó correctamente
                 conexion.commit()
-                return "SE HA ELIMINADO CORRECTAMENTE EL USUARIO"
+                return "SE HA ELIMINADO EXITOSAMENTE EL USUARIO"
             else:
                 # No se realizó la actualización
                 return None

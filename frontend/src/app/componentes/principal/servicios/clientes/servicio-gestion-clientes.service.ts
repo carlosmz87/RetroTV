@@ -46,17 +46,17 @@ export class ServicioGestionClientesService {
 
   ActualizarCorreo(form:NuevoCorreoInterface):Observable<RespuestaClientesInterface>{
     let dir = this.url + `ActualizarCorreo`;
-    return this.http.put<RespuestaClientesInterface>(dir, {...form});
+    return this.http.put<RespuestaClientesInterface>(dir, {...form.value});
   }
 
   ActualizarTelefono(form:NuevoTelefonoInterface):Observable<RespuestaClientesInterface>{
     let dir = this.url + `ActualizarTelefono`;
-    return this.http.put<RespuestaClientesInterface>(dir, {...form});
+    return this.http.put<RespuestaClientesInterface>(dir, {...form.value});
   }
 
   ActualizarContrasena(form:NuevaContrasenaInterface):Observable<RespuestaClientesInterface>{
     let dir = this.url + `ActualizarContrasena`;
-    return this.http.put<RespuestaClientesInterface>(dir, {...form});
+    return this.http.put<RespuestaClientesInterface>(dir, {...form.value});
   }
 
 }

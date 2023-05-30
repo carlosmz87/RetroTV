@@ -3,13 +3,13 @@ export interface RespuestaClasificacionInterface {
     RetroTV:string
 }
 
-export interface ClasificacionesInterface{
+export interface ListaClasificacionesInterface{
     nombre:string
 }
 
 export interface RespuestaListaClasificacionInterface{
     status:string,
     RetroTV:string,
-    clasificaciones:ClasificacionesInterface[]
+    clasificaciones:ListaClasificacionesInterface[]
 }
 

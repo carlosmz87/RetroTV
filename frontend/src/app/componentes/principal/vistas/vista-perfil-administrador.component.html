@@ -16,13 +16,6 @@
     </div>
     <div class="contenedor_actualizacion">
         <h3 class="titulo">ACTUALIZAR DATOS</h3>
-        <form class="formCorreo" [formGroup]="formularioCorreo" (ngSubmit)="ActualizarCorreo()">
-            <mat-form-field class="campo">
-                <mat-label>CORREO</mat-label>
-                <input formControlName="correo" placeholder="pat@example.com" matInput required/>
-            </mat-form-field>
-            <button mat-raised-button type="submit" color="primary" class="boton">Actualizar correo</button>
-        </form> 
         <form class="formTelefono" [formGroup]="formularioTelefono" (ngSubmit)="ActualizarTelefono()">
             <mat-form-field appearance="fill" hintLabel="Max 10 caracteres en E.E.U.U y 11 en Latinoamerica" class="campo">
                 <mat-label>TELEFONO</mat-label>

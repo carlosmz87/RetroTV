@@ -367,7 +367,7 @@ def CrearClasificacion():
         nombre = datos['nombre']
         resp = controlador.CrearClasificacion(nombre)
         if resp:
-            response = make_response(jsonify({'status':'success', 'RetroTV':resp}))
+            response = make_response(jsonify({'status':'success', 'RetroTV':"LA NUEVA CLASIFICACION SE HA AGREGADO EXITOSAMENTE"}))
             response.status_code = 200
             return response
         else:
@@ -490,7 +490,9 @@ def ActualizarContrasena():
     except:
         response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION'}))
         response.status_code = 500
-        return response 
+        return response
+    
+     
     
 if __name__ == '__main__':
     print("SERVIDOR INICIADO EN EL PUERTO: 5000")

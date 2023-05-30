@@ -60,11 +60,11 @@
         <p class="parrafo">Al cancelar tu suscripción, automáticamente se inhabilita al usuario el acceso al contenido (canales y videos). 
             Para volver a tener acceso, deberá volver a solicitar una suscripción y realizar nuevamente el pago correspondiente.
         </p>
-        <button mat-raised-button color="warn" class="boton">CANCELAR SUSCRIPCION</button>
+        <button mat-raised-button color="warn" class="boton" (click)="CancelarSuscripcion()">CANCELAR SUSCRIPCION</button>
         <p class="parrafo">Al eliminar la cuenta, ya no tendra acceso al sistema, unicamente se podran visualizar las páginas disponibles
             a todo público. Puede volver a crear una cuenta en cualquier momento sin ningún problema.
         </p>
-        <button mat-raised-button color="warn" class="boton">ELIMINAR CUENTA</button>
+        <button mat-raised-button color="warn" class="boton" (click)="EliminarCuenta()">ELIMINAR CUENTA</button>
     </div>
 </div>
 

@@ -4,6 +4,8 @@ import { NuevoCorreoInterface, NuevoTelefonoInterface, NuevaContrasenaInterface,
 import { ServicioGenericosService } from '../../genericos/servicios/servicio-genericos.service';
 import { ServicioAuthService } from '../../login/servicios/servicio-auth.service';
 import { ServicioGestionClientesService } from '../servicios/clientes/servicio-gestion-clientes.service';
+import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vista-perfil-usuario',
@@ -11,7 +13,7 @@ import { ServicioGestionClientesService } from '../servicios/clientes/servicio-g
   styleUrls: ['./vista-perfil-usuario.component.css']
 })
 export class VistaPerfilUsuarioComponent {
-  constructor(private fb:FormBuilder, private authService:ServicioAuthService, private servicio_genericos:ServicioGenericosService, private servicio_gestion:ServicioGestionClientesService){
+  constructor(private router:Router,private cookieService:CookieService,private fb:FormBuilder, private authService:ServicioAuthService, private servicio_genericos:ServicioGenericosService, private servicio_gestion:ServicioGestionClientesService){
   }
   ngOnInit(){
     this.authService.userId$.subscribe(
@@ -74,16 +76,17 @@ export class VistaPerfilUsuarioComponent {
     if(this.formularioTelefono.valid){
       const confirmacion = confirm('¿ESTAS SEGURO QUE DESEAS ACTALIZAR TU CORREO ELECTRONICO?');
       if(confirmacion){
-        /*this.servicio_gestion.ActualizarTelefono(this.formularioTelefono).subscribe(
+        console.log(this.formularioTelefono);
+        this.servicio_gestion.ActualizarTelefono(this.formularioTelefono).subscribe(
           response => {
             this.servicio_genericos.ConfigNotification(response.RetroTV, 'OK', response.status);
-            this.formularioTelefono.reset();
+            this.resetFormularios();
             this.LlenarDatosPersonales(this.id_user);
           },
           error => {
             this.servicio_genericos.ConfigNotification(error.error.RetroTV, 'OK', error.error.status);
           }
-        )*/
+        )
       }
     }
   }
@@ -92,16 +95,17 @@ export class VistaPerfilUsuarioComponent {
     if(this.formularioCorreo.valid){
       const confirmacion = confirm('¿ESTAS SEGURO QUE DESEAS ACTALIZAR TU CORREO ELECTRONICO?');
       if(confirmacion){
-        /*this.servicio_gestion.ActualizarCorreo(this.formularioCorreo).subscribe(
+        console.log(this.formularioCorreo);
+        this.servicio_gestion.ActualizarCorreo(this.formularioCorreo).subscribe(
           response => {
             this.servicio_genericos.ConfigNotification(response.RetroTV, 'OK', response.status);
-            this.formularioCorreo.reset();
+            this.resetFormularios();
             this.LlenarDatosPersonales(this.id_user);
           },
           error => {
             this.servicio_genericos.ConfigNotification(error.error.RetroTV, 'OK', error.error.status);
           }
-        )*/
+        )
       }
     }
   }
@@ -110,15 +114,19 @@ export class VistaPerfilUsuarioComponent {
     if(this.formularioContrasena.valid){
       const confirmacion = confirm('¿ESTAS SEGURO QUE DESEAS ACTALIZAR TU CONTRASEÑA?');
       if(confirmacion){
-        /*this.servicio_gestion.ActualizarContrasena(this.formularioContrasena).subscribe(
+        console.log(this.formularioContrasena);
+        this.servicio_gestion.ActualizarContrasena(this.formularioContrasena).subscribe(
           response => {
             this.servicio_genericos.ConfigNotification(response.RetroTV, 'OK', response.status);
-            this.formularioContrasena.reset();
+            this.resetFormularios();
+            this.cookieService.delete('token');
+            this.router.navigate(['/login']);
+            this.servicio_genericos.recargarComponente();
           },
           error => {
             this.servicio_genericos.ConfigNotification(error.error.RetroTV, 'OK', error.error.status);
           }
-        )*/
+        )
       }     
     }
   }
@@ -136,5 +144,56 @@ export class VistaPerfilUsuarioComponent {
       }
     );
   }
+
+  resetFormularios() {
+    this.formularioCorreo.reset();
+
+    this.formularioTelefono.reset();
+
+    this.formularioContrasena.reset();
+  }
+
+  CancelarSuscripcion(){
+    const confirmacion = confirm('¿ESTAS SEGURO QUE DESEAS CANCELAR TU SUSCRIPCION?');
+      if(confirmacion){
+        this.servicio_gestion.CancelarSuscripcion(this.id_user).subscribe(
+          response => {
+            if(response.respuesta.includes("EXITOSAMENTE")){
+              this.servicio_genericos.ConfigNotification(response.respuesta, 'OK', response.status);
+              this.cookieService.delete('token');
+              this.router.navigate(['/login']);
+              this.servicio_genericos.recargarComponente();
+            }else if(response.respuesta.includes("ERROR")){
+              this.servicio_genericos.ConfigNotification(response.respuesta, 'OK', 'error');
+            }     
+          },
+          error => {
+            this.servicio_genericos.ConfigNotification(error.error.respuesta, 'OK', error.error.status);
+          }
+        );
+      }
+  }
+  
+  EliminarCuenta(){
+    const confirmacion = confirm('¿ESTAS SEGURO QUE DESEAS ELIMINAR TU CUENTA?');
+    if(confirmacion){
+      this.servicio_gestion.EliminarCliente(this.id_user).subscribe(
+        response => {
+          if(response.RetroTV.includes("EXITOSAMENTE")){
+            this.servicio_genericos.ConfigNotification(response.RetroTV, 'OK', response.status);
+            this.cookieService.delete('token');
+            this.router.navigate(['/login']);
+            this.servicio_genericos.recargarComponente();
+          }else if(response.RetroTV.includes("ERROR")){
+            this.servicio_genericos.ConfigNotification(response.RetroTV, 'OK', 'error');
+          }     
+        },
+        error => {
+          this.servicio_genericos.ConfigNotification(error.error.RetroTV, 'OK', error.error.status);
+        }
+      );
+    }
+  }
+
 
 }
