@@ -76,7 +76,7 @@ export class ServicioAuthService {
     if(token){
       try{
         const decodedToken: any = jwt_decode(token);
-        const userId = decodedToken.id;
+        const userId = decodedToken.sub;
         this._userId$.next(userId);
       }catch(error){
         console.error('Error al decodificar el token: ', error);

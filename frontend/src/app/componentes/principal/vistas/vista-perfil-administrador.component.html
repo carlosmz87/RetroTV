@@ -7,23 +7,23 @@
                 <mat-card-title class="titulo"> DATOS PERSONALES </mat-card-title>
             </mat-card-header>
             <mat-card-content class="card_body">
-                <mat-label class="dato">NOMBRE: {{""}}</mat-label>
-                <mat-label class="dato">USUARIO: {{""}}</mat-label>
-                <mat-label class="dato">CORREO: {{""}}</mat-label>
-                <mat-label class="dato">TELEFONO: {{""}}</mat-label>
+                <mat-label class="dato">NOMBRE: {{datos_perfil.datos.nombre}}</mat-label>
+                <mat-label class="dato">USUARIO: {{datos_perfil.datos.usuario}}</mat-label>
+                <mat-label class="dato">CORREO: {{datos_perfil.datos.correo}}</mat-label>
+                <mat-label class="dato">TELEFONO: {{datos_perfil.datos.telefono}}</mat-label>
             </mat-card-content>
         </mat-card>
     </div>
     <div class="contenedor_actualizacion">
         <h3 class="titulo">ACTUALIZAR DATOS</h3>
-        <form class="formCorreo">
+        <form class="formCorreo" [formGroup]="formularioCorreo" (ngSubmit)="ActualizarCorreo()">
             <mat-form-field class="campo">
                 <mat-label>CORREO</mat-label>
                 <input formControlName="correo" placeholder="pat@example.com" matInput required/>
             </mat-form-field>
             <button mat-raised-button type="submit" color="primary" class="boton">Actualizar correo</button>
         </form> 
-        <form class="formTelefono">
+        <form class="formTelefono" [formGroup]="formularioTelefono" (ngSubmit)="ActualizarTelefono()">
             <mat-form-field appearance="fill" hintLabel="Max 10 caracteres en E.E.U.U y 11 en Latinoamerica" class="campo">
                 <mat-label>TELEFONO</mat-label>
                 <mat-icon matPrefix>phone</mat-icon>
@@ -31,7 +31,7 @@
             </mat-form-field> 
             <button mat-raised-button type="submit" color="primary" class="boton">Actualizar telefono</button>
         </form>
-        <form class="formularioContrasena">
+        <form class="formularioContrasena" [formGroup]="formularioContrasena" (ngSubmit)="ActualizarContrasena()">
             <mat-form-field class="campo">
                 <mat-label>CONTRASEÑA</mat-label>
                 <input formControlName="contrasena" [type]="hide ? 'password' : 'text'" matInput required/>
@@ -55,7 +55,7 @@
                 <mat-card-title class="titulo">CREAR UNA NUEVA CLASIFICACION DE VIDEOS</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <form class="formulario_clasificacion">
+                <form class="formulario_clasificacion" [formGroup]="formularioAgregarClasificacion" (ngSubmit)="AgregarClasificacion()">
                     <mat-form-field class="campo">
                         <mat-label>NOMBRE DE CLASIFICACION:</mat-label>
                         <input formControlName="nombre" matInput required/>
@@ -65,5 +65,23 @@
             </mat-card-content>
         </mat-card>
     </div>
-
+    <div class="contenedor_eliminar_clasificacion">
+        <mat-card>
+            <mat-card-header class="card_header_eliminar_clasificacion">
+                <mat-card-title class="titulo">ELIMINAR CLASIFICACION</mat-card-title>            
+            </mat-card-header>
+            <mat-card-content>
+                <form class="formulario_eliminar_clasificacion" [formGroup]="formularioEliminarClasificacion" (ngSubmit)="EliminarClasificacion()">
+                    <mat-form-field class="campo">
+                        <mat-label>CLASIFICACION</mat-label>
+                        <mat-select formControlName="nombre" required>
+                          <mat-option *ngFor="let cla of clasificaciones.clasificaciones" value={{cla.nombre}}>{{cla.nombre}}</mat-option>
+                        </mat-select>
+                        <mat-hint align="end">Selecciona la clasificacion ^</mat-hint>
+                      </mat-form-field>
+                      <button mat-raised-button type="submit" color="warn" class="boton">Eliminar clasificacion</button>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
 </div>

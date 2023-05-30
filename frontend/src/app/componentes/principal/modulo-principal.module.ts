@@ -19,6 +19,9 @@ import { VistaVideosComponent } from './vistas/vista-videos.component';
 import { VistaCanalesComponent } from './vistas/vista-canales.component';
 import { ServicioGestionClientesService } from './servicios/clientes/servicio-gestion-clientes.service';
 import { ServicioGestionContenidoService } from './servicios/contenido/servicio-gestion-contenido.service';
+import { ServicioClasificacionService } from './servicios/clasificacion/servicio-clasificacion.service';
+import { ServicioAuthService } from '../login/servicios/servicio-auth.service';
+import { ServicioGenericosService } from '../genericos/servicios/servicio-genericos.service';
 import { HttpClientModule } from '@angular/common/http';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
@@ -27,6 +30,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import {MatCardModule} from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -57,7 +64,10 @@ import {MatCardModule} from '@angular/material/card';
     MatInputModule,
     MatSortModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    MatSelectModule,
+    MatOptionModule,
+    ReactiveFormsModule
   ],
   exports: [
     VistaPrincipalComponent,
@@ -77,7 +87,10 @@ import {MatCardModule} from '@angular/material/card';
   ],
   providers: [
     ServicioGestionClientesService,
-    ServicioGestionContenidoService
+    ServicioGestionContenidoService,
+    ServicioClasificacionService,
+    ServicioAuthService,
+    ServicioGenericosService
   ]
 })
 export class ModuloPrincipalModule { }

@@ -177,3 +177,163 @@ def EliminarUsuario(id):
     finally:
         conexion.close()
     
+#Funcion para retornar los datos del administrador
+def PerfilAdministrador(id):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = "SELECT NOMBRE, USUARIO, CORREO, TELEFONO FROM USUARIO WHERE USU_ID =%s AND ROL ='ADMINISTRADOR'"
+            cursor.execute(query, (id,))
+            datos = cursor.fetchone()
+            if datos:
+                datos_obj = {
+                    "nombre":datos[0],
+                    "usuario":datos[1],
+                    "correo":datos[2],
+                    "telefono":datos[3]
+                }
+                return datos_obj
+            else:
+                return None
+    except:
+        return None
+    finally:
+        conexion.close()
+
+#Funcion para retornar los datos del usuario
+def PerfilUsuario(id):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = "SELECT NOMBRE, USUARIO, CORREO, TELEFONO, ESTADO FROM USUARIO WHERE USU_ID =%s AND ROL ='USUARIO'"
+            cursor.execute(query, (id,))
+            datos = cursor.fetchone()
+            if datos:
+                datos_obj = {
+                    "nombre":datos[0],
+                    "usuario":datos[1],
+                    "correo":datos[2],
+                    "telefono":datos[3],
+                    "suscripcion":datos[4]
+                }
+                return datos_obj
+            else:
+                return None
+    except:
+        return None
+    finally:
+        conexion.close() 
+
+#Funcion para crear una nueva clasificacion de videos
+def CrearClasificacion(nombre):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = "INSERT INTO CLASIFICACION(NOMBRE) VALUES(%s)"
+            cursor.execute(query,(nombre,))
+            conexion.commit()
+            if cursor.rowcount > 0:
+                # Inserción exitosa
+                return True
+            else:
+                # Error en la inserción
+                return False
+    except:
+        return False
+    finally:
+        conexion.close()
+
+#Funcion para listar las clasificacion de videos
+def ListarClasificaciones():
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = "SELECT NOMBRE FROM CLASIFICACION"
+            cursor.execute(query)
+            clasificaciones = cursor.fetchall()
+            if len(clasificaciones) == 0:
+                return None
+            else:
+                clasificaciones_obj = []
+                for clasificacion in clasificaciones:
+                    clasificacion_obj = {
+                        "nombre":clasificacion[0]
+                    }
+                    clasificaciones_obj.append(clasificacion_obj)
+                return clasificaciones_obj
+    except:
+        return None
+    finally:
+        conexion.close()
+
+#Funcion para eliminar una clasificacion de videos
+def EliminarClasificacion(nombre):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = "DELETE FROM CLASIFICACION WHERE NOMBRE = %s"
+            cursor.execute(query, (nombre,))
+            if cursor.rowcount > 0:
+                # La actualización se realizó correctamente
+                conexion.commit()
+                return "SE HA ELIMINADO CORRECTAMENTE LA CLASIFICACION"
+            else:
+                # No se realizó la actualización
+                return None
+
+    except:
+        return None
+    finally:
+        conexion.close()
+
+#Funcion para actualizar el correo del usuario:
+def ActualizarCorreo(correo, id):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = 'UPDATE USUARIO SET CORREO =%s WHERE USU_ID=%s'
+            cursor.execute(query,(correo, id))
+            if cursor.rowcount > 0:
+                conexion.commit()
+                return "SE HA ACTUALIZADO EXITOSAMENTE SU CORREO ELECTRONICO"
+            else:
+                return None
+    except:
+        return None
+    finally:
+        conexion.close()
+
+#Funcion para actualizar el telefono del usuario:
+def ActualizarTelefono(telefono, id):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = 'UPDATE USUARIO SET TELEFONO =%s WHERE USU_ID=%s'
+            cursor.execute(query,(telefono, id))
+            if cursor.rowcount > 0:
+                conexion.commit()
+                return "SE HA ACTUALIZADO EXITOSAMENTE SU NUMERO DE TELEFONO"
+            else:
+                return None
+    except:
+        return None
+    finally:
+        conexion.close()
+
+#Funcion para actualizar la contrasena del usuario:
+def ActualizarContrasena(contrasena, id):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = 'UPDATE USUARIO SET CONTRASENA =%s WHERE USU_ID=%s'
+            cursor.execute(query,(contrasena, id))
+            if cursor.rowcount > 0:
+                conexion.commit()
+                return "SE HA ACTUALIZADO EXITOSAMENTE SU CONTRASEÑA"
+            else:
+                return None
+    except:
+        return None
+    finally:
+        conexion.close()
+
