@@ -337,3 +337,23 @@ def ActualizarContrasena(contrasena, id):
     finally:
         conexion.close()
 
+
+#Funcion que retorne todos los correos de los usuarios
+def ObtenerCorreosUsuarios():
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = 'SELECT CORREO FROM USUARIO WHERE ROL ="USUARIO"'
+            cursor.execute(query)
+            destinatarios = cursor.fetchall()
+            if len(destinatarios) == 0:
+                return None
+            else:
+                correos_obj = []
+                for destinatario in destinatarios:
+                    correos_obj.append(destinatario[0])
+                return correos_obj
+    except:
+        return None
+    finally:
+        conexion.close()

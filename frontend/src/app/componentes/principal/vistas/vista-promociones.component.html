@@ -1,1 +1,38 @@
-<p>vista-promociones works!</p>
+<div class="contenedor_principal">
+    <h1 class="titulo">ENVIAR PROMOCIONES POR CORREO</h1>
+    <form class="formulario_correo" [formGroup]="formularioCorreo" (ngSubmit)="enviarCorreo()">
+      <mat-form-field class="campo-asunto">
+        <input matInput placeholder="Asunto" formControlName="asunto">
+        <mat-error *ngIf="formularioCorreo.get('asunto')?.invalid && formularioCorreo.get('asunto')?.touched">
+          El asunto es requerido.
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field class="campo-cuerpo">
+        <textarea matInput placeholder="Cuerpo del correo" formControlName="cuerpo"></textarea>
+        <mat-error *ngIf="formularioCorreo.get('cuerpo')?.invalid && formularioCorreo.get('cuerpo')?.touched">
+          El cuerpo del correo es requerido.
+        </mat-error>
+      </mat-form-field>
+  
+      <div class="botones-adjuntar-enviar">
+        <div class="adjuntar-archivo">
+            <button mat-raised-button color="accent" type="button" (click)="archivoInput.click()">Adjuntar archivo</button>
+            <input type="file" style="display: none" #archivoInput (change)="manejarArchivoInput($event)">
+        </div>
+      </div>
+  
+      <div class="lista-adjuntos">
+        <div *ngFor="let adjunto of previsualizacionesAdjuntos; let i = index" class="adjunto-item">
+          <div class="adjunto-info">
+            <a [href]="adjunto" target="_blank">{{ adjuntos[i].name }}</a>
+          </div>
+          <button mat-icon-button color="warn" class="eliminar-adjunto" (click)="eliminarAdjunto(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <button class="boton_enviar" mat-raised-button color="primary" type="submit" [disabled]="formularioCorreo.invalid">Enviar correo</button>
+    </form>
+  </div>
+  

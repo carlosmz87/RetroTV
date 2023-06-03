@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 import json
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/*": {"origins": ["http://localhost:4200"]}})
+cors = CORS(app, resources={r"/*": {"origins": ["*"]}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SECRET_KEY'] = os.environ.get('RetroTV_API_KEY')
 load_dotenv()
@@ -491,8 +491,63 @@ def ActualizarContrasena():
         response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION'}))
         response.status_code = 500
         return response
+
+#Endpoint para enviar una solicitud de suscripcion al administrador
+@app.route('/SolicitarSuscripcion', methods=['POST'])
+@user_required()
+def SolicitarSuscripcion():
+    try:
+        datos = request.get_json()
+        usuario = datos['usuario']
+        conn_smtp.conectar()
+        destinatario = '2730538920101@ingenieria.usac.edu.gt'
+        asunto = 'SOLICITUD DE MEMBRESIA PREMIUM RetroTV'
+        contenido = 'SE INFORMA QUE EL USUARIO ' + str(usuario) + ' HA SOLICITADO UNA MEMBRESIA PREMIUM.'
+        conn_smtp.enviar_correo(destinatario, asunto, contenido)
+        response = make_response(jsonify({'status':'success',"RetroTV":"LA NOTIFICACION DE CORREO ELECTRONICO AL ADMINISTRADOR SE HA ENVIADO EXITOSAMENTE"}))
+        response.status_code = 200
+        return response
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION'}))
+        response.status_code = 500
+        return response
+    finally:
+        conn_smtp.desconectar()
+
+@app.route('/EnviarPromocion', methods=['POST'])
+@admin_required()
+def EnviarPromocion():
+    try:
+        destinatarios = controlador.ObtenerCorreosUsuarios()        
+        asunto = request.form['asunto']
+        cuerpo = request.form['cuerpo']
+        archivos = request.files.getlist('archivos') if 'archivos' in request.files else None
+        if len(destinatarios) > 0:
+            for destinatario in destinatarios:
+                try:
+                    conn_smtp.conectar()
+                    conn_smtp.enviar_correo(destinatario, asunto, cuerpo, archivos)
+                    conn_smtp.desconectar()
+                except:
+                    conn_smtp.desconectar()
+            
+            response_data = {
+                'status': 'success',
+                'RetroTV': 'CORREOS ENVIADOS EXITOSAMENTE'
+            }
+            response = make_response(jsonify(response_data))
+            response.status_code = 200
+            return response
+        else:
+            response = make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL OBTENER LOS DESTINATARIOS DEL CORREO','destinatarios_con_error': []}))
+            response.status_code = 400
+            return response
+    except Exception:
+        response = make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR DE COMUNICACION','destinatarios_con_error': []}))
+        response.status_code = 500
+        return response
     
-     
+        
     
 if __name__ == '__main__':
     print("SERVIDOR INICIADO EN EL PUERTO: 5000")
