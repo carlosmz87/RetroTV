@@ -1,0 +1,77 @@
+.contenedor_principal {
+    background-color: #f5f5f5;
+    border-radius: 2%;
+  }
+
+  .formulario_correo{
+    margin-left: 15%;
+    margin-top: 3%;
+  }
+  
+  .campo-asunto,
+  .campo-cuerpo {
+    width: 65%;
+  }
+  
+  .adjuntar-archivo {
+    margin-top: 5%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
+  .adjuntar-archivo button {
+    width: auto;
+  }
+  
+  .lista-adjuntos {
+    margin-top: 2%;
+    width: 50%;
+  }
+
+  .boton_enviar{
+    width: 45%;
+    margin-left: 50%;
+  }
+  
+  .adjunto-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1%;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 1%;
+    margin-bottom: 1%;
+  }
+  
+  .adjunto-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .adjunto-info a {
+    margin-right: 5%;
+    text-decoration: none;
+    color: #007bff;
+  }
+  
+  .eliminar-adjunto {
+    margin-left: auto;
+  }
+  
+  button[mat-raised-button] {
+    margin-top: 5%;
+    width: 25%;
+  }
+  
+  .contenedor-adjuntos-enviar {
+    display: flex;
+    justify-content: flex-end; /* Cambiado a 'flex-end' para alinear a la derecha */
+    align-items: center;
+  }
+  
+  .titulo {
+    text-align: center;
+  }
+  

@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GestionClientesInterface, NuevaContrasenaInterface, NuevoCorreoInterface, NuevoTelefonoInterface, RespuestaDatosPerfilInterface, RespuestaDatosPerfilUsuarioInterface } from '../../modelos/clientes/gestion-clientes.interface';
 import { Observable } from 'rxjs';
-import { SuscripcionesInterface } from '../../modelos/clientes/suscripciones.interface';
+import { RespuestaSuscripcionInterface, SolicitarSuscripcionInterface, SuscripcionesInterface } from '../../modelos/clientes/suscripciones.interface';
 import { RespuestaClientesInterface } from '../../modelos/clientes/respuesta-clientes.interface';
+import { PromocionesInterface } from '../../modelos/promociones/promociones.interface';
+import { RespuestaPromocionesInterface } from '../../modelos/promociones/respuesta-promociones.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -57,6 +59,16 @@ export class ServicioGestionClientesService {
   ActualizarContrasena(form:NuevaContrasenaInterface):Observable<RespuestaClientesInterface>{
     let dir = this.url + `ActualizarContrasena`;
     return this.http.put<RespuestaClientesInterface>(dir, {...form.value});
+  }
+
+  SolicitarSuscripcion(usuario:SolicitarSuscripcionInterface):Observable<RespuestaSuscripcionInterface>{
+    let dir = this.url + `SolicitarSuscripcion`;
+    return this.http.post<RespuestaSuscripcionInterface>(dir, usuario);
+  }
+
+  EnviarCorreoPromocional(correo:FormData):Observable<RespuestaPromocionesInterface>{
+    let dir = this.url + `EnviarPromocion`;
+    return this.http.post<RespuestaPromocionesInterface>(dir, correo);
   }
 
 }

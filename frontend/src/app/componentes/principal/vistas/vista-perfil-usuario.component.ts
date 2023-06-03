@@ -6,6 +6,7 @@ import { ServicioAuthService } from '../../login/servicios/servicio-auth.service
 import { ServicioGestionClientesService } from '../servicios/clientes/servicio-gestion-clientes.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { SolicitarSuscripcionInterface } from '../modelos/clientes/suscripciones.interface';
 
 @Component({
   selector: 'app-vista-perfil-usuario',
@@ -38,9 +39,12 @@ export class VistaPerfilUsuarioComponent {
     });
 
     this.LlenarDatosPersonales(this.id_user);
-
+    this.usuario ={
+      "usuario":this.datos_perfil.datos.usuario
+    }
   }
   hide = true;
+  usuario!:SolicitarSuscripcionInterface;
   formularioCorreo!:NuevoCorreoInterface
   formularioTelefono!:NuevoTelefonoInterface
   formularioContrasena!:NuevaContrasenaInterface
@@ -196,4 +200,15 @@ export class VistaPerfilUsuarioComponent {
   }
 
 
+
+  SolicitarSuscripcion(usuario:SolicitarSuscripcionInterface){
+    this.servicio_gestion.SolicitarSuscripcion(usuario).subscribe(
+      response => {
+        this.servicio_genericos.ConfigNotification(response.RetroTV, 'OK', response.status);
+      },
+      error => {
+        this.servicio_genericos.ConfigNotification(error.error.RetroTV, 'OK', error.error.status);
+      }
+    )
+  }
 }
