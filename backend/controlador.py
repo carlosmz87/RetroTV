@@ -357,3 +357,56 @@ def ObtenerCorreosUsuarios():
         return None
     finally:
         conexion.close()
+
+#Funcion que retorna el id de la clasificacion
+def GetIdClasificacion(nombre):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = "SELECT CLA_ID FROM CLASIFICACION WHERE NOMBRE = %s"
+            cursor.execute(query, (nombre,))
+            id = cursor.fetchone()
+            if id:
+                return id[0]
+            else: 
+                return None
+    except:
+        return None
+    finally:
+        conexion.close()
+
+#Funcion que agrega el video a la base de datos
+def AgregarVideo(nombre, fecha, resena, duracion, portada, clasificacion):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = "INSERT INTO VIDEO (NOMBRE, FECHA, RESENA, DURACION, PORTADA, CLASIFICACION_CLA_ID) VALUES(%s,%s,%s,%s,%s,%s)"
+            cursor.execute(query, (nombre, fecha, resena, duracion, portada, clasificacion))
+            conexion.commit()
+            if cursor.rowcount > 0:
+                # Inserción exitosa
+                return True
+            else:
+                # Error en la inserción
+                return False
+    except:
+        return False
+    finally:
+        conexion.close()
+
+#Funcion para validar que el video no haya sido cargado previamente
+def ObtenerVideo(nombre):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = "SELECT VID_ID FROM VIDEO WHERE NOMBRE = %s"
+            cursor.execute(query, (nombre,))
+            id = cursor.fetchone()
+            if id:
+                return id[0]
+            else: 
+                return None
+    except:
+        return None
+    finally:
+        conexion.close()

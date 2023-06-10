@@ -21,7 +21,8 @@ import { VistaPerfilUsuarioComponent } from './componentes/principal/vistas/vist
 import { VistaFavoritosComponent } from './componentes/principal/vistas/vista-favoritos.component';
 import { VistaCanalesComponent } from './componentes/principal/vistas/vista-canales.component';
 import { VistaVideosComponent } from './componentes/principal/vistas/vista-videos.component';
-
+import { VistaAgregarCanalesComponent } from './componentes/principal/vistas/vista-agregar-canales.component';
+import { VistaAgregarVideosComponent } from './componentes/principal/vistas/vista-agregar-videos.component';
 
 const routes: Routes = [
   {
@@ -113,6 +114,22 @@ const routes: Routes = [
   {
     path: 'reportes',
     component: VistaReportesComponent,
+    canActivate: [RoleGuard],
+    data: {
+      roleDisponible: ['ADMINISTRADOR']
+    }
+  },
+  {
+    path: 'agregar-videos',
+    component: VistaAgregarVideosComponent,
+    canActivate: [RoleGuard],
+    data: {
+      roleDisponible: ['ADMINISTRADOR']
+    }
+  },
+  {
+    path: 'agregar-canales',
+    component: VistaAgregarCanalesComponent,
     canActivate: [RoleGuard],
     data: {
       roleDisponible: ['ADMINISTRADOR']

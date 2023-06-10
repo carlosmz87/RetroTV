@@ -1,0 +1,69 @@
+<div class="contenedor_principal">
+    <h1 class="titulo">AGREGAR VIDEOS</h1>
+    <div class="input_imagen">
+        <div class="label_container">
+          <mat-label class="label">SELECCIONA UNA IMAGEN DE PORTADA</mat-label>
+        </div>
+        <div class="input_container">
+          <input
+            #portadaInput
+            type="file"
+            (change)="onPortadaSelected($event)"
+            accept="image/*"
+            required
+          />
+          <button mat-raised-button color="accent" (click)="portadaInput.click()">AGREGAR</button>
+          <span class="nombre_archivo">{{ nombreArchivoPortada }}</span>
+        </div>
+      </div>
+      <div class="input_video">
+        <div class="label_container">
+          <mat-label class="label">SELECCIONA UN VIDEO</mat-label>
+        </div>
+        <div class="input_container">
+          <input
+            #videoInput
+            type="file"
+            (change)="onVideoSelected($event)"
+            accept="video/*"
+            required
+          />
+          <button mat-raised-button color="accent" (click)="videoInput.click()">AGREGAR</button>
+          <span class="nombre_archivo">{{ nombreArchivoVideo }}</span>
+        </div>
+      </div>
+  <h3 class="titulo">DATOS DEL VIDEO</h3>
+  <form
+    class="formulario_video"
+    [formGroup]="formularioVideos"
+    (ngSubmit)="AgregarVideo()"
+  >
+    <mat-form-field>
+      <mat-label>Nombre del archivo</mat-label>
+      <input matInput formControlName="nombre" required />
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>FECHA</mat-label>
+        <input matInput [matDatepicker]="picker" placeholder="Seleccione una fecha" formControlName="fecha" required>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-hint align="end">MM/DD/YYYY</mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Reseña</mat-label>
+      <textarea matInput formControlName="resena" required></textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Duración</mat-label>
+      <input matInput formControlName="duracion" required />
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Clasificación</mat-label>
+        <mat-select formControlName="clasificacion" required>
+          <mat-option *ngFor="let cla of clasificaciones.clasificaciones" value={{cla.nombre}}>{{cla.nombre}}</mat-option>
+        </mat-select>
+        <mat-hint align="end">Selecciona la clasificacion ^</mat-hint>
+      </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">ACEPTAR</button>
+  </form>
+</div>

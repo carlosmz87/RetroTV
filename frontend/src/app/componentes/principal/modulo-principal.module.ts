@@ -33,7 +33,10 @@ import {MatCardModule} from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { VistaAgregarVideosComponent } from './vistas/vista-agregar-videos.component';
+import { VistaAgregarCanalesComponent } from './vistas/vista-agregar-canales.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -50,7 +53,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     VistaPerfilAdministradorComponent,
     VistaFavoritosComponent,
     VistaVideosComponent,
-    VistaCanalesComponent
+    VistaCanalesComponent,
+    VistaAgregarVideosComponent,
+    VistaAgregarCanalesComponent
   ],
   imports: [
     CommonModule,
@@ -67,7 +72,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatCardModule,
     MatSelectModule,
     MatOptionModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   exports: [
     VistaPrincipalComponent,
@@ -83,7 +90,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     VistaPerfilAdministradorComponent,
     VistaFavoritosComponent,
     VistaVideosComponent,
-    VistaCanalesComponent
+    VistaCanalesComponent,
+    VistaAgregarCanalesComponent,
+    VistaAgregarVideosComponent
   ],
   providers: [
     ServicioGestionClientesService,
