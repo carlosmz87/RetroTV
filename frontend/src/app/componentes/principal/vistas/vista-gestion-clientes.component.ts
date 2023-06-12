@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ServicioGestionClientesService } from '../servicios/clientes/servicio-gestion-clientes.service';
 import { ServicioGenericosService } from '../../genericos/servicios/servicio-genericos.service';
 import { MatPaginator } from '@angular/material/paginator';
