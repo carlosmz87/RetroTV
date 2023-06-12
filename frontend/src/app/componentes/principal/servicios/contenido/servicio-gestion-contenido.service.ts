@@ -23,4 +23,9 @@ export class ServicioGestionContenidoService {
     return this.http.get<RespuestaObtenerVideosInterface>(dir);
   }
 
+  EliminarVideo(nombre:string):Observable<RespuestaGestionVideosInterface>{
+    let dir = this.url + "EliminarVideo/"+nombre;
+    return this.http.delete<RespuestaGestionVideosInterface>(dir);
+  }
+
 }

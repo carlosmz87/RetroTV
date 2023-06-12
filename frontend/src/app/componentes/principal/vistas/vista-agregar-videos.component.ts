@@ -42,25 +42,28 @@ export class VistaAgregarVideosComponent {
 
   AgregarVideo() {
     if (this.formularioVideos.valid && this.portada && this.video) {
-      const formData = new FormData();
-      formData.append('nombre', this.formularioVideos.value.nombre);
-      formData.append('fecha', format(this.formularioVideos.value.fecha, 'yyyy-MM-dd HH:mm:ss'));
-      formData.append('resena', this.formularioVideos.value.resena);
-      formData.append('duracion', this.formularioVideos.value.duracion);
-      formData.append('clasificacion', this.formularioVideos.value.clasificacion);
-      formData.append('portada', this.portada);
-      formData.append('video', this.video);
+      const confirmacion = confirm('¿ESTAS SEGURO QUE DESEAS AGREGAR EL VIDEO?');
+      if (confirmacion) {
+        const formData = new FormData();
+        formData.append('nombre', this.formularioVideos.value.nombre);
+        formData.append('fecha', format(this.formularioVideos.value.fecha, 'yyyy-MM-dd HH:mm:ss'));
+        formData.append('resena', this.formularioVideos.value.resena);
+        formData.append('duracion', this.formularioVideos.value.duracion);
+        formData.append('clasificacion', this.formularioVideos.value.clasificacion);
+        formData.append('portada', this.portada);
+        formData.append('video', this.video);
 
-      // Enviar petición POST al backend
-      this.servicio_contenido.AgregarVideo(formData).subscribe(
-        response => {
-          this.servicio_genericos.ConfigNotification(response.RetroTV, 'OK', response.status);
-          window.location.reload()
-        },
-        error => {
-          this.servicio_genericos.ConfigNotification(error.error.RetroTV, 'OK', error.error.status);
-        }
-      )
+        // Enviar petición POST al backend
+        this.servicio_contenido.AgregarVideo(formData).subscribe(
+          response => {
+            this.servicio_genericos.ConfigNotification(response.RetroTV, 'OK', response.status);
+            window.location.reload()
+          },
+          error => {
+            this.servicio_genericos.ConfigNotification(error.error.RetroTV, 'OK', error.error.status);
+          }
+        )
+      }
     }
   }
 
