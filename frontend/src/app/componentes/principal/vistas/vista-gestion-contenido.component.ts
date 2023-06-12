@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vista-gestion-contenido',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./vista-gestion-contenido.component.css']
 })
 export class VistaGestionContenidoComponent {
-
+  constructor(private router:Router){}
 }

@@ -1,5 +1,7 @@
 from jwt import ExpiredSignatureError, InvalidTokenError
 from conexion import obtener_conexion
+import boto3
+from botocore.exceptions import NoCredentialsError
 import controlador, conexion_smtp
 from flask import Flask, jsonify, request, make_response
 from flask_jwt_extended import (
@@ -11,6 +13,7 @@ from flask_jwt_extended import (
 from functools import wraps
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash
+from werkzeug.utils import secure_filename
 from datetime import timedelta
 import os
 from dotenv import load_dotenv
@@ -20,6 +23,8 @@ app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": ["*"]}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SECRET_KEY'] = os.environ.get('RetroTV_API_KEY')
+app.config['UPLOAD_FOLDER'] = os.environ.get('UPLOAD_PORTADAS')
+
 load_dotenv()
 #Configuracion JWT
 jwt = JWTManager(app)
@@ -539,11 +544,84 @@ def EnviarPromocion():
             response.status_code = 200
             return response
         else:
-            response = make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL OBTENER LOS DESTINATARIOS DEL CORREO','destinatarios_con_error': []}))
+            response = make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL OBTENER LOS DESTINATARIOS DEL CORREO'}))
             response.status_code = 400
             return response
-    except Exception:
-        response = make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR DE COMUNICACION','destinatarios_con_error': []}))
+    except:
+        response = make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR DE COMUNICACION'}))
+        response.status_code = 500
+        return response
+
+#Endpoint para agregar un video a la base de datos
+@app.route('/AgregarVideo', methods=['POST'])
+@admin_required()
+def AgregarVideo():
+    try:
+        nombre = request.form['nombre']
+        fecha = request.form['fecha']
+        resena = request.form['resena']
+        duracion = request.form['duracion']
+        clasificacion = request.form['clasificacion']
+        portada = request.files['portada']
+        video = request.files['video']
+        ruta_portada = ""
+        if portada is not None:
+            filename = secure_filename(portada.filename)
+            portada.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            ruta_portada = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        else:
+            response = make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL OBTENER LA PORTADA'}))
+            response.status_code = 400
+            return response   
+
+        id_clasificacion = controlador.GetIdClasificacion(clasificacion)
+        if id_clasificacion is not None:
+            if video is not None:
+                # Cambiar el nombre del archivo de video
+                new_filename = secure_filename(nombre + '.mp4')
+                id_vid = controlador.ObtenerVideo(new_filename)
+                if id_vid is not None:
+                    response = make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR, EL VIDEO YA EXISTE EN LA BASE DE DATOS'}))
+                    response.status_code = 400
+                    return response 
+                else:
+                    # Subir el archivo de video a S3 con el nuevo nombre
+                    s3 = boto3.client('s3')
+
+                    bucket_name = os.environ.get('BUCKET_NAME')  # Reemplaza con el nombre de tu bucket de S3
+                    object_name = f"videos/{new_filename}"  # Ruta dentro del bucket donde se almacenará el video
+
+                    try:
+                        s3.upload_fileobj(video, bucket_name, object_name)
+                        print("Archivo de video subido exitosamente a S3 con el nuevo nombre")
+                        insertado = controlador.AgregarVideo(new_filename, fecha, resena, duracion, ruta_portada, id_clasificacion)
+                        if insertado:
+                            response_data = {
+                            "status":"success",
+                            "RetroTV":"VIDEO AGREGADO EXITOSAMENTE"
+                            }
+                            response = make_response(jsonify(response_data))
+                            response.status_code = 200
+                            return response
+                        else:
+                            response = make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL SUBIR LOS DATOS DEL VIDEO A LA BASE DE DATOS'}))
+                            response.status_code = 400
+                            return response   
+                    except NoCredentialsError:
+                        print("Credenciales de AWS no encontradas")
+                        response = make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL SUBIR VIDEO EN AWS'}))
+                        response.status_code = 400
+                        return response
+            else:
+                response = make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL OBTENER EL VIDEO'}))
+                response.status_code = 400
+                return response
+        else:
+            response = make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL OBTENER EL ID DE LA CLASIFICACION'}))
+            response.status_code = 400
+            return response
+    except:
+        response = make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR DE COMUNICACION'}))
         response.status_code = 500
         return response
     
