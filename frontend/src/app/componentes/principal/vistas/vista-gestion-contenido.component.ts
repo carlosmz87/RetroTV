@@ -58,7 +58,15 @@ export class VistaGestionContenidoComponent {
   confirmarEliminarVideo(nombre: string) {
     const confirmacion = confirm('¿ESTAS SEGURO QUE DESEAS ELIMINAR EL VIDEO?');
     if (confirmacion) {
-      console.log(nombre);
+      this.servicio_contenido.EliminarVideo(nombre).subscribe(
+        response => {
+          this.servicio_genericos.ConfigNotification(response.RetroTV, 'OK', response.status);
+          this.LlenarTablaVideos();
+        },
+        error => {
+          this.servicio_genericos.ConfigNotification(error.error.RetroTV, 'OK', error.error.status)
+        }
+      );
     }
   }
 }

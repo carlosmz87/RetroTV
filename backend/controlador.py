@@ -447,3 +447,23 @@ def ObtenerVideosLista():
         return None
     finally:
         conexion.close()
+
+#Funcion para eliminar un video
+def EliminarVideo(nombre):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = "DELETE FROM VIDEO WHERE NOMBRE = %s"
+            cursor.execute(query, (nombre,))
+            if cursor.rowcount > 0:
+                # La actualización se realizó correctamente
+                conexion.commit()
+                return "SE HA ELIMINADO CORRECTAMENTE EL VIDEO"
+            else:
+                # No se realizó la actualización
+                return None
+
+    except:
+        return None
+    finally:
+        conexion.close()

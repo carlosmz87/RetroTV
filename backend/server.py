@@ -1,7 +1,7 @@
 from jwt import ExpiredSignatureError, InvalidTokenError
 from conexion import obtener_conexion
 import boto3
-from botocore.exceptions import NoCredentialsError
+from botocore.exceptions import NoCredentialsError, ClientError
 import controlador, conexion_smtp
 from flask import Flask, jsonify, request, make_response
 from flask_jwt_extended import (
@@ -35,6 +35,10 @@ username = os.environ.get('CORREO_EMISOR')
 password = os.environ.get('PASSWORD_CORREO_EMISOR')
 
 conn_smtp = conexion_smtp.ConexionSMTP(smtp_server, smtp_port, username, password)
+
+#Configuracion del bucket de s3
+s3 = boto3.client('s3')
+bucket_name = os.environ.get('BUCKET_NAME')  # Reemplaza con el nombre de tu bucket de S3
 
 #Decorador personalizado para validar usuario administrador logueado
 def admin_required():
@@ -587,11 +591,8 @@ def AgregarVideo():
                     return response 
                 else:
                     # Subir el archivo de video a S3 con el nuevo nombre
-                    s3 = boto3.client('s3')
-
-                    bucket_name = os.environ.get('BUCKET_NAME')  # Reemplaza con el nombre de tu bucket de S3
+                    
                     object_name = f"videos/{new_filename}"  # Ruta dentro del bucket donde se almacenará el video
-
                     try:
                         s3.upload_fileobj(video, bucket_name, object_name)
                         print("Archivo de video subido exitosamente a S3 con el nuevo nombre")
@@ -643,7 +644,29 @@ def ObtenerVideosLista():
         response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION', 'videos':None}))
         response.status_code = 500
         return response
-    
+
+@app.route('/EliminarVideo/<nombre>', methods=['DELETE'])
+@admin_required()
+def EliminarVideo(nombre):
+    try:
+        # Eliminar el video de S3
+        try:
+            s3.delete_object(Bucket=bucket_name,Key="videos/"+nombre)
+        except:
+            # Si no se eliminó correctamente de S3, devolver un error
+            return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL ELIMINAR EL VIDEO DE S3'}), 400)
+         # Eliminar el video de la base de datos
+        mensaje = controlador.EliminarVideo(nombre)
+        
+        # Verificar si el video se eliminó correctamente de la base de datos
+        if mensaje is not None:
+            return make_response(jsonify({'status': 'success', 'RetroTV': mensaje}), 200)
+        else:
+            return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL ELIMINAR EL VIDEO DE LA BASE DE DATOS'}), 400)    
+    except:
+        return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR DE COMUNICACION'}), 500)
+
+
 if __name__ == '__main__':
     print("SERVIDOR INICIADO EN EL PUERTO: 5000")
     app.run(host="0.0.0.0", port=5000, debug=True)
