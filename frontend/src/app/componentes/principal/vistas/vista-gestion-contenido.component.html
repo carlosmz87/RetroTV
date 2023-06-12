@@ -2,7 +2,62 @@
     <h1 class="titulo">GESTION DE CONTENIDO</h1>
     <div class="contenedor_videos">
         <h3 class="subtitulo">VIDEOS</h3>
-        <button mat-raised-button color="primary" [routerLink]="['/agregar-videos']">AGREGAR VIDEOS</button>
+        <div class="filter-container">
+          <mat-form-field class="filter-field">
+            <mat-label>Filter</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Roberto" #input>
+          </mat-form-field>
+        </div>
+        <div class="table-container">
+            <mat-table [dataSource]="dataSourceVideos" matSort>
+              <!-- Columnas de la tabla -->
+            <ng-container matColumnDef="id">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>id</mat-header-cell>
+              <mat-cell *matCellDef="let video">{{ video.id }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="nombre">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>nombre</mat-header-cell>
+              <mat-cell *matCellDef="let video">{{ video.nombre }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="fecha">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>fecha</mat-header-cell>
+              <mat-cell *matCellDef="let video">{{ video.fecha }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="resena">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>reseña</mat-header-cell>
+              <mat-cell *matCellDef="let video">{{ video.resena}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="duracion">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>duracion</mat-header-cell>
+              <mat-cell *matCellDef="let video">{{ video.duracion }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="clasificacion">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>clasificacion</mat-header-cell>
+              <mat-cell *matCellDef="let video">{{ video.clasificacion }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="portada">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>portada</mat-header-cell>
+              <mat-cell *matCellDef="let video">{{ video.portada }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="eliminar">
+              <mat-header-cell *matHeaderCellDef>eliminar</mat-header-cell>
+              <mat-cell *matCellDef="let video">
+                <button mat-icon-button color="warn" (click)="confirmarEliminarVideo(video.nombre)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </mat-cell>
+            </ng-container>
+      
+            <!-- Definición de las columnas visibles -->
+            <mat-header-row *matHeaderRowDef="displayedColumnsVideos"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumnsVideos;"></mat-row>
+            </mat-table>
+          </div>
+          <div class="paginator-container">
+            <button mat-raised-button class="boton_agregar" color="primary" [routerLink]="['/agregar-videos']">AGREGAR VIDEOS</button>
+            <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator> 
+          </div>
+
     </div>
     <div class="contenedor_canales">
         <h3 class="subtitulo">CANALES</h3>

@@ -519,6 +519,7 @@ def SolicitarSuscripcion():
     finally:
         conn_smtp.desconectar()
 
+#Endpoint para enviar un correo de promocion a los usuarios
 @app.route('/EnviarPromocion', methods=['POST'])
 @admin_required()
 def EnviarPromocion():
@@ -625,7 +626,23 @@ def AgregarVideo():
         response.status_code = 500
         return response
     
-        
+#Endpoint para obtener una lista con los videos almacenados en la base de datos
+@app.route('/ObtenerVideosLista', methods = ['GET'])
+def ObtenerVideosLista():
+    try:
+        videos = controlador.ObtenerVideosLista()
+        if videos is not None:
+            response = make_response(jsonify({'status':'success', 'RetroTV':'SE HAN OBTENIDO LOS VIDEOS EXITOSAMENTE', 'videos':videos}))
+            response.status_code = 200
+            return response
+        else:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'ERROR AL OBTENER LOS VIDEOS', 'videos': None}))
+            response.status_code = 400
+            return response  
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION', 'videos':None}))
+        response.status_code = 500
+        return response
     
 if __name__ == '__main__':
     print("SERVIDOR INICIADO EN EL PUERTO: 5000")
