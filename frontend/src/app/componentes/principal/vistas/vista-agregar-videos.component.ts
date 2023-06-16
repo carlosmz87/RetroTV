@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { RespuestaListaClasificacionInterface } from '../modelos/clasificacion/respuesta-clasificacion.interface';
 import { ServicioGenericosService } from '../../genericos/servicios/servicio-genericos.service';
@@ -11,13 +11,14 @@ import { format } from 'date-fns';
   templateUrl: './vista-agregar-videos.component.html',
   styleUrls: ['./vista-agregar-videos.component.css']
 })
-export class VistaAgregarVideosComponent {
+export class VistaAgregarVideosComponent implements OnInit {
   formularioVideos!: FormGroup;
   nombreArchivoPortada: string = '';
   nombreArchivoVideo: string = '';
   portada!: File;
   video!: File;
-
+  @ViewChild('portadaInput') portadaInput!: ElementRef;
+  @ViewChild('videoInput') videoInput!: ElementRef;
 
   constructor(private servicio_contenido:ServicioGestionContenidoService,private fb: FormBuilder, private servicio_genericos:ServicioGenericosService, private servicio_clasificacion:ServicioClasificacionService) {
     
@@ -56,8 +57,12 @@ export class VistaAgregarVideosComponent {
         // Enviar petición POST al backend
         this.servicio_contenido.AgregarVideo(formData).subscribe(
           response => {
+            this.formularioVideos.reset();
+            this.nombreArchivoPortada = '';
+            this.nombreArchivoVideo = '';
+            this.portadaInput.nativeElement.value = '';
+            this.videoInput.nativeElement.value = '';
             this.servicio_genericos.ConfigNotification(response.RetroTV, 'OK', response.status);
-            window.location.reload()
           },
           error => {
             this.servicio_genericos.ConfigNotification(error.error.RetroTV, 'OK', error.error.status);
