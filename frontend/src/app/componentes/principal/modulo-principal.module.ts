@@ -37,6 +37,8 @@ import { VistaAgregarVideosComponent } from './vistas/vista-agregar-videos.compo
 import { VistaAgregarCanalesComponent } from './vistas/vista-agregar-canales.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -74,7 +76,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatOptionModule,
     ReactiveFormsModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatGridListModule,
+    FormsModule
   ],
   exports: [
     VistaPrincipalComponent,
