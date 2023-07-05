@@ -467,3 +467,53 @@ def EliminarVideo(nombre):
         return None
     finally:
         conexion.close()
+
+#Funcion para determinar si un usuario cuenta con suscripcion activa
+def IsSubscriptionActive(id):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = "SELECT ESTADO FROM USUARIO WHERE USU_ID = %s"
+            cursor.execute(query, (id,))
+            estado = cursor.fetchone()
+            if estado:
+                return estado[0]
+            else: 
+                return None
+    except:
+        return None
+    finally:
+        conexion.close()
+
+#Funcion que retorna la informacion de un video especifico
+def GetVideoData(id):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = """SELECT V.NOMBRE, V.FECHA, V.RESENA, V.DURACION, V.PORTADA, C.NOMBRE AS CLASIFICACION FROM VIDEO V
+            JOIN CLASIFICACION C ON V.CLASIFICACION_CLA_ID = C.CLA_ID
+            WHERE V.VID_ID = %s;"""
+            cursor.execute(query, (id,))
+            data = cursor.fetchone()
+            if data:
+                if data[4] is not None:
+                    with open(data[4], 'rb') as f:
+                        imagen_bytes = f.read()
+                        imagen_base64 = base64.b64encode(imagen_bytes).decode('utf-8')
+                        data_obj = {
+                            "nombre":data[0],
+                            "fecha": data[1],
+                            "resena":data[2],
+                            "duracion":data[3],
+                            "portada":imagen_base64,
+                            "clasificacion":data[5]
+                        }
+                        return data_obj
+                else:
+                    return None
+            else: 
+                return None
+    except:
+        return None
+    finally:
+        conexion.close()

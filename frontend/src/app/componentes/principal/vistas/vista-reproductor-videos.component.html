@@ -1,0 +1,18 @@
+<div class="video-container">
+    <div class="video-info">
+      <img class="video-thumbnail" [src]="'data:image/png;base64,' + video.portada" alt="Thumbnail">
+      <h2 class="video-title">{{ video.nombre }}</h2>
+      <p class="video-date">{{ video.fecha }}</p>
+      <p class="video-duration">{{ video.duracion }}</p>
+    </div>
+    <div class="video-player">
+      <video preload="auto" controls>
+        <source [src]="video.video_url" type="video/mp4">
+      </video>
+    </div>
+    <div class="video-details">
+      <p class="video-classification">{{ video.clasificacion }}</p>
+      <p class="video-review">{{ video.resena }}</p>
+    </div>
+  </div>
+  

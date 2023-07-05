@@ -23,6 +23,8 @@ import { VistaCanalesComponent } from './componentes/principal/vistas/vista-cana
 import { VistaVideosComponent } from './componentes/principal/vistas/vista-videos.component';
 import { VistaAgregarCanalesComponent } from './componentes/principal/vistas/vista-agregar-canales.component';
 import { VistaAgregarVideosComponent } from './componentes/principal/vistas/vista-agregar-videos.component';
+import { VistaReproductorCanalesComponent } from './componentes/principal/vistas/vista-reproductor-canales.component';
+import { VistaReproductorVideosComponent } from './componentes/principal/vistas/vista-reproductor-videos.component';
 
 const routes: Routes = [
   {
@@ -36,8 +38,16 @@ const routes: Routes = [
     component: VistaCanalesComponent
   },
   {
+    path: 'canales/:id',
+    component: VistaReproductorCanalesComponent
+  },
+  {
     path: 'videos',
     component: VistaVideosComponent
+  },
+  {
+    path: 'videos/:id',
+    component: VistaReproductorVideosComponent
   },
   {
     path: 'registro',

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { RespuestaGestionVideosInterface, RespuestaObtenerVideosInterface } from '../../modelos/contenido/gestion-videos.interface';
+import { RespuestaGestionVideosInterface, RespuestaObtenerVideosInterface, RespuestaVideoInterface } from '../../modelos/contenido/gestion-videos.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +26,11 @@ export class ServicioGestionContenidoService {
   EliminarVideo(nombre:string):Observable<RespuestaGestionVideosInterface>{
     let dir = this.url + "EliminarVideo/"+nombre;
     return this.http.delete<RespuestaGestionVideosInterface>(dir);
+  }
+
+  ObternerVideo(id:any):Observable<RespuestaVideoInterface>{
+    let dir = this.url + "GetVideoData";
+    return this.http.post<RespuestaVideoInterface>(dir,id);
   }
 
 }

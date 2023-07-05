@@ -27,3 +27,18 @@ export interface VideosInterface{
     portada_b64:string
 };
 
+export interface VideoInterface{
+    nombre:string,
+    fecha:string,
+    resena:string,
+    duracion:string,
+    clasificacion:string,
+    portada:string,
+    video_url:string
+};
+
+export interface RespuestaVideoInterface{
+    status:string,
+    RetroTV:string,
+    data:VideoInterface
+}

@@ -1,6 +1,9 @@
 from jwt import ExpiredSignatureError, InvalidTokenError
 from conexion import obtener_conexion
 import boto3
+import datetime
+#Configuracion del cliente de cloudfront
+from cryptography.hazmat.primitives import hashes
 from botocore.exceptions import NoCredentialsError, ClientError
 import controlador, conexion_smtp
 from flask import Flask, jsonify, request, make_response
@@ -18,6 +21,11 @@ from datetime import timedelta
 import os
 from dotenv import load_dotenv
 import json
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives.asymmetric import padding
+from botocore.signers import CloudFrontSigner
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": ["*"]}})
@@ -40,6 +48,10 @@ conn_smtp = conexion_smtp.ConexionSMTP(smtp_server, smtp_port, username, passwor
 s3 = boto3.client('s3')
 bucket_name = os.environ.get('BUCKET_NAME')  # Reemplaza con el nombre de tu bucket de S3
 
+
+
+# Crear un cliente de CloudFront usando la sesión
+cloudfront_client = boto3.client('cloudfront')
 #Decorador personalizado para validar usuario administrador logueado
 def admin_required():
     def wrapper(fn):
@@ -645,6 +657,7 @@ def ObtenerVideosLista():
         response.status_code = 500
         return response
 
+#Endpoint para eliminar un video del sistema y de S3
 @app.route('/EliminarVideo/<nombre>', methods=['DELETE'])
 @admin_required()
 def EliminarVideo(nombre):
@@ -666,6 +679,77 @@ def EliminarVideo(nombre):
     except:
         return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR DE COMUNICACION'}), 500)
 
+#Endpoint para saber si un usuario cuenta con suscripcion activa
+@app.route('/IsSubscriptionActive', methods = ['POST'])
+def IsSubscriptionActive():
+    try:
+        data = request.get_json()
+        id = data['id']
+        suscripcion = controlador.IsSubscriptionActive(id)
+        if suscripcion is not None:
+            return make_response(jsonify({'status': 'success', 'RetroTV': 'ESTADO DE LA SUSCRIPCION DEL USUARIO OBTENIDA EXITOSAMENTE', 'suscripcion':suscripcion}), 200)
+        else:
+            return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL OBTENER EL ESTADO DE LA SUSCRIPCION DEL USUARIO', 'suscripcion':None}), 400)
+    except:
+        return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR DE COMUNICACION', 'suscripcion':None}), 500)
+
+#Endpoint para retornar los datos del video y una URL firmada del video
+@app.route('/GetVideoData', methods=['POST'])
+def GetVideoData():
+    try:
+        enviados = request.get_json()
+        id_vid = enviados['id']
+        data = controlador.GetVideoData(id_vid)
+        if data is not None:
+            try:
+                key_id = os.environ.get('CF_PUBLIC_KEY_ID')
+                url = 'https://' + os.environ.get('CLOUDFRONT_URL') + '/videos/' + data['nombre']
+                expire_date = datetime.datetime.now() + datetime.timedelta(hours=5)
+
+                cloudfront_signer = CloudFrontSigner(key_id, rsa_signer)  # Especificar la versión V4
+
+                # Crear una URL firmada que será válida hasta la fecha de expiración específica utilizando una política predefinida.
+                signed_url = cloudfront_signer.generate_presigned_url(url, date_less_than=expire_date)
+
+                if signed_url is not None:
+                    print("URL firmada:")
+                    print(signed_url)
+                    data_obj = {
+                        "nombre": data['nombre'],
+                        "fecha": data['fecha'],
+                        "resena": data['resena'],
+                        "duracion": data['duracion'],
+                        "portada": data['portada'],
+                        "clasificacion": data['clasificacion'],
+                        "video_url": url
+                    }
+                    response = make_response(jsonify({'status': 'success', 'RetroTV': 'VIDEO OBTENIDO EXITOSAMENTE', 'data': data_obj}), 200)
+                     # Establecer el encabezado "Content-Type" en la respuesta
+                    response.headers['Content-Type'] = 'video/mp4'
+                    return response
+                else:
+                    return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL OBTENER LA URL FIRMADA DEL VIDEO', 'data': None}), 400)
+            except NoCredentialsError:
+                return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL OBTENER LA URL FIRMADA DEL VIDEO', 'data': None}), 400)
+            except ClientError as e:
+                error_message = str(e)
+                print("Error al generar la URL firmada:", error_message)
+                return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL GENERAR LA URL FIRMADA DEL VIDEO', 'data': None}), 400)
+        else:
+            return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL OBTENER LA INFORMACION DEL VIDEO', 'data': None}), 400)
+    except:
+        return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR DE COMUNICACION', 'data': None}), 500)
+
+
+# Función para leer la URL firmada
+def rsa_signer(message):
+    with open(os.environ.get('PRIVATE_KEY_PATH'), 'rb') as key_file:
+        private_key = serialization.load_pem_private_key(
+            key_file.read(),
+            password=None,
+            backend=default_backend()
+        )
+    return private_key.sign(message, padding.PKCS1v15(), hashes.SHA1())
 
 if __name__ == '__main__':
     print("SERVIDOR INICIADO EN EL PUERTO: 5000")

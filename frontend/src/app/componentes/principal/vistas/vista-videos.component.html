@@ -19,7 +19,7 @@
           <img [src]="'data:image/png;base64,' + video.portada_b64" alt="Imagen de portada">
         </div>
         <div class="card_actions">
-          <button mat-raised-button color="primary" class="boton">VER</button>
+          <button mat-raised-button color="primary" class="boton" [routerLink]="['/videos/'+video.id]">VER</button>
           <button mat-raised-button color="accent" class="boton">AGREGAR A FAVORITOS</button>
           <button mat-raised-button color="warn" class="boton">ELIMINAR DE FAVORITOS</button>
         </div>
