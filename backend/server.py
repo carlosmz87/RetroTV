@@ -616,6 +616,9 @@ def AgregarVideo():
                             }
                             response = make_response(jsonify(response_data))
                             response.status_code = 200
+                             # Establecer el encabezado "Content-Type" en la respuesta
+                            response.headers['Content-Type'] = 'video/mp4'
+                            response.headers['Content-Disposition'] = 'inline'
                             return response
                         else:
                             response = make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL SUBIR LOS DATOS DEL VIDEO A LA BASE DE DATOS'}))
@@ -721,11 +724,13 @@ def GetVideoData():
                         "duracion": data['duracion'],
                         "portada": data['portada'],
                         "clasificacion": data['clasificacion'],
-                        "video_url": url
+                        "video_url": signed_url
                     }
                     response = make_response(jsonify({'status': 'success', 'RetroTV': 'VIDEO OBTENIDO EXITOSAMENTE', 'data': data_obj}), 200)
                      # Establecer el encabezado "Content-Type" en la respuesta
                     response.headers['Content-Type'] = 'video/mp4'
+                    response.headers['Content-Type'] = 'text/vtt'
+                    response.headers['Content-Disposition'] = 'inline'
                     return response
                 else:
                     return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL OBTENER LA URL FIRMADA DEL VIDEO', 'data': None}), 400)

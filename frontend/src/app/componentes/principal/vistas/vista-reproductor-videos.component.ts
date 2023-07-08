@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { VideoInterface } from '../modelos/contenido/gestion-videos.interface';
 import { ServicioGestionContenidoService } from '../servicios/contenido/servicio-gestion-contenido.service';
@@ -11,6 +11,8 @@ import { ServicioGenericosService } from '../../genericos/servicios/servicio-gen
   styleUrls: ['./vista-reproductor-videos.component.css']
 })
 export class VistaReproductorVideosComponent implements OnInit{
+  @ViewChild('media', { static: true })
+  media!: ElementRef;
   video: VideoInterface = { nombre: '', fecha: '', resena: '', duracion: '', clasificacion: '', portada: '', video_url: '' };
   constructor(private route: ActivatedRoute, private servicio_contenido:ServicioGestionContenidoService, private servicio_generico: ServicioGenericosService){}
   ngOnInit(){
@@ -22,7 +24,14 @@ export class VistaReproductorVideosComponent implements OnInit{
       this.servicio_contenido.ObternerVideo(id_obj).subscribe(
         response => {
           if (response.status === 'success' && response.data) {
-            this.video = response.data; // Asigna los datos al objeto video
+            this.video = response.data;
+            // Asigna los datos al objeto video
+             // Crea la etiqueta source
+            const sourceElement = document.createElement('source');
+            sourceElement.src = this.video.video_url;
+            sourceElement.type = 'video/mp4';
+            // Asocia la etiqueta source al elemento video
+            this.media.nativeElement.appendChild(sourceElement);
             console.log(response);
           } else {
             console.error('Error al obtener los datos del video');

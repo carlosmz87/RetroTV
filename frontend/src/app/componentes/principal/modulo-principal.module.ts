@@ -41,6 +41,10 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { FormsModule } from '@angular/forms';
 import { VistaReproductorVideosComponent } from './vistas/vista-reproductor-videos.component';
 import { VistaReproductorCanalesComponent } from './vistas/vista-reproductor-canales.component';
+import {VgCoreModule} from '@videogular/ngx-videogular/core';
+import {VgControlsModule} from '@videogular/ngx-videogular/controls';
+import {VgOverlayPlayModule} from '@videogular/ngx-videogular/overlay-play';
+import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
 
 @NgModule({
   declarations: [
@@ -82,7 +86,11 @@ import { VistaReproductorCanalesComponent } from './vistas/vista-reproductor-can
     MatDatepickerModule,
     MatNativeDateModule,
     MatGridListModule,
-    FormsModule
+    FormsModule,
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule
   ],
   exports: [
     VistaPrincipalComponent,
