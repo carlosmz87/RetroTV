@@ -20,11 +20,10 @@ from werkzeug.utils import secure_filename
 from datetime import timedelta
 import os
 from dotenv import load_dotenv
-import json
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric import rsa
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives.asymmetric import padding
+
+import functools 
+import rsa 
+
 from botocore.signers import CloudFrontSigner
 
 app = Flask(__name__)
@@ -50,8 +49,9 @@ bucket_name = os.environ.get('BUCKET_NAME')  # Reemplaza con el nombre de tu buc
 
 
 
-# Crear un cliente de CloudFront usando la sesión
-cloudfront_client = boto3.client('cloudfront')
+# # Crear un cliente de CloudFront usando la sesión
+# cloudfront_client = boto3.client('cloudfront')
+
 #Decorador personalizado para validar usuario administrador logueado
 def admin_required():
     def wrapper(fn):
@@ -696,6 +696,7 @@ def IsSubscriptionActive():
     except:
         return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR DE COMUNICACION', 'suscripcion':None}), 500)
 
+
 #Endpoint para retornar los datos del video y una URL firmada del video
 @app.route('/GetVideoData', methods=['POST'])
 def GetVideoData():
@@ -705,12 +706,14 @@ def GetVideoData():
         data = controlador.GetVideoData(id_vid)
         if data is not None:
             try:
-                key_id = os.environ.get('CF_PUBLIC_KEY_ID')
-                url = 'https://' + os.environ.get('CLOUDFRONT_URL') + '/videos/' + data['nombre']
+                url = os.environ.get('CLOUDFRONT_URL') + '/videos/' + data['nombre']
                 expire_date = datetime.datetime.now() + datetime.timedelta(hours=5)
-
+                ##DEFINIR UN SIGNER DE CLOUDFRONT PARA LAS URL
+                key_id = os.environ.get('CF_PUBLIC_KEY_ID')
+                private_key_id = open(os.environ.get('PRIVATE_KEY_PATH'), 'rb').read()
+                key = rsa.PrivateKey.load_pkcs1(private_key_id)
+                rsa_signer = functools.partial(rsa.sign, priv_key=key, hash_method="SHA-1")
                 cloudfront_signer = CloudFrontSigner(key_id, rsa_signer)  # Especificar la versión V4
-
                 # Crear una URL firmada que será válida hasta la fecha de expiración específica utilizando una política predefinida.
                 signed_url = cloudfront_signer.generate_presigned_url(url, date_less_than=expire_date)
 
@@ -729,7 +732,6 @@ def GetVideoData():
                     response = make_response(jsonify({'status': 'success', 'RetroTV': 'VIDEO OBTENIDO EXITOSAMENTE', 'data': data_obj}), 200)
                      # Establecer el encabezado "Content-Type" en la respuesta
                     response.headers['Content-Type'] = 'video/mp4'
-                    response.headers['Content-Type'] = 'text/vtt'
                     response.headers['Content-Disposition'] = 'inline'
                     return response
                 else:
@@ -745,16 +747,6 @@ def GetVideoData():
     except:
         return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR DE COMUNICACION', 'data': None}), 500)
 
-
-# Función para leer la URL firmada
-def rsa_signer(message):
-    with open(os.environ.get('PRIVATE_KEY_PATH'), 'rb') as key_file:
-        private_key = serialization.load_pem_private_key(
-            key_file.read(),
-            password=None,
-            backend=default_backend()
-        )
-    return private_key.sign(message, padding.PKCS1v15(), hashes.SHA1())
 
 if __name__ == '__main__':
     print("SERVIDOR INICIADO EN EL PUERTO: 5000")
