@@ -2,8 +2,13 @@ from jwt import ExpiredSignatureError, InvalidTokenError
 from conexion import obtener_conexion
 import boto3
 import datetime
+
 #Configuracion del cliente de cloudfront
+from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import padding
+
 from botocore.exceptions import NoCredentialsError, ClientError
 import controlador, conexion_smtp
 from flask import Flask, jsonify, request, make_response
@@ -21,10 +26,11 @@ from datetime import timedelta
 import os
 from dotenv import load_dotenv
 
-import functools 
-import rsa 
+
 
 from botocore.signers import CloudFrontSigner
+
+
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": ["*"]}})
@@ -49,8 +55,6 @@ bucket_name = os.environ.get('BUCKET_NAME')  # Reemplaza con el nombre de tu buc
 
 
 
-# # Crear un cliente de CloudFront usando la sesión
-# cloudfront_client = boto3.client('cloudfront')
 
 #Decorador personalizado para validar usuario administrador logueado
 def admin_required():
@@ -707,16 +711,13 @@ def GetVideoData():
         if data is not None:
             try:
                 url = os.environ.get('CLOUDFRONT_URL') + '/videos/' + data['nombre']
-                expire_date = datetime.datetime.now() + datetime.timedelta(hours=5)
+                ##FECHA DE EXPIRACION DEBE ESTAR DEFINIDA EN FORMATO UTC
+                expire_date = datetime.datetime.now(datetime.timezone.utc)+ datetime.timedelta(hours=3)
                 ##DEFINIR UN SIGNER DE CLOUDFRONT PARA LAS URL
                 key_id = os.environ.get('CF_PUBLIC_KEY_ID')
-                private_key_id = open(os.environ.get('PRIVATE_KEY_PATH'), 'rb').read()
-                key = rsa.PrivateKey.load_pkcs1(private_key_id)
-                rsa_signer = functools.partial(rsa.sign, priv_key=key, hash_method="SHA-1")
                 cloudfront_signer = CloudFrontSigner(key_id, rsa_signer)  # Especificar la versión V4
                 # Crear una URL firmada que será válida hasta la fecha de expiración específica utilizando una política predefinida.
                 signed_url = cloudfront_signer.generate_presigned_url(url, date_less_than=expire_date)
-
                 if signed_url is not None:
                     print("URL firmada:")
                     print(signed_url)
@@ -746,7 +747,16 @@ def GetVideoData():
             return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL OBTENER LA INFORMACION DEL VIDEO', 'data': None}), 400)
     except:
         return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR DE COMUNICACION', 'data': None}), 500)
+    
 
+def rsa_signer(message):
+    with open(os.environ.get("PRIVATE_KEY_PATH"), 'rb') as key_file:
+        private_key = serialization.load_pem_private_key(
+            key_file.read(),
+            password=None,
+            backend=default_backend()
+        )
+    return private_key.sign(message, padding.PKCS1v15(), hashes.SHA1())
 
 if __name__ == '__main__':
     print("SERVIDOR INICIADO EN EL PUERTO: 5000")

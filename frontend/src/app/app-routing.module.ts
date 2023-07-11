@@ -35,19 +35,35 @@ const routes: Routes = [
   },
   {
     path: 'canales',
-    component: VistaCanalesComponent
+    component: VistaCanalesComponent,
+    canActivate: [RoleGuard],
+    data: {
+      roleDisponible: ['USUARIO', 'ADMINISTRADOR']
+    }
   },
   {
     path: 'canales/:id',
-    component: VistaReproductorCanalesComponent
+    component: VistaReproductorCanalesComponent,
+    canActivate: [RoleGuard],
+    data: {
+      roleDisponible: ['USUARIO', 'ADMINISTRADOR']
+    }
   },
   {
     path: 'videos',
-    component: VistaVideosComponent
+    component: VistaVideosComponent,
+    canActivate: [RoleGuard],
+    data: {
+      roleDisponible: ['USUARIO', 'ADMINISTRADOR']
+    }
   },
   {
     path: 'videos/:id',
-    component: VistaReproductorVideosComponent
+    component: VistaReproductorVideosComponent,
+    canActivate: [RoleGuard],
+    data: {
+      roleDisponible: ['USUARIO', 'ADMINISTRADOR']
+    }
   },
   {
     path: 'registro',

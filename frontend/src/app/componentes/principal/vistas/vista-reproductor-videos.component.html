@@ -1,36 +1,46 @@
 <div class="video-container">
-    <div class="video-info">
-      <img class="video-thumbnail" [src]="'data:image/png;base64,' + video.portada" alt="Thumbnail">
+  <div class="video-row1">
+    <div class="video-column1">
       <h2 class="video-title">{{ video.nombre }}</h2>
-      <p class="video-date">{{ video.fecha }}</p>
-      <p class="video-duration">{{ video.duracion }}</p>
+      <div class="video-info"> 
+        <p class="video-classification">Clasificación: {{ video.clasificacion }}</p> 
+        <p class="video-date">Fecha: {{ video.fecha }}</p>
+        <p class="video-duration">Duración: {{ video.duracion }}</p>
+        <button mat-raised-button color="accent" class="boton">AGREGAR A FAVORITOS</button>
+        <button mat-raised-button color="warn" class="boton">ELIMINAR DE FAVORITOS</button>  
+      </div>
     </div>
-    <div class="video-player">
-      <vg-player>
-        <vg-overlay-play></vg-overlay-play>
-        <vg-buffering></vg-buffering>
-        <vg-scrub-bar>
-          <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-          <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
-        </vg-scrub-bar>
-        <vg-controls>
-          <vg-play-pause></vg-play-pause>
-          <vg-playback-button></vg-playback-button>
-          <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
-          <vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>
-          <vg-time-display vgProperty="left" vgFormat="mm:ss"></vg-time-display>
-          <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
-          <vg-mute></vg-mute>
-          <vg-volume></vg-volume>
-          <vg-fullscreen></vg-fullscreen>
-        </vg-controls>
-        <video [vgMedia]="$any(media)" #media id="singleVideo" preload="auto" crossorigin>
-        </video>
-      </vg-player>
-    </div>
-    <div class="video-details">
-      <p class="video-classification">{{ video.clasificacion }}</p>
-      <p class="video-review">{{ video.resena }}</p>
+    <div class="video-column2">
+      <img class="video-thumbnail" [src]="'data:image/png;base64,' + video.portada" alt="Thumbnail">
     </div>
   </div>
-  
+  <div class="video-row2">
+    <div class="video-column1">
+      <div class="video-player">
+        <vg-player>
+          <vg-overlay-play></vg-overlay-play>
+          <vg-buffering></vg-buffering>
+          <vg-scrub-bar>
+            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+            <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+          </vg-scrub-bar>
+          <vg-controls>
+            <vg-play-pause></vg-play-pause>
+            <vg-playback-button></vg-playback-button>
+            <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+            <vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>
+            <vg-time-display vgProperty="left" vgFormat="mm:ss"></vg-time-display>
+            <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+            <vg-mute></vg-mute>
+            <vg-volume></vg-volume>
+            <vg-fullscreen></vg-fullscreen>
+          </vg-controls>
+          <video [vgMedia]="$any(media)" #media id="singleVideo" preload="auto" crossorigin></video>
+        </vg-player>
+      </div>
+    </div>
+    <div class="video-column2">
+      <p class="video-review">Reseña del video: {{ video.resena }}</p>
+    </div>
+  </div>
+</div>
