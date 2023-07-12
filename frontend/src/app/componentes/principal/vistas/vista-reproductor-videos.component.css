@@ -1,0 +1,82 @@
+.video-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(56, 149, 200);
+}
+
+.video-row1 {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 30%;
+  margin-bottom: 0;
+}
+
+.video-row2 {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 70%;
+  margin-top: 0;
+  margin-bottom: 2%;
+}
+
+.video-column1 {
+  flex-basis: 65%; /* Ajusta el tamaño de las columnas según tus necesidades */
+}
+
+.video-column2 {
+  flex-basis: 25%;
+  margin-left: 5%; /* Ajusta el tamaño de las columnas según tus necesidades */
+}
+
+.video-thumbnail {
+  width: 100%;
+  height: 100%;
+  margin-top: 2%;
+}
+
+.video-title {
+  font-size: 2.5vw;
+  margin-top: 4%;
+  margin-left: 5%;
+}
+
+.video-info {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin-top: 2%;
+  margin-left: 10%;
+}
+
+.video-classification,
+.video-duration,
+.video-date {
+  font-size: 1.4vw;
+  margin-top: 2%;
+}
+
+.video-player {
+  margin-top: 1%;
+  width: 100%;
+  height: 100%;
+  margin-left: 1%;
+}
+
+.boton {
+  margin: 2%;
+  height: 50px;
+  width: 30%;
+}
+
+video {
+  width: 100%;
+  height: 100%;
+}
+
+.video-review {
+  font-size: 1.6vw;
+  margin-right: 5%;
+}

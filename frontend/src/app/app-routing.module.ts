@@ -23,6 +23,8 @@ import { VistaCanalesComponent } from './componentes/principal/vistas/vista-cana
 import { VistaVideosComponent } from './componentes/principal/vistas/vista-videos.component';
 import { VistaAgregarCanalesComponent } from './componentes/principal/vistas/vista-agregar-canales.component';
 import { VistaAgregarVideosComponent } from './componentes/principal/vistas/vista-agregar-videos.component';
+import { VistaReproductorCanalesComponent } from './componentes/principal/vistas/vista-reproductor-canales.component';
+import { VistaReproductorVideosComponent } from './componentes/principal/vistas/vista-reproductor-videos.component';
 
 const routes: Routes = [
   {
@@ -33,11 +35,35 @@ const routes: Routes = [
   },
   {
     path: 'canales',
-    component: VistaCanalesComponent
+    component: VistaCanalesComponent,
+    canActivate: [RoleGuard],
+    data: {
+      roleDisponible: ['USUARIO', 'ADMINISTRADOR']
+    }
+  },
+  {
+    path: 'canales/:id',
+    component: VistaReproductorCanalesComponent,
+    canActivate: [RoleGuard],
+    data: {
+      roleDisponible: ['USUARIO', 'ADMINISTRADOR']
+    }
   },
   {
     path: 'videos',
-    component: VistaVideosComponent
+    component: VistaVideosComponent,
+    canActivate: [RoleGuard],
+    data: {
+      roleDisponible: ['USUARIO', 'ADMINISTRADOR']
+    }
+  },
+  {
+    path: 'videos/:id',
+    component: VistaReproductorVideosComponent,
+    canActivate: [RoleGuard],
+    data: {
+      roleDisponible: ['USUARIO', 'ADMINISTRADOR']
+    }
   },
   {
     path: 'registro',

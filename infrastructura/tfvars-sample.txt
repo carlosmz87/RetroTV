@@ -1,2 +1,6 @@
-openssl genpkey -algorithm RSA -out private_retrotv_key.pem -pkeyopt rsa_keygen_bits:2048
-openssl rsa -pubout -in private_retrotv_key.pem -out public_retrotv_key.pem
+//clave privada
+openssl genrsa -out private_retrotv_key.pem 2048
+openssl rsa -pubout -in private_retrotv_key.pem -out public_retrotv_key.pem 
+
+
+

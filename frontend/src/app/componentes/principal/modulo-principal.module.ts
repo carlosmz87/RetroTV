@@ -39,6 +39,12 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { FormsModule } from '@angular/forms';
+import { VistaReproductorVideosComponent } from './vistas/vista-reproductor-videos.component';
+import { VistaReproductorCanalesComponent } from './vistas/vista-reproductor-canales.component';
+import {VgCoreModule} from '@videogular/ngx-videogular/core';
+import {VgControlsModule} from '@videogular/ngx-videogular/controls';
+import {VgOverlayPlayModule} from '@videogular/ngx-videogular/overlay-play';
+import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
 
 @NgModule({
   declarations: [
@@ -57,7 +63,9 @@ import { FormsModule } from '@angular/forms';
     VistaVideosComponent,
     VistaCanalesComponent,
     VistaAgregarVideosComponent,
-    VistaAgregarCanalesComponent
+    VistaAgregarCanalesComponent,
+    VistaReproductorVideosComponent,
+    VistaReproductorCanalesComponent
   ],
   imports: [
     CommonModule,
@@ -78,7 +86,11 @@ import { FormsModule } from '@angular/forms';
     MatDatepickerModule,
     MatNativeDateModule,
     MatGridListModule,
-    FormsModule
+    FormsModule,
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule
   ],
   exports: [
     VistaPrincipalComponent,
@@ -96,7 +108,9 @@ import { FormsModule } from '@angular/forms';
     VistaVideosComponent,
     VistaCanalesComponent,
     VistaAgregarCanalesComponent,
-    VistaAgregarVideosComponent
+    VistaAgregarVideosComponent,
+    VistaReproductorCanalesComponent,
+    VistaReproductorVideosComponent
   ],
   providers: [
     ServicioGestionClientesService,

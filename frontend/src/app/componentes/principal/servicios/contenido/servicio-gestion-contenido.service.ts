@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { RespuestaGestionVideosInterface, RespuestaObtenerVideosInterface } from '../../modelos/contenido/gestion-videos.interface';
+import { RespuestaGestionVideosInterface, RespuestaObtenerVideosInterface, RespuestaVideoInterface } from '../../modelos/contenido/gestion-videos.interface';
+import { RespuestaSuscripcionActivaInterface, SuscripcionActivaInterface } from '../../modelos/contenido/suscripcion-activa.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,16 @@ export class ServicioGestionContenidoService {
   EliminarVideo(nombre:string):Observable<RespuestaGestionVideosInterface>{
     let dir = this.url + "EliminarVideo/"+nombre;
     return this.http.delete<RespuestaGestionVideosInterface>(dir);
+  }
+
+  ObternerVideo(id:any):Observable<RespuestaVideoInterface>{
+    let dir = this.url + "GetVideoData";
+    return this.http.post<RespuestaVideoInterface>(dir,id);
+  }
+
+  IsSubscriptionActive(id:SuscripcionActivaInterface):Observable<RespuestaSuscripcionActivaInterface>{
+    let dir = this.url + "IsSubscriptionActive";
+    return this.http.post<RespuestaSuscripcionActivaInterface>(dir, id);
   }
 
 }

@@ -15,6 +15,13 @@ export class CustomNavbarComponent {
   isLoggedIn: boolean = false;
   userId: Number = 0;
   constructor(public authService: ServicioAuthService, private coockieService: CookieService, private router:Router, private genericos_service:ServicioGenericosService){
+    
+  }
+
+  ngOnInit(){
+    this.genericos_service.recargarComponente$.subscribe(() => {
+      this.resetearVariables();
+    });
     this.authService.userRole$.subscribe(role => {
       this.userRole = role;
     });
@@ -23,12 +30,6 @@ export class CustomNavbarComponent {
     });
     this.authService.userId$.subscribe(usr => {
       this.userId = usr;
-    });
-  }
-
-  ngOnInit(){
-    this.genericos_service.recargarComponente$.subscribe(() => {
-      this.resetearVariables();
     });
   }
   
