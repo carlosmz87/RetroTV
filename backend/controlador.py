@@ -517,3 +517,98 @@ def GetVideoData(id):
         return None
     finally:
         conexion.close()
+
+#Funcion que agrega el video a la lista de favoritos
+def AgregarVideoFavoritos(id_usuario, id_video):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = "INSERT INTO FAVORITO (USUARIO_USU_ID, VIDEO_VID_ID) VALUES(%s,%s)"
+            cursor.execute(query, (id_usuario, id_video))
+            conexion.commit()
+            if cursor.rowcount > 0:
+                # Inserción exitosa
+                return True
+            else:
+                # Error en la inserción
+                return False
+    except:
+        return False
+    finally:
+        conexion.close()
+
+#Funcion para eliminar un video de la lista de favoritos
+def EliminarVideoFavoritos(id_usuario, id_video):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = "DELETE FROM FAVORITO WHERE USUARIO_USU_ID = %s AND VIDEO_VID_ID = %s"
+            cursor.execute(query, (id_usuario, id_video))
+            if cursor.rowcount > 0:
+                # La actualización se realizó correctamente
+                conexion.commit()
+                return "SE HA ELIMINADO CORRECTAMENTE EL VIDEO DE LA LISTA DE FAVORITOS"
+            else:
+                # No se realizó la actualización
+                return None
+
+    except:
+        return None
+    finally:
+        conexion.close()
+
+#Funcion para obtener la informacion de los videos en la lista de videos favoritos
+def ObtenerVideosListaFavoritos(id_usuario):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = """SELECT V.VID_ID, V.NOMBRE, V.FECHA, V.RESENA, V.DURACION, V.PORTADA, C.NOMBRE AS CLASIFICACION FROM FAVORITO F
+            JOIN VIDEO V ON F.VIDEO_VID_ID = V.VID_ID
+            JOIN CLASIFICACION C ON V.CLASIFICACION_CLA_ID = C.CLA_ID 
+            WHERE F.USUARIO_USU_ID = %s"""
+            cursor.execute(query, (id_usuario,))
+            videos = cursor.fetchall()
+            if len(videos) == 0:
+                return None
+            else:
+                videos_obj = []
+                for video in videos:
+                    if video[5] is not None:
+                        with open(video[5], 'rb') as f:
+                            imagen_bytes = f.read()
+                            imagen_base64 = base64.b64encode(imagen_bytes).decode('utf-8')
+                    nombre_portada = video[5].split("/")
+                    video_obj = {
+                        "id":video[0],
+                        "nombre":video[1],
+                        "fecha":video[2],
+                        "resena": video[3],
+                        "duracion":video[4],
+                        "portada":nombre_portada[-1],
+                        "clasificacion":video[6],
+                        "portada_b64": imagen_base64
+                    }
+                    videos_obj.append(video_obj)
+                return videos_obj
+    except:
+        return None
+    finally:
+        conexion.close()
+
+#Funcion para validar si un video es favorito para el usuario loggeado
+def IsFavoriteOf(id_usuario, id_video):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = "SELECT COUNT(*) FROM FAVORITO WHERE USUARIO_USU_ID = %s AND VIDEO_VID_ID = %s"
+            cursor.execute(query, (id_usuario, id_video))
+            estado = cursor.fetchone()
+            if estado[0] == 1:
+                return True
+            else: 
+                return False
+    except:
+        return False
+    finally:
+        conexion.close()
+
