@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { RespuestaGestionVideosInterface, RespuestaObtenerVideosInterface, RespuestaVideoInterface } from '../../modelos/contenido/gestion-videos.interface';
+import { DatosFavoritoInterface, FavoritosInterface, RespuestaGestionVideosInterface, RespuestaIsFavoriteOfInterface, RespuestaObtenerVideosInterface, RespuestaVideoInterface } from '../../modelos/contenido/gestion-videos.interface';
 import { RespuestaSuscripcionActivaInterface, SuscripcionActivaInterface } from '../../modelos/contenido/suscripcion-activa.interface';
 
 @Injectable({
@@ -37,6 +37,26 @@ export class ServicioGestionContenidoService {
   IsSubscriptionActive(id:SuscripcionActivaInterface):Observable<RespuestaSuscripcionActivaInterface>{
     let dir = this.url + "IsSubscriptionActive";
     return this.http.post<RespuestaSuscripcionActivaInterface>(dir, id);
+  }
+
+  ObtenerVideosListaFavoritos(ids:FavoritosInterface):Observable<RespuestaObtenerVideosInterface>{
+    let dir = this.url + "ObtenerVideosListaFavoritos";
+    return this.http.post<RespuestaObtenerVideosInterface>(dir, ids);
+  }
+
+  IsFavoriteOf(fav:DatosFavoritoInterface):Observable<RespuestaIsFavoriteOfInterface>{
+    let dir = this.url + "IsFavoriteOf";
+    return this.http.post<RespuestaIsFavoriteOfInterface>(dir,fav);
+  }
+
+  AgregarVideoFavoritos(fav:DatosFavoritoInterface):Observable<RespuestaGestionVideosInterface>{
+    let dir = this.url + "AgregarVideoFavoritos";
+    return this.http.post<RespuestaGestionVideosInterface>(dir, fav);
+  }
+
+  EliminarVideoFavoritos(fav:DatosFavoritoInterface):Observable<RespuestaGestionVideosInterface>{
+    let dir = this.url + "EliminarVideoFavoritos";
+    return this.http.post<RespuestaGestionVideosInterface>(dir, fav);
   }
 
 }

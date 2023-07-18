@@ -24,7 +24,8 @@ export interface VideosInterface{
     duracion:string,
     clasificacion:string,
     portada:string,
-    portada_b64:string
+    portada_b64:string,
+    esFavorito:boolean
 };
 
 export interface VideoInterface{
@@ -42,3 +43,19 @@ export interface RespuestaVideoInterface{
     RetroTV:string,
     data:VideoInterface
 }
+
+export interface FavoritosInterface{
+    id_usuario:Number
+};
+
+export interface DatosFavoritoInterface{
+    id_usuario:Number,
+    id_video:Number
+};
+
+export interface RespuestaIsFavoriteOfInterface{
+    status:string,
+    RetroTV:string,
+    favorito:boolean
+};
+

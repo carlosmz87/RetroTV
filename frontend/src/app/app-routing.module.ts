@@ -86,7 +86,7 @@ const routes: Routes = [
     component: VistaFavoritosComponent,
     canActivate: [RoleGuard],
     data: {
-      roleDisponible: ['USUARIO']
+      roleDisponible: ['USUARIO', 'ADMINISTRADOR']
     }
   },
   {

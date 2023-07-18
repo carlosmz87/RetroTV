@@ -4,7 +4,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 import { ServicioGestionContenidoService } from '../servicios/contenido/servicio-gestion-contenido.service';
 import { ServicioGenericosService } from '../../genericos/servicios/servicio-genericos.service';
-import { VideosInterface } from '../modelos/contenido/gestion-videos.interface';
+import { DatosFavoritoInterface, VideosInterface } from '../modelos/contenido/gestion-videos.interface';
 import { ServicioAuthService } from '../../login/servicios/servicio-auth.service';
 
 @Component({
@@ -21,6 +21,7 @@ export class VistaVideosComponent implements OnInit {
   pagedData: VideosInterface[] = [];
   id_user:Number = 0;
   is_logged:boolean = false;
+  data_fav!:DatosFavoritoInterface;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -72,7 +73,18 @@ export class VistaVideosComponent implements OnInit {
 
   LlenarGaleria() {
     this.servicio_contenido.ObtenerVideosLista().subscribe(
-      response => {
+      response => {        
+        response.videos.forEach(vid => {
+          this.data_fav = {
+            id_usuario:this.id_user,
+            id_video:vid.id
+          }
+          this.servicio_contenido.IsFavoriteOf(this.data_fav).subscribe(
+            res => {
+              vid.esFavorito = res.favorito;
+            }
+          );
+        });
         this.videos = response.videos;
         this.dataSourceLoaded = true;
         this.pagedData = this.videos.slice(0, this.pageSize);
@@ -86,4 +98,23 @@ export class VistaVideosComponent implements OnInit {
       }
     );
   }
+
+  AgregarVideoFavoritos(id_vid:Number){
+    this.data_fav = {
+      id_usuario:this.id_user,
+      id_video:id_vid
+    }
+    this.servicio_contenido.AgregarVideoFavoritos(this.data_fav).subscribe(
+      response => {
+        this.servicio_generico.ConfigNotification(response.RetroTV, 'OK', response.status);
+        this.LlenarGaleria();
+      },
+      error => {
+        this.servicio_generico.ConfigNotification(error.error.RetroTV, 'OK', error.error.status);
+      }
+    );
+    
+  }
+    
+  
 }

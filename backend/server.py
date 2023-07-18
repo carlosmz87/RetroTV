@@ -648,6 +648,7 @@ def AgregarVideo():
     
 #Endpoint para obtener una lista con los videos almacenados en la base de datos
 @app.route('/ObtenerVideosLista', methods = ['GET'])
+@auth_required()
 def ObtenerVideosLista():
     try:
         videos = controlador.ObtenerVideosLista()
@@ -703,6 +704,7 @@ def IsSubscriptionActive():
 
 #Endpoint para retornar los datos del video y una URL firmada del video
 @app.route('/GetVideoData', methods=['POST'])
+@auth_required()
 def GetVideoData():
     try:
         enviados = request.get_json()
@@ -747,7 +749,85 @@ def GetVideoData():
             return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL OBTENER LA INFORMACION DEL VIDEO', 'data': None}), 400)
     except:
         return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR DE COMUNICACION', 'data': None}), 500)
-    
+
+#Endpoint para crear una nueva clasificacion de videos
+@app.route('/AgregarVideoFavoritos', methods=['POST'])
+@auth_required()
+def AgregarVideoFavoritos():
+    try:
+        datos = request.get_json()
+        id_usu = datos['id_usuario']
+        id_vid = datos['id_video']
+        resp = controlador.AgregarVideoFavoritos(id_usu, id_vid)
+        if resp:
+            response = make_response(jsonify({'status':'success', 'RetroTV':"EL VIDEO SE HA AGREGADO A LA LISTA DE FAVORITOS EXITOSAMENTE"}))
+            response.status_code = 200
+            return response
+        else:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'ERROR AL AGREGAR EL VIDEO A LA LISTA DE FAVORITOS'}))
+            response.status_code = 400
+            return response
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION'}))
+        response.status_code = 500
+        return response 
+
+ #Endpoint para eliminar un video de la lista de favoritos
+@app.route('/EliminarVideoFavoritos', methods=['POST'])
+@auth_required()
+def EliminarVideoFavoritos():
+    try:
+        datos = request.get_json()
+        id_usu = datos['id_usuario']
+        id_vid = datos['id_video']
+         # Eliminar el video de la base de datos
+        mensaje = controlador.EliminarVideoFavoritos(id_usu, id_vid)
+        
+        # Verificar si el video se eliminó correctamente de la base de datos
+        if mensaje is not None:
+            return make_response(jsonify({'status': 'success', 'RetroTV': mensaje}), 200)
+        else:
+            return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL ELIMINAR EL VIDEO DE LA BASE DE DATOS'}), 400)    
+    except:
+        return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR DE COMUNICACION'}), 500)
+
+#Endpoint para obtener una lista con los videos almacenados en la lista de favoritos del usuario logueado
+@app.route('/ObtenerVideosListaFavoritos', methods = ['POST'])
+@auth_required()
+def ObtenerVideosListaFavoritos():
+    try:
+        datos = request.get_json()
+        id_usu = datos['id_usuario']
+        videos = controlador.ObtenerVideosListaFavoritos(id_usu)
+        if videos is not None:
+            response = make_response(jsonify({'status':'success', 'RetroTV':'SE HAN OBTENIDO LOS VIDEOS FAVORITOS EXITOSAMENTE', 'videos':videos}))
+            response.status_code = 200
+            return response
+        else:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'ERROR AL OBTENER LOS VIDEOS FAVORITOS', 'videos': None}))
+            response.status_code = 400
+            return response  
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION', 'videos':None}))
+        response.status_code = 500
+        return response
+
+
+#Endpoint para saber si un usuario cuenta con suscripcion activa
+@app.route('/IsFavoriteOf', methods = ['POST'])
+@auth_required()
+def IsFavoriteOf():
+    try:
+        data = request.get_json()
+        id_usu = data['id_usuario']
+        id_vid = data['id_video']
+        fav = controlador.IsFavoriteOf(id_usu, id_vid)
+        if fav is not None:
+            return make_response(jsonify({'status': 'success', 'RetroTV': 'SE HA VERIFICADO QUE EL VIDEO ES FAVORITO PARA EL USUARIO CON SESION ACTIVA EXITOSAMENTE', 'favorito':fav}), 200)
+        else:
+            return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL VERIFICAR SI EL VIDEO ES FAVORITO PARA EL USUARIO CON SESION ACTIVA', 'favorito':None}), 400)
+    except:
+        return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR DE COMUNICACION', 'favorito':None}), 500)
 
 def rsa_signer(message):
     with open(os.environ.get("PRIVATE_KEY_PATH"), 'rb') as key_file:
