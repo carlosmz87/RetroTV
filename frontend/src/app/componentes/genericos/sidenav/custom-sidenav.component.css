@@ -1,4 +1,29 @@
 .sidenav{
     height: 100%;
     width: 100%;
+    margin-top: 50px;
 }
+
+.titulo{
+    text-align: center;
+}
+
+.formulario_clasificacion{
+    display: flex;
+    flex-direction: row;
+    font-size: small;
+}
+
+.boton{
+    height: 30px;
+    width: 50px;
+    margin-left: 5px;
+    margin-top: 10px;
+}
+
+.campo{
+    height: 60px;
+    width: 100px;
+    margin-left: 10px;
+}
+

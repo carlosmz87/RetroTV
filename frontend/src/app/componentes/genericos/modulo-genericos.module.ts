@@ -14,6 +14,10 @@ import { MatCardModule } from '@angular/material/card';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { ServicioAuthService } from '../login/servicios/servicio-auth.service';
 import { CookieService } from 'ngx-cookie-service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -30,7 +34,11 @@ import { CookieService } from 'ngx-cookie-service';
     MatIconModule,
     RouterModule,
     MatSnackBarModule,
-    MatCardModule
+    MatCardModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
+    ReactiveFormsModule
   ],
   exports: [
     CustomFooterComponent,

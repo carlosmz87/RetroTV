@@ -612,3 +612,41 @@ def IsFavoriteOf(id_usuario, id_video):
     finally:
         conexion.close()
 
+#Funcion para obtener los videos de acuerdo a su clasificacion
+def ObtenerVideosClasificacion(clasificacion):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = """SELECT V.VID_ID, V.NOMBRE, V.FECHA, V.RESENA, V.DURACION, V.PORTADA, C.NOMBRE AS CLASIFICACION FROM VIDEO V
+            JOIN CLASIFICACION C ON V.CLASIFICACION_CLA_ID = C.CLA_ID
+            WHERE C.NOMBRE = %s;"""
+            cursor.execute(query, (clasificacion, ))
+            videos = cursor.fetchall()
+            if len(videos) == 0:
+                return None
+            else:
+                videos_obj = []
+                for video in videos:
+                    if video[5] is not None:
+                        with open(video[5], 'rb') as f:
+                            imagen_bytes = f.read()
+                            imagen_base64 = base64.b64encode(imagen_bytes).decode('utf-8')
+                    nombre_portada = video[5].split("/")
+                    video_obj = {
+                        "id":video[0],
+                        "nombre":video[1],
+                        "fecha":video[2],
+                        "resena": video[3],
+                        "duracion":video[4],
+                        "portada":nombre_portada[-1],
+                        "clasificacion":video[6],
+                        "portada_b64": imagen_base64
+                    }
+                    videos_obj.append(video_obj)
+                return videos_obj
+    except:
+        return None
+    finally:
+        conexion.close()
+
+

@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
   templateUrl: './vista-perfil-administrador.component.html',
   styleUrls: ['./vista-perfil-administrador.component.css']
 })
-export class VistaPerfilAdministradorComponent {
+export class VistaPerfilAdministradorComponent implements OnInit{
   constructor(private router:Router, private cookieSrvice:CookieService, private fb:FormBuilder, private authService:ServicioAuthService, private servicio_genericos:ServicioGenericosService, private servicio_clasificacion:ServicioClasificacionService, private servicio_gestion:ServicioGestionClientesService){
     
   }
@@ -150,7 +150,7 @@ export class VistaPerfilAdministradorComponent {
   }
   EliminarClasificacion(){
     if(this.formularioEliminarClasificacion.valid){
-      const confirmacion = confirm('¿ESTAS SEGURO QUE DESEAS AGREGAR UNA NUEVA CLASIFICACION AL SISTEMA?');
+      const confirmacion = confirm('¿ESTAS SEGURO QUE DESEAS ELIMINAR UNA CLASIFICACION EN EL SISTEMA?');
       if(confirmacion){
         this.servicio_clasificacion.EliminarClasificacion(this.formularioEliminarClasificacion).subscribe(
           response => {

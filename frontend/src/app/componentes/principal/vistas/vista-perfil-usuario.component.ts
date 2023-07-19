@@ -13,7 +13,7 @@ import { SolicitarSuscripcionInterface } from '../modelos/clientes/suscripciones
   templateUrl: './vista-perfil-usuario.component.html',
   styleUrls: ['./vista-perfil-usuario.component.css']
 })
-export class VistaPerfilUsuarioComponent {
+export class VistaPerfilUsuarioComponent implements OnInit{
   constructor(private router:Router,private cookieService:CookieService,private fb:FormBuilder, private authService:ServicioAuthService, private servicio_genericos:ServicioGenericosService, private servicio_gestion:ServicioGestionClientesService){
   }
   ngOnInit(){
