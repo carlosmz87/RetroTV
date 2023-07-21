@@ -828,7 +828,28 @@ def IsFavoriteOf():
             return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL VERIFICAR SI EL VIDEO ES FAVORITO PARA EL USUARIO CON SESION ACTIVA', 'favorito':None}), 400)
     except:
         return make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR DE COMUNICACION', 'favorito':None}), 500)
+    
+#Endpoint para obtener la lista de videos segun su clasificacion
+@app.route('/ObtenerVideosClasificacion/<clasificacion>', methods = ['GET'])
+@auth_required()
+def ObtenerVideosClasificacion(clasificacion):
+    try:
+        videos = controlador.ObtenerVideosClasificacion(clasificacion)
+        if videos is not None:
+            response = make_response(jsonify({'status':'success', 'RetroTV':'SE HAN OBTENIDO LOS VIDEOS EXITOSAMENTE', 'videos':videos}))
+            response.status_code = 200
+            return response
+        else:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'ERROR AL OBTENER LOS VIDEOS', 'videos': None}))
+            response.status_code = 400
+            return response  
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION', 'videos':None}))
+        response.status_code = 500
+        return response
 
+
+#FUNCION PARA FIRMAR LAS URL'S GENERADAS PARA ACCEDER AL CONTENIDO CON ACCESO RESTRINGIDO
 def rsa_signer(message):
     with open(os.environ.get("PRIVATE_KEY_PATH"), 'rb') as key_file:
         private_key = serialization.load_pem_private_key(

@@ -59,4 +59,9 @@ export class ServicioGestionContenidoService {
     return this.http.post<RespuestaGestionVideosInterface>(dir, fav);
   }
 
+  ObtenerVideosClasificacion(clasificacion:string):Observable<RespuestaObtenerVideosInterface>{
+    let dir = this.url + "ObtenerVideosClasificacion/"+clasificacion;
+    return this.http.get<RespuestaObtenerVideosInterface>(dir);
+  }
+
 }

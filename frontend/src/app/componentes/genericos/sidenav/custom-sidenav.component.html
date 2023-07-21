@@ -1,3 +1,11 @@
 <div class="sidenav">
-
+    <h3 class="titulo">CLASIFICACIONES</h3>
+    <form class="formulario_clasificacion" [formGroup]="formularioListarClasificacion" (ngSubmit)="IrClasificacion()">
+        <mat-form-field class="campo">
+            <mat-select class="selector" formControlName="nombre" required>
+              <mat-option *ngFor="let cla of clasificaciones.clasificaciones" value={{cla.nombre}}>{{cla.nombre}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button mat-raised-button type="submit" color="primary" class="boton"> IR </button>
+    </form>
 </div>

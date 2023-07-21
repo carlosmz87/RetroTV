@@ -25,6 +25,7 @@ import { VistaAgregarCanalesComponent } from './componentes/principal/vistas/vis
 import { VistaAgregarVideosComponent } from './componentes/principal/vistas/vista-agregar-videos.component';
 import { VistaReproductorCanalesComponent } from './componentes/principal/vistas/vista-reproductor-canales.component';
 import { VistaReproductorVideosComponent } from './componentes/principal/vistas/vista-reproductor-videos.component';
+import { VistaClasificacionesComponent } from './componentes/principal/vistas/vista-clasificaciones.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,14 @@ const routes: Routes = [
     component: VistaInicioComponent,
     pathMatch: 'full'
     
+  },
+  {
+    path: 'clasificaciones/:clasificacion',
+    component: VistaClasificacionesComponent,
+    canActivate: [RoleGuard],
+    data: {
+      roleDisponible: ['USUARIO', 'ADMINISTRADOR']
+    }
   },
   {
     path: 'canales',
