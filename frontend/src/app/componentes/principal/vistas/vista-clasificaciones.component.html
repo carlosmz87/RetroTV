@@ -1,1 +1,31 @@
-<p>vista-clasificaciones works!</p>
+<h1 class="titulo">VIDEOS DE {{this.clasificacion}} </h1>
+
+<ng-container *ngIf="dataSourceLoaded">
+  <div class="contenedor_filtro">
+    <mat-form-field class="filter-field">
+      <mat-label>Filter</mat-label>
+      <input matInput [formControl]="filterControl" (input)="applyFilter(filterControl.value)" placeholder="Ex. Roberto">
+    </mat-form-field>
+  </div>
+
+  <div class="contenedor_principal">
+    <div *ngFor="let video of pagedData" class="contenedor_card">
+      <div class="card">
+        <div class="card_header">
+          <div class="card_title">{{ video.nombre.split(".")[0] }}</div>
+          <div class="card_subtitle">{{ video.duracion }}</div>
+        </div>
+        <div class="card_content">
+          <img [src]="'data:image/png;base64,' + video.portada_b64" alt="Imagen de portada">
+        </div>
+        <div class="card_actions">
+          <button mat-raised-button color="primary" class="boton" [routerLink]="['/videos/'+video.id]">VER</button>
+          <button mat-raised-button color="accent" class="boton" *ngIf="!(video.esFavorito)" (click)="AgregarVideoFavoritos(video.id)">AGREGAR A FAVORITOS</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <mat-paginator [length]="videos.length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+    (page)="onPageChange($event)"></mat-paginator>
+</ng-container>

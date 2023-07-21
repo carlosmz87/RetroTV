@@ -35,9 +35,9 @@ export class VistaReproductorVideosComponent implements OnInit{
           this.route.params.subscribe(params => {
             const id = params['id']; // 'id' es el nombre del parámetro en tu ruta
             
-            const id_obj = { id: id }
+            this.id_obj = { id: id }
             // Realiza la solicitud HTTP para obtener los datos del video
-            this.servicio_contenido.ObternerVideo(id_obj).subscribe(
+            this.servicio_contenido.ObternerVideo(this.id_obj).subscribe(
               response => {
                 if (response.status === 'success' && response.data) {
                   this.video = response.data;
