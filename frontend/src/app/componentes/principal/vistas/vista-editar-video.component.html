@@ -1,5 +1,5 @@
 <div class="contenedor_principal">
-    <h1 class="titulo">AGREGAR VIDEOS</h1>
+    <h1 class="titulo">EDITAR DATOS DEL VIDEO</h1>
     <div class="input_imagen">
         <div class="label_container">
           <mat-label class="label">SELECCIONA UNA IMAGEN DE PORTADA</mat-label>
@@ -16,32 +16,12 @@
           <span class="nombre_archivo">{{ nombreArchivoPortada }}</span>
         </div>
       </div>
-      <div class="input_video">
-        <div class="label_container">
-          <mat-label class="label">SELECCIONA UN VIDEO</mat-label>
-        </div>
-        <div class="input_container">
-          <input
-            #videoInput
-            type="file"
-            (change)="onVideoSelected($event)"
-            accept="video/*"
-            required
-          />
-          <button mat-raised-button color="accent" (click)="videoInput.click()">AGREGAR</button>
-          <span class="nombre_archivo">{{ nombreArchivoVideo }}</span>
-        </div>
-      </div>
   <h3 class="titulo">DATOS DEL VIDEO</h3>
   <form
     class="formulario_video"
     [formGroup]="formularioVideos"
-    (ngSubmit)="AgregarVideo()"
+    (ngSubmit)="EditarVideo()"
   >
-    <mat-form-field>
-      <mat-label>Nombre del archivo</mat-label>
-      <input matInput formControlName="nombre" required />
-    </mat-form-field>
     <mat-form-field>
         <mat-label>Fecha</mat-label>
         <input matInput [matDatepicker]="picker" placeholder="Seleccione una fecha" formControlName="fecha" required>
@@ -67,3 +47,4 @@
     <button mat-raised-button color="primary" type="submit">ACEPTAR</button>
   </form>
 </div>
+

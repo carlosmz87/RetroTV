@@ -394,6 +394,23 @@ def AgregarVideo(nombre, fecha, resena, duracion, portada, clasificacion):
         return False
     finally:
         conexion.close()
+        
+#Funcion para actualizar la informacion del video:
+def EditarVideoInfo(fecha, resena, duracion, clasificacion, portada, id):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = 'UPDATE VIDEO SET FECHA =%s, RESENA=%s, DURACION=%s, CLASIFICACION_CLA_ID=%s, PORTADA=%s WHERE VID_ID=%s'
+            cursor.execute(query,(fecha, resena, duracion, clasificacion, portada, id))
+            if cursor.rowcount > 0:
+                conexion.commit()
+                return "SE HA ACTUALIZADO EXITOSAMENTE LA INFORMACION DEL VIDEO"
+            else:
+                return None
+    except:
+        return None
+    finally:
+        conexion.close()
 
 #Funcion para validar que el video no haya sido cargado previamente
 def ObtenerVideo(nombre):

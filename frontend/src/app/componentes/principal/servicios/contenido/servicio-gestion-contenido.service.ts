@@ -18,6 +18,11 @@ export class ServicioGestionContenidoService {
     return this.http.post<RespuestaGestionVideosInterface>(dir,datos);
   }
 
+  EditarVideoInfo(datos:FormData):Observable<RespuestaGestionVideosInterface>{
+    let dir = this.url + "EditarVideoInfo";
+    return this.http.put<RespuestaGestionVideosInterface>(dir,datos);
+  }
+
 
   ObtenerVideosLista():Observable<RespuestaObtenerVideosInterface>{
     let dir = this.url + "ObtenerVideosLista";

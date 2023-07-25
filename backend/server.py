@@ -645,6 +645,47 @@ def AgregarVideo():
         response = make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR DE COMUNICACION'}))
         response.status_code = 500
         return response
+
+#Endpoint para actualizar la informacion del video
+@app.route('/EditarVideoInfo', methods={'PUT'})
+@admin_required()
+def EditarVideoInfo():
+    try:
+        id_vid = request.form['id']
+        fecha = request.form['fecha']
+        resena = request.form['resena']
+        duracion = request.form['duracion']
+        clasificacion = request.form['clasificacion']
+        portada = request.files['portada']
+        ruta_portada = ""
+        if portada is not None:
+            filename = secure_filename(portada.filename)
+            portada.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            ruta_portada = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        else:
+            response = make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL OBTENER LA PORTADA'}))
+            response.status_code = 400
+            return response   
+
+        id_clasificacion = controlador.GetIdClasificacion(clasificacion)
+        if id_clasificacion is not None:
+            res = controlador.EditarVideoInfo(fecha, resena, duracion, id_clasificacion, ruta_portada, id_vid)
+            if res is not None:
+                response = make_response(jsonify({'status':'success','RetroTV': res}))
+                response.status_code = 200
+                return response 
+            else:
+                response = make_response(jsonify({'status':'error','RetroTV': 'ERROR AL ACTUALIZAR LA INFORMACION DEL VIDEO'}))
+                response.status_code = 400
+                return response
+        else:
+            response = make_response(jsonify({'status': 'error', 'RetroTV': 'ERROR AL OBTENER EL ID DE LA CLASIFICACION'}))
+            response.status_code = 400
+            return response
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION'}))
+        response.status_code = 500
+        return response 
     
 #Endpoint para obtener una lista con los videos almacenados en la base de datos
 @app.route('/ObtenerVideosLista', methods = ['GET'])

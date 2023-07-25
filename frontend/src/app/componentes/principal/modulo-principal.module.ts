@@ -46,6 +46,7 @@ import {VgControlsModule} from '@videogular/ngx-videogular/controls';
 import {VgOverlayPlayModule} from '@videogular/ngx-videogular/overlay-play';
 import {VgBufferingModule} from '@videogular/ngx-videogular/buffering';
 import { VistaClasificacionesComponent } from './vistas/vista-clasificaciones.component';
+import { VistaEditarVideoComponent } from './vistas/vista-editar-video.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { VistaClasificacionesComponent } from './vistas/vista-clasificaciones.co
     VistaAgregarCanalesComponent,
     VistaReproductorVideosComponent,
     VistaReproductorCanalesComponent,
-    VistaClasificacionesComponent
+    VistaClasificacionesComponent,
+    VistaEditarVideoComponent
   ],
   imports: [
     CommonModule,
@@ -113,7 +115,8 @@ import { VistaClasificacionesComponent } from './vistas/vista-clasificaciones.co
     VistaAgregarVideosComponent,
     VistaReproductorCanalesComponent,
     VistaReproductorVideosComponent,
-    VistaClasificacionesComponent
+    VistaClasificacionesComponent,
+    VistaEditarVideoComponent
   ],
   providers: [
     ServicioGestionClientesService,

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ServicioGestionContenidoService } from '../servicios/contenido/servicio-gestion-contenido.service';
 import { ServicioGenericosService } from '../../genericos/servicios/servicio-genericos.service';
@@ -12,9 +12,9 @@ import { MatSort } from '@angular/material/sort';
   templateUrl: './vista-gestion-contenido.component.html',
   styleUrls: ['./vista-gestion-contenido.component.css']
 })
-export class VistaGestionContenidoComponent {
+export class VistaGestionContenidoComponent implements OnInit, AfterViewInit{
   dataSourceVideos!: MatTableDataSource<VideosInterface>;
-  displayedColumnsVideos: string[] = ['id', 'nombre', 'fecha', 'resena', 'duracion', 'clasificacion', 'portada','eliminar'];
+  displayedColumnsVideos: string[] = ['id', 'nombre', 'fecha', 'resena', 'duracion', 'clasificacion', 'portada', 'modificar', 'eliminar'];
 
   @ViewChild(MatPaginator) paginator_videos!: MatPaginator;
   @ViewChild(MatSort) sort_videos!: MatSort;
@@ -67,6 +67,13 @@ export class VistaGestionContenidoComponent {
           this.servicio_genericos.ConfigNotification(error.error.RetroTV, 'OK', error.error.status)
         }
       );
+    }
+  }
+
+  confirmarModificarVideo(id: Number) {
+    const confirmacion = confirm('¿ESTAS SEGURO QUE DESEAS MODIFICAR LA INFORMACIÓN DEL VIDEO?');
+    if (confirmacion) {
+      this.router.navigate(['/edit-video/'+id]);
     }
   }
 }
