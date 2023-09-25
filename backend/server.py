@@ -2,6 +2,7 @@ from jwt import ExpiredSignatureError, InvalidTokenError
 from conexion import obtener_conexion
 import boto3
 import datetime
+import openpyxl
 
 #Configuracion del cliente de cloudfront
 from cryptography.hazmat.backends import default_backend
@@ -10,8 +11,8 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import padding
 
 from botocore.exceptions import NoCredentialsError, ClientError
-import controlador, conexion_smtp
-from flask import Flask, jsonify, request, make_response
+import controlador, conexion_smtp, reportes
+from flask import Flask, jsonify, request, make_response, send_file
 from flask_jwt_extended import (
     JWTManager,
     create_access_token,
@@ -888,6 +889,224 @@ def ObtenerVideosClasificacion(clasificacion):
         response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION', 'videos':None}))
         response.status_code = 500
         return response
+
+# Endpoint para obtener la lista de videos segun su clasificacion
+@app.route('/reporte/consulta1', methods = ['GET'])
+#@auth_required()
+def VideosExistentesConClasificacion():
+    try:
+        videos = reportes.VideosExistentes_ConClasificacion()
+        if videos is not None:
+            response = make_response(jsonify({'status':'success', 'RetroTV':'SE HAN OBTENIDO LOS VIDEOS EXITOSAMENTE', 'videos':videos}))
+            response.status_code = 200
+            return response
+        elif videos is None:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'NO HAY VIDEOS DISPONIBLES', 'canales': None}))
+            response.status_code = 200
+            return response
+        else:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'ERROR AL OBTENER LOS VIDEOS', 'videos': None}))
+            response.status_code = 400
+            return response
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION', 'videos':None}))
+        response.status_code = 500
+        return response
+    
+# Endpoint para obtener la lista de clasificaciones
+@app.route('/reporte/consulta2', methods = ['GET'])
+#@auth_required()
+def ListaClasificaciones():
+    try:
+        clasificaciones = reportes.ListaClasificaciones()
+        if clasificaciones is not None:
+            response = make_response(jsonify({'status':'success', 'RetroTV':'SE HAN OBTENIDO LAS CLASIFICACIONES EXITOSAMENTE', 'clasificaciones':clasificaciones}))
+            response.status_code = 200
+            return response
+        elif clasificaciones is None:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'NO HAY CLASIFICACIONES DISPONIBLES', 'canales': None}))
+            response.status_code = 200
+            return response
+        else:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'ERROR AL OBTENER LAS CLASIFICACIONES', 'clasificaciones': None}))
+            response.status_code = 400
+            return response
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION', 'clasificaciones':None}))
+        response.status_code = 500
+        return response
+    
+# Endpoint para obtener la lista de canales
+@app.route('/reporte/consulta3', methods = ['GET'])
+#@auth_required()
+def ListaCanales():
+    try:
+        canales = reportes.ListaCanales()
+        if canales is not None:
+            response = make_response(jsonify({'status':'success', 'RetroTV':'SE HAN OBTENIDO LOS CANALES EXITOSAMENTE', 'canales':canales}))
+            response.status_code = 200
+            return response
+        elif canales is None:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'NO HAY CANALES DISPONIBLES', 'canales': None}))
+            response.status_code = 200
+            return response
+        else:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'ERROR AL OBTENER LOS CANALES', 'canales': None}))
+            response.status_code = 400
+            return response
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION', 'canales':None}))
+        response.status_code = 500
+        return response
+    
+# Endpoint para obtener la lista de usuarios
+@app.route('/reporte/consulta4', methods = ['GET'])
+#@auth_required()
+def ListaUsuarios():
+    try:
+        usuarios = reportes.ListaUsuarios()
+        if usuarios is not None:
+            response = make_response(jsonify({'status':'success', 'RetroTV':'SE HAN OBTENIDO LOS USUARIOS EXITOSAMENTE', 'usuarios':usuarios}))
+            response.status_code = 200
+            return response
+        elif usuarios is None:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'NO HAY USUARIOS DISPONIBLES', 'usuarios': None}))
+            response.status_code = 200
+            return response
+        else:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'ERROR AL OBTENER LOS USUARIOS', 'usuarios': None}))
+            response.status_code = 400
+            return response
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION', 'usuarios':None}))
+        response.status_code = 500
+        return response
+
+# Endpoint para obtener la lista de usuarios con suscripción activa con fecha de inicio y fecha de vencimiento
+@app.route('/reporte/consulta5', methods = ['GET'])
+#@auth_required()
+def ListaSuscripciones():
+    try:
+        suscripciones = reportes.ListaSuscripciones()
+        if suscripciones is not None:
+            response = make_response(jsonify({'status':'success', 'RetroTV':'SE HAN OBTENIDO LAS SUSCRIPCIONES EXITOSAMENTE', 'suscripciones':suscripciones}))
+            response.status_code = 200
+            return response
+        elif suscripciones is None:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'NO HAY SUSCRIPCIONES DISPONIBLES', 'suscripciones': None}))
+            response.status_code = 200
+            return response
+        else:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'ERROR AL OBTENER LAS SUSCRIPCIONES', 'suscripciones': None}))
+            response.status_code = 400
+            return response
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION', 'suscripciones':None}))
+        response.status_code = 500
+        return response
+    
+# Endpoint para obtener la lista de usuarios con suscripción activa con fecha de inicio y fecha de vencimiento
+@app.route('/reporte/consultaE1', methods = ['GET'])
+#@auth_required()
+def ListaVideosCarrusel():
+    try:
+        videos = reportes.ListaVideosCarrusel()
+        if videos is not None:
+            response = make_response(jsonify({'status':'success', 'RetroTV':'SE HAN OBTENIDO LOS VIDEOS EXITOSAMENTE', 'videos':videos}))
+            response.status_code = 200
+            return response
+        elif videos is None:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'NO HAY VIDEOS DISPONIBLES', 'videos': None}))
+            response.status_code = 200
+            return response
+        else:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'ERROR AL OBTENER LOS VIDEOS', 'videos': None}))
+            response.status_code = 400
+            return response
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION', 'videos':None}))
+        response.status_code = 500
+        return response
+
+# Endpoint para obtener la cantidad de subscripciones activas e inactivas
+@app.route('/reporte/consultaE2', methods = ['GET'])
+#@auth_required()
+def SuscripcionesActivasInactivas():
+    try:
+        suscripciones = reportes.SuscripcionesActivasInactivas()
+        if suscripciones is not None:
+            response = make_response(jsonify({'status':'success', 'RetroTV':'SE HAN OBTENIDO LAS SUSCRIPCIONES EXITOSAMENTE', 'suscripciones':suscripciones}))
+            response.status_code = 200
+            return response
+        elif suscripciones is None:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'NO HAY SUSCRIPCIONES DISPONIBLES', 'suscripciones': None}))
+            response.status_code = 200
+            return response
+        else:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'ERROR AL OBTENER LAS SUSCRIPCIONES ', 'suscripciones': None}))
+            response.status_code = 400
+            return response
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION', 'videos':None}))
+        response.status_code = 500
+        return response
+    
+# Función para generar el reporte
+@app.route('/reporte/generar', methods = ['GET'])
+def GenerarReporte():
+    try:
+        workbook = openpyxl.Workbook()
+        #realizamo la consulta
+        videos = reportes.VideosExistentes_ConClasificacion()
+        
+        if videos is not None:
+            # Crear una hoja de Excel para la primera consulta
+            sheet1 = workbook.active
+            sheet1.title = "Consulta 1"
+            # Escribir los encabezados
+            sheet1.append(["Nombre video", "Clasificacion"])
+
+            for video in videos:
+                sheet1.append([video['Nombre_Video'], video['Clasificacion']])            
+        elif videos is None:
+            sheet1 = workbook.active
+            sheet1.title = "Consulta 1"
+            sheet1.append(["Nombre video", "Clasificacion"])
+        else:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'ERROR AL OBTENER LOS VIDEOS PARA EL REPORTE', 'videos': None}))
+            response.status_code = 400
+            return response
+
+        clasificaciones = reportes.ListaClasificaciones()
+        if clasificaciones is not None:
+            # Crear una hoja de Excel para la primera consulta
+            sheet2 = workbook.active
+            sheet2.title = "Consulta 2"
+            # Escribir los encabezados
+            sheet2.append(["Clasificacion"])
+
+            for clasificacion in clasificaciones:
+                sheet2.append([clasificacion['Clasificacion']])            
+        elif clasificaciones is None:
+            sheet2 = workbook.active
+            sheet2.title = "Consulta 2"
+            sheet2.append(["Clasificacion"])
+        else:
+            response = make_response(jsonify({'status':'error', 'RetroTV':'ERROR AL OBTENER LAS CLASIFICACIONES PARA EL REPORTE', 'videos': None}))
+            response.status_code = 400
+            return response
+        
+        # Guardar el archivo Excel
+        archivo_excel = './reports/reporte.xlsx'  # Ruta donde deseas guardar el archivo
+        workbook.save(archivo_excel)
+        #archivo_csv = './top_horas_concurridas.xlsx'  # Ruta a tu archivo CSV
+        return send_file(archivo_excel, as_attachment=True)
+
+    except:
+        response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION', 'reporte':None}))
+        response.status_code = 500
+        return response
+
 
 
 #FUNCION PARA FIRMAR LAS URL'S GENERADAS PARA ACCEDER AL CONTENIDO CON ACCESO RESTRINGIDO

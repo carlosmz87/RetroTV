@@ -23,6 +23,8 @@ export class VistaEditarVideoComponent implements OnInit{
   }
 
   ngOnInit(){
+    const id = Number(this.route.snapshot.params['id']);
+    this.GetDataVideo(id)
     this.formularioVideos = this.fb.group({
       fecha: ['', Validators.required],
       resena: ['', Validators.required],
@@ -55,6 +57,25 @@ export class VistaEditarVideoComponent implements OnInit{
         this.servicio_genericos.ConfigNotification(error.error.RetroTV, 'OK', error.error.status);
       }
     );
+  }
+
+  GetDataVideo(id: Number) {
+    let data_obj = { 'id': id };
+    this.servicio_contenido.ObternerVideo(data_obj).subscribe(
+      response => {
+        if (response.status === 'success' && response.data) {
+          this.formularioVideos.patchValue({
+            fecha: response.data.fecha,
+            resena: response.data.resena,
+            duracion: response.data.duracion,
+            clasificacion: response.data.clasificacion,
+          });
+        } else {
+          console.error('Error al obtener los datos del video');
+        }
+
+      }
+    )
   }
 
   EditarVideo(){
