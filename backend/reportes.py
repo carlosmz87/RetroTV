@@ -24,9 +24,9 @@ def VideosExistentes_ConClasificacion():
                         "Clasificacion": clasificacion
                     })
                 # Imprimir los datos por consola
-                for resultado in resultados:
-                    print(f"Nombre del Video: {resultado['Nombre_Video']}")
-                    print(f"Clasificación: {resultado['Clasificacion']}")
+                # for resultado in resultados:
+                #     print(f"Nombre del Video: {resultado['Nombre_Video']}")
+                #     print(f"Clasificación: {resultado['Clasificacion']}")
                 return resultados
     except Exception as e:
         print(f"Error: {str(e)}")
@@ -51,11 +51,12 @@ def ListaClasificaciones():
                 for clasificacion in clasificaciones:
                     nombre_clasificacion = clasificacion
                     resultados.append({
-                        "nombre_clasificacion": nombre_clasificacion
+                        "clasificacion": nombre_clasificacion[0]
                     })
+                    print(nombre_clasificacion)
                 # Imprimir los datos por consola
-                for resultado in resultados:
-                    print(f"Nombre de clasificacion: {resultado['nombre_clasificacion']}")
+                # for resultado in resultados:
+                #     print(f"Nombre de clasificacion: {resultado['nombre_clasificacion']}")
                 return resultados
     except Exception as e:
         print(f"Error: {str(e)}")
@@ -76,7 +77,8 @@ def ListaCanales():
             
             if len(canales) == 0:
                 print("No se encontraron canales existentes.")
-                return None
+                resultados = [{"canal": "No hay canales existentes", "enlace": "No hay canales existentes", "resena": "No hay canales existentes"}]
+                return resultados
             else:
                 resultados = []
                 for canal in canales:
@@ -87,10 +89,10 @@ def ListaCanales():
                         "resena": resena
                     })
                 # Imprimir los datos por consola
-                for resultado in resultados:
-                    print(f"Nombre de canal: {resultado['canal']}")
-                    print(f"Enlace: {resultado['enlace']}")
-                    print(f"Reseña: {resultado['resena']}")
+                # for resultado in resultados:
+                #     print(f"Nombre de canal: {resultado['canal']}")
+                #     print(f"Enlace: {resultado['enlace']}")
+                #     print(f"Reseña: {resultado['resena']}")
                 return resultados
     except Exception as e:
         print(f"Error: {str(e)}")
@@ -128,15 +130,15 @@ def ListaUsuarios():
                         "estado": estado
                     })
                 # Imprimir los datos por consola
-                for resultado in resultados:
-                    print(f"Nombre: {resultado['nombre']}")
-                    print(f"Correo: {resultado['correo']}")
-                    print(f"Usuario: {resultado['usuario']}")
-                    print(f"Rol: {resultado['rol']}")
-                    print(f"Genero: {resultado['genero']}")
-                    print(f"Fecha de Nacimiento: {resultado['fecha_nacimiento']}")
-                    print(f"Telefono: {resultado['telefono']}")
-                    print(f"Estado: {resultado['estado']}")
+                # for resultado in resultados:
+                #     print(f"Nombre: {resultado['nombre']}")
+                #     print(f"Correo: {resultado['correo']}")
+                #     print(f"Usuario: {resultado['usuario']}")
+                #     print(f"Rol: {resultado['rol']}")
+                #     print(f"Genero: {resultado['genero']}")
+                #     print(f"Fecha de Nacimiento: {resultado['fecha_nacimiento']}")
+                #     print(f"Telefono: {resultado['telefono']}")
+                #     print(f"Estado: {resultado['estado']}")
                 return resultados
     except Exception as e:
         print(f"Error: {str(e)}")
@@ -171,10 +173,10 @@ def ListaSuscripciones():
                         "fecha_final": fecha_final
                     })
                 # Imprimir los datos por consola
-                for resultado in resultados:
-                    print(f"Nombre de usuario: {resultado['usuario']}")
-                    print(f"Fecha de inicio: {resultado['fecha_inicio']}")
-                    print(f"Fecha final: {resultado['fecha_final']}")
+                # for resultado in resultados:
+                #     print(f"Nombre de usuario: {resultado['usuario']}")
+                #     print(f"Fecha de inicio: {resultado['fecha_inicio']}")
+                #     print(f"Fecha final: {resultado['fecha_final']}")
                 return resultados
     except Exception as e:
         print(f"Error: {str(e)}")
@@ -209,10 +211,10 @@ def ListaVideosCarrusel():
                         "portada": portada
                     })
                 # Imprimir los datos por consola
-                for resultado in resultados:
-                    print(f"Nombre de usuario: {resultado['nombre']}")
-                    print(f"Reseña: {resultado['resena']}")
-                    print(f"Portada: {resultado['portada']}")
+                # for resultado in resultados:
+                #     print(f"Nombre de usuario: {resultado['nombre']}")
+                #     print(f"Reseña: {resultado['resena']}")
+                #     print(f"Portada: {resultado['portada']}")
                 return resultados
     except Exception as e:
         print(f"Error: {str(e)}")
@@ -247,9 +249,9 @@ def SuscripcionesActivasInactivas():
                         "inactivas": suscripcion_inactiva,
                     })
                 # Imprimir los datos por consola
-                for resultado in resultados:
-                    print(f"Suscripciones activas: {resultado['activas']}")
-                    print(f"Suscripciones inactivas: {resultado['inactivas']}")
+                # for resultado in resultados:
+                #     print(f"Suscripciones activas: {resultado['activas']}")
+                #     print(f"Suscripciones inactivas: {resultado['inactivas']}")
                 return resultados
     except Exception as e:
         print(f"Error: {str(e)}")

@@ -1055,53 +1055,16 @@ def SuscripcionesActivasInactivas():
 @app.route('/reporte/generar', methods = ['GET'])
 def GenerarReporte():
     try:
-        workbook = openpyxl.Workbook()
-        #realizamo la consulta
-        videos = reportes.VideosExistentes_ConClasificacion()
-        
-        if videos is not None:
-            # Crear una hoja de Excel para la primera consulta
-            sheet1 = workbook.active
-            sheet1.title = "Consulta 1"
-            # Escribir los encabezados
-            sheet1.append(["Nombre video", "Clasificacion"])
-
-            for video in videos:
-                sheet1.append([video['Nombre_Video'], video['Clasificacion']])            
-        elif videos is None:
-            sheet1 = workbook.active
-            sheet1.title = "Consulta 1"
-            sheet1.append(["Nombre video", "Clasificacion"])
-        else:
-            response = make_response(jsonify({'status':'error', 'RetroTV':'ERROR AL OBTENER LOS VIDEOS PARA EL REPORTE', 'videos': None}))
-            response.status_code = 400
-            return response
-
-        clasificaciones = reportes.ListaClasificaciones()
-        if clasificaciones is not None:
-            # Crear una hoja de Excel para la primera consulta
-            sheet2 = workbook.active
-            sheet2.title = "Consulta 2"
-            # Escribir los encabezados
-            sheet2.append(["Clasificacion"])
-
-            for clasificacion in clasificaciones:
-                sheet2.append([clasificacion['Clasificacion']])            
-        elif clasificaciones is None:
-            sheet2 = workbook.active
-            sheet2.title = "Consulta 2"
-            sheet2.append(["Clasificacion"])
-        else:
-            response = make_response(jsonify({'status':'error', 'RetroTV':'ERROR AL OBTENER LAS CLASIFICACIONES PARA EL REPORTE', 'videos': None}))
-            response.status_code = 400
-            return response
-        
-        # Guardar el archivo Excel
-        archivo_excel = './reports/reporte.xlsx'  # Ruta donde deseas guardar el archivo
-        workbook.save(archivo_excel)
-        #archivo_csv = './top_horas_concurridas.xlsx'  # Ruta a tu archivo CSV
-        return send_file(archivo_excel, as_attachment=True)
-
+        videos_clasificacion = reportes.VideosExistentes_ConClasificacion()
+        lista_clasificacion = reportes.ListaClasificaciones()
+        lista_canales = reportes.ListaCanales()
+        lista_usuarios = reportes.ListaUsuarios()
+        lista_suscripcion = reportes.ListaSuscripciones()
+        response = make_response(jsonify({'status':'success', 'RetroTV':'SE HAN OBTENIDO DATOS DEL REPORTE CORRECTAMENTE', 
+                                          'videos_existente': videos_clasificacion, 'lista_clasificacion': lista_clasificacion, 
+                                          'lista_canales': lista_canales, 'lista_usuarios': lista_usuarios, 'lista_suscripciones': lista_suscripcion}))
+        response.status_code = 200
+        return response
     except:
         response = make_response(jsonify({'status':'error','RetroTV': 'ERROR DE COMUNICACION', 'reporte':None}))
         response.status_code = 500
