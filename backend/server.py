@@ -1029,7 +1029,7 @@ def ListaVideosCarrusel():
         return response
 
 # Endpoint para obtener la cantidad de subscripciones activas e inactivas
-@app.route('/reporte/consultaE2', methods = ['GET'])
+@app.route('/reporte/grafica', methods = ['GET'])
 #@auth_required()
 def SuscripcionesActivasInactivas():
     try:

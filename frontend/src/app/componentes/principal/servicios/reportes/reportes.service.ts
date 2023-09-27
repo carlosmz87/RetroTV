@@ -16,4 +16,9 @@ export class ReportesService {
     return this.http.get<HttpResponse<any>>(dir);
   }
 
+  ObtenerSuscripciones():Observable<any>{
+    let dir = this.url + "grafica";
+    return this.http.get<HttpResponse<any>>(dir);
+  }
+
 }
