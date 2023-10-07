@@ -1,4 +1,58 @@
-.inicio{
-    height: 100%;
-    width: 100%;
-}
+/* Ajustar carrusel a pantalla */
+.carousel-container {
+    width: 50%;
+    margin: 0 auto;
+    position: relative;
+  }
+  
+  /* Imagen de slide */
+  .carousel-slide img {
+    width: 700px;
+    height: 400px;
+    display: flex;
+    justify-content: center; 
+    margin: 0 auto;
+  }
+  
+  /* Botones anterior y siguiente */
+  .carousel-container .prev,
+  .carousel-container .next {
+    position: absolute;
+    top: 90%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    padding: 1rem;
+    color: white;
+    background: rgba(0,0,0,0.5);
+    border: none;
+    cursor: pointer;
+  }
+  
+  .carousel-container .prev {
+    left: 0;
+  }
+  
+  .carousel-container .next {
+    right: 0; 
+  }
+  
+  /* Puntos del carrusel abajo centrados */
+  .carousel-dots {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  /* Adaptable */
+  @media (max-width: 767px) {
+    /* Ajustar botones */
+    .carousel-container .prev,
+    .carousel-container .next {
+      font-size: 1.5rem;
+      padding: 0.5rem;
+    }
+  
+    /* Ajustar puntos */
+    .carousel-dots {
+      margin-top: 0.5rem;
+    }
+  }

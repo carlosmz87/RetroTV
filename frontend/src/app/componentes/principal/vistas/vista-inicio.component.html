@@ -1,3 +1,11 @@
-<div class="inicio">
-    <h1>PAGINA INICIO USUARIO</h1>
+<div class="carousel-container">
+
+    <a class="prev" (click)="onPreviousClick()">&#10094;</a>
+
+    <div class="carousel-slide">
+        <img [attr.src]="slides[currentSlide]">
+    </div>
+
+    <a class="next" (click)="onNextClick()">&#10095;</a>
+
 </div>

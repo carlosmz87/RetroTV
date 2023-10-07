@@ -1,3 +1,4 @@
+import base64
 from conexion import obtener_conexion
 
 # Funcion para obtener la lista de videos existentes
@@ -204,12 +205,17 @@ def ListaVideosCarrusel():
             else:
                 resultados = []
                 for video in videos:
-                    nombre, resena, portada = video
-                    resultados.append({
-                        "nombre": nombre,
-                        "resena": resena,
-                        "portada": portada
-                    })
+                    if video[0] is not None:
+                        with open(video[0], 'rb') as f:
+                            imagen_bytes = f.read()
+                            imagen_base64 = base64.b64encode(imagen_bytes).decode('utf-8')
+                            portada, nombre, resena = video
+                            resultados.append({
+                                "nombre": nombre,
+                                "resena": resena,
+                                "url" : portada,
+                                "portada": imagen_base64
+                        })  
                 # Imprimir los datos por consola
                 # for resultado in resultados:
                 #     print(f"Nombre de usuario: {resultado['nombre']}")

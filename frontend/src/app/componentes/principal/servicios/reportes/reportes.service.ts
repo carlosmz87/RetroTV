@@ -21,4 +21,9 @@ export class ReportesService {
     return this.http.get<HttpResponse<any>>(dir);
   }
 
+  ObtenerDataCarousel():Observable<any>{
+    let dir = this.url + "carousel";
+    return this.http.get<HttpResponse<any>>(dir);
+  }
+
 }

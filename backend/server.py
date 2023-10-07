@@ -1006,7 +1006,7 @@ def ListaSuscripciones():
         return response
     
 # Endpoint para obtener la lista de usuarios con suscripción activa con fecha de inicio y fecha de vencimiento
-@app.route('/reporte/consultaE1', methods = ['GET'])
+@app.route('/reporte/carousel', methods = ['GET'])
 #@auth_required()
 def ListaVideosCarrusel():
     try:
