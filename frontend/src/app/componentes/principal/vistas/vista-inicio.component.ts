@@ -17,7 +17,6 @@ export class VistaInicioComponent implements OnInit{
   }
 
   slides: any[] = [];
-
   currentSlide = 0;
   
   constructor(private reportesService: ReportesService) { }
@@ -27,9 +26,10 @@ export class VistaInicioComponent implements OnInit{
       response => {
         //console.log(response.videos);
         response.videos.forEach((element: any) => {
-          //console.log(element.portada);
-          this.slides.push("data:image/jpeg;base64,"+element.portada);
-          //console.log(this.slides);
+          //console.log(element.nombre);
+          // Extraer el nombre del archivo sin la extensión
+          const nombre = element.nombre.split('.')[0].replace(/_/g, ' '); // Quitar extension despues del punto y reemplazar los guiones bajos por espacios
+          this.slides.push({imagen:"data:image/jpeg;base64,"+element.portada, titulo:nombre, descripcion:element.resena});
         });
       },
       err => {

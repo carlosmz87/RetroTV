@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Chart, ChartType, PieController, ArcElement } from 'chart.js';
+// import { Chart, ChartType, PieController, ArcElement } from 'chart.js';
+import { Chart, ArcElement, PieController, ChartType, Legend, Title, Tooltip } from 'chart.js';
 import { ReportesService } from '../servicios/reportes/reportes.service';
 
 @Component({
@@ -16,65 +17,58 @@ export class VistaDashboardComponent implements OnInit {
     // registrar controladores
     Chart.register(PieController);
     Chart.register(ArcElement);
+    Chart.register(Legend);
+    Chart.register(Title);
+    Chart.register(Tooltip);
   }
 
   ngOnInit() {
     // data mock
     this.DibujarGrafica();
-
   }
 
   DibujarGrafica(): void {
-
+    // Declaramos las variables que almacenaran los datos de la respuesta
     let activas: number;
     let inactivas: number;
 
+    // Realizamos la peticion al servicio
     this.reportesService.ObtenerSuscripciones().subscribe(
       response => {
+        // Obtenemos los datos de la respuesta
         for (const dato of response.suscripciones) {
           activas = dato.activas;
           inactivas = dato.inactivas;
         }
-
-        // Datos para la grafica
+        // Configuramos la data y opciones de la grafica
         const data = {
-          label: [
-            "Activas",
-            'Inactivas'
+          labels: ["Suscripciones activas","Suscripciones inactivas"],
+          datasets: [
+            {
+              label: "Total",
+              data: [activas, inactivas],
+              backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)'
+              ],
+            }
           ],
-          datasets: [{
-            data: [activas, inactivas],
-            backgroundColor: [
-              'rgb(255, 99, 132)',
-              'rgb(54, 162, 235)'
-            ],
-            hoverOffset: 4
-          }]
-        };
-
-        // crear chart
-        const ctx = document.getElementById('myChart') as HTMLCanvasElement;
-        this.chart = new Chart(ctx, {
-          type: 'pie' as ChartType,
-          data: data,
-          options: {
-            elements: {
-              arc: {
-                borderWidth: 0
-              }
-            },
-            plugins: {
-              legend: {
-                display: true,
-                position: 'bottom',
-                labels: {
-                  boxWidth: 20,
-                  boxHeight: 20,
-                  color: 'rgb(255, 255, 255)',
-                }
-              },
-            },
+          
+        }; 
+        // Habilitamos la leyenda de la grafica
+        const options = {
+          plugins: {
+            legend: {
+              display: true
+            }
           }
+        }
+        // Dibujamos la grafica en el canvas con id myChart
+        const ctx = document.getElementById('myChart') as HTMLCanvasElement;
+        new Chart(ctx, {
+          type: 'pie',
+          data: data,
+          options: options
         });
       })
   }
