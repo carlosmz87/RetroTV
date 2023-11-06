@@ -391,6 +391,7 @@ def CrearClasificacion():
     try:
         datos = request.get_json()
         nombre = datos['nombre']
+        print(nombre)
         resp = controlador.CrearClasificacion(nombre)
         if resp:
             response = make_response(jsonify({'status':'success', 'RetroTV':"LA NUEVA CLASIFICACION SE HA AGREGADO EXITOSAMENTE"}))

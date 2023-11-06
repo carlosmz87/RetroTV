@@ -231,7 +231,7 @@ def CrearClasificacion(nombre):
         conexion = obtener_conexion()
         with conexion.cursor() as cursor:
             query = "INSERT INTO CLASIFICACION(NOMBRE) VALUES(%s)"
-            cursor.execute(query,(nombre,))
+            cursor.execute(query, (nombre,))
             conexion.commit()
             if cursor.rowcount > 0:
                 # Inserción exitosa
