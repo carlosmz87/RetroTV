@@ -231,7 +231,7 @@ def CrearClasificacion(nombre):
         conexion = obtener_conexion()
         with conexion.cursor() as cursor:
             query = "INSERT INTO CLASIFICACION(NOMBRE) VALUES(%s)"
-            cursor.execute(query,(nombre,))
+            cursor.execute(query, (nombre,))
             conexion.commit()
             if cursor.rowcount > 0:
                 # Inserción exitosa
@@ -392,6 +392,23 @@ def AgregarVideo(nombre, fecha, resena, duracion, portada, clasificacion):
                 return False
     except:
         return False
+    finally:
+        conexion.close()
+        
+#Funcion para actualizar la informacion del video:
+def EditarVideoInfo(fecha, resena, duracion, clasificacion, portada, id):
+    try:
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            query = 'UPDATE VIDEO SET FECHA =%s, RESENA=%s, DURACION=%s, CLASIFICACION_CLA_ID=%s, PORTADA=%s WHERE VID_ID=%s'
+            cursor.execute(query,(fecha, resena, duracion, clasificacion, portada, id))
+            if cursor.rowcount > 0:
+                conexion.commit()
+                return "SE HA ACTUALIZADO EXITOSAMENTE LA INFORMACION DEL VIDEO"
+            else:
+                return None
+    except:
+        return None
     finally:
         conexion.close()
 

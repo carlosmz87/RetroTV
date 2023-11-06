@@ -39,6 +39,14 @@
               <mat-header-cell *matHeaderCellDef mat-sort-header>portada</mat-header-cell>
               <mat-cell *matCellDef="let video">{{ video.portada }}</mat-cell>
             </ng-container>
+            <ng-container matColumnDef="modificar">
+              <mat-header-cell *matHeaderCellDef>modificar</mat-header-cell>
+              <mat-cell *matCellDef="let video">
+                <button mat-icon-button color="primary" (click)="confirmarModificarVideo(video.id)">
+                  <mat-icon>loop</mat-icon>
+                </button>
+              </mat-cell>
+            </ng-container>
             <ng-container matColumnDef="eliminar">
               <mat-header-cell *matHeaderCellDef>eliminar</mat-header-cell>
               <mat-cell *matCellDef="let video">

@@ -1,4 +1,72 @@
-.inicio{
-    height: 100%;
-    width: 100%;
+.carousel-container {
+  position: relative;
+  text-align: center;
+  background: rgba(116, 113, 113, 0.5); /* Fondo negro transparente */
+  color: #fff;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 1); /* Sombra en el contenedor */
+}
+
+
+.carousel-slide {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.cinematic-image {
+  width: 700px;
+  height: 500px;
+  object-fit: cover;
+  border-radius: 20px; /* Bordes redondos */
+}
+
+
+.text-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  text-align: left;
+  object-fit: cover;
+  border-radius: 20px; /* Bordes redondos */
+}
+
+.cinematic-title {
+  font-size: 24px;
+  margin: 0;
+  padding: 0;
+}
+
+.cinematic-description {
+  font-size: 16px;
+}
+
+.prev-button, .next-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #fff;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.prev-button {
+  left: 25%;
+}
+
+.next-button {
+  right: 25%;
 }

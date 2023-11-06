@@ -1,3 +1,13 @@
-<div class="inicio">
-    <h1>PAGINA INICIO USUARIO</h1>
+<div class="carousel-container">
+    <a class="prev-button" (click)="onPreviousClick()">&#10094;</a>
+    <div class="carousel-slide">
+        <div *ngIf="slides">
+            <img [attr.src]="slides[currentSlide]?.imagen" class="cinematic-image">
+            <div class="text-container">
+                <h2 class="cinematic-title">{{slides[currentSlide]?.titulo}}</h2>
+                <p class="cinematic-description">{{slides[currentSlide]?.descripcion}}</p>
+            </div>
+        </div>
+    </div>
+    <a class="next-button" (click)="onNextClick()">&#10095;</a>
 </div>

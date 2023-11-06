@@ -26,6 +26,7 @@ import { VistaAgregarVideosComponent } from './componentes/principal/vistas/vist
 import { VistaReproductorCanalesComponent } from './componentes/principal/vistas/vista-reproductor-canales.component';
 import { VistaReproductorVideosComponent } from './componentes/principal/vistas/vista-reproductor-videos.component';
 import { VistaClasificacionesComponent } from './componentes/principal/vistas/vista-clasificaciones.component';
+import { VistaEditarVideoComponent } from './componentes/principal/vistas/vista-editar-video.component';
 
 const routes: Routes = [
   {
@@ -72,6 +73,14 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: {
       roleDisponible: ['USUARIO', 'ADMINISTRADOR']
+    }
+  },
+  {
+    path: 'edit-video/:id',
+    component: VistaEditarVideoComponent,
+    canActivate: [RoleGuard],
+    data: {
+      roleDisponible: ['ADMINISTRADOR']
     }
   },
   {

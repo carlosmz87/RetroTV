@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { RespuestaListaClasificacionInterface } from '../modelos/clasificacion/respuesta-clasificacion.interface';
 import { ServicioGenericosService } from '../../genericos/servicios/servicio-genericos.service';
