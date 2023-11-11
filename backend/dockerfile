@@ -1,0 +1,38 @@
+# Usar la imagen base oficial de Python
+FROM python:latest
+
+# Establecer el directorio de trabajo en /app
+WORKDIR /app
+
+# Copiar el archivo de requisitos y el código de la aplicación a la imagen
+COPY requirements.txt .
+COPY conexion_smtp.py .
+COPY conexion.py .
+COPY controlador.py .
+COPY private_retrotv_key.pem .
+COPY reportes.py .
+COPY server.py . 
+
+# Instalar las dependencias del servidor Flask
+RUN pip install --upgrade pip
+#RUN pip install -r requirements.txt
+RUN pip install --upgrade jwt
+RUN pip install --upgrade Flask-JWT-Extended
+RUN pip install --upgrade python-dotenv
+RUN pip install --upgrade Flask-CORS
+RUN pip install --upgrade Flask
+RUN pip install --upgrade cryptography
+RUN pip install --upgrade openpyxl
+RUN pip install --upgrade Werkzeug
+RUN pip install --upgrade mysql-connector-python
+RUN pip install --upgrade boto3
+RUN pip install --upgrade PyJWT
+
+
+
+# Comando para ejecutar la aplicación Flask
+CMD ["python3", "server.py"]
+
+# Exponer el puerto en el que se ejecutará la aplicación
+EXPOSE 5000
+

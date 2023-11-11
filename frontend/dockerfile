@@ -1,0 +1,9 @@
+FROM node:latest as build 
+WORKDIR /app 
+COPY . .
+RUN npm install
+CMD ["npm", "run", "build", "--configuration","production"] 
+
+FROM nginx:latest
+COPY --from=build /app/dist/frontend /usr/share/nginx/html
+EXPOSE 80

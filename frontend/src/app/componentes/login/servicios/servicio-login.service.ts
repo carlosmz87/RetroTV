@@ -5,16 +5,20 @@ import { LoginInterface } from '../modelos/login.interface';
 import { RespuestaLoginInterface } from '../modelos/respuesta-login.interface';
 import { RecuperacionInterface } from '../modelos/recuperacion.interface';
 import { RespuestaRecuperacionInterface } from '../modelos/respuesta-recuperacion.interface';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServicioLoginService {
-
-  url:string = "http://localhost:5000/";
+  private url_host: string | undefined;
+  private url_port: string | undefined;
+  private url: string | undefined;
   
   constructor(private http:HttpClient) { 
-
+    this.url_host = environment.API_HOST;
+    this.url_port = environment.API_PORT;
+    this.url = `${this.url_host}${this.url_port}`+"/";
   }
 
   LoginByForm(form:LoginInterface):Observable<RespuestaLoginInterface>{

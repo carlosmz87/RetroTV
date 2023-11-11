@@ -16,7 +16,47 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
+
+  backend:
+    restart: on-failure
+    container_name: backend
+    image: carlosmz87/retrotv-backend:local-V1.0.0-Beta
+    build: ./backend
+    ports:
+      - "5000:5000"
+    networks:
+      - app_net
+    links:
+      - mysqldb
+    environment:
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_PORT: ${DATABASE_PORT}
+      CORREO_EMISOR: ${CORREO_EMISOR}
+      PASSWORD_CORREO_EMISOR: ${PASSWORD_CORREO_EMISOR}
+      RetroTV_API_KEY: ${RetroTV_API_KEY}
+      UPLOAD_PORTADAS: ${UPLOAD_PORTADAS}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      BUCKET_NAME: ${BUCKET_NAME}
+      CLOUDFRONT_URL: ${CLOUDFRONT_URL}
+      CF_PUBLIC_KEY_ID: ${CF_PUBLIC_KEY_ID}
+      PRIVATE_KEY_PATH: ${PRIVATE_KEY_PATH}
     
+  frontend:
+    depends_on:
+      - backend
+    container_name: frontend
+    image: carlosmz87/retrotv-frontend:local-V1.0.0-Beta
+    build: ./frontend
+    ports:
+      - "80:80"
+    networks:
+      - app_net
+    links:
+      - backend
 
 networks:
   app_net:

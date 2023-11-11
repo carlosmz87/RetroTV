@@ -6,15 +6,22 @@ import { RespuestaSuscripcionInterface, SolicitarSuscripcionInterface, Suscripci
 import { RespuestaClientesInterface } from '../../modelos/clientes/respuesta-clientes.interface';
 import { PromocionesInterface } from '../../modelos/promociones/promociones.interface';
 import { RespuestaPromocionesInterface } from '../../modelos/promociones/respuesta-promociones.interface';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServicioGestionClientesService {
   
-  url:string = "http://localhost:5000/";
-
-  constructor(private http:HttpClient ) { }
+  private url_host: string | undefined;
+  private url_port: string | undefined;
+  private url: string | undefined;
+  
+  constructor(private http:HttpClient) { 
+    this.url_host = environment.API_HOST;
+    this.url_port = environment.API_PORT;
+    this.url = `${this.url_host}${this.url_port}`+"/";
+  }
 
   ListarClientes():Observable<GestionClientesInterface>{
     let dir = this.url + 'ListarClientes';

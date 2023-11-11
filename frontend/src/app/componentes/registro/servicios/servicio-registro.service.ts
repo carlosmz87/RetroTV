@@ -3,16 +3,21 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RegistroInterface } from '../modelos/registro.interface';
 import { RespuestaRegistroInterface } from '../modelos/respuesta-registro.interface';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServicioRegistroService {
   
-  url:string = "http://localhost:5000/";
-
-  constructor(private http:HttpClient) {
-
+  private url_host: string | undefined;
+  private url_port: string | undefined;
+  private url: string | undefined;
+  
+  constructor(private http:HttpClient) { 
+    this.url_host = environment.API_HOST;
+    this.url_port = environment.API_PORT;
+    this.url = `${this.url_host}${this.url_port}`+"/";
   }
 
   RegisterByForm(form:RegistroInterface):Observable<RespuestaRegistroInterface>{

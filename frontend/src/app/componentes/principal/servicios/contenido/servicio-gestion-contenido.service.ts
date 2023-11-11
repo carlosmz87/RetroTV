@@ -3,15 +3,22 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DatosFavoritoInterface, FavoritosInterface, RespuestaGestionVideosInterface, RespuestaIsFavoriteOfInterface, RespuestaObtenerVideosInterface, RespuestaVideoInterface } from '../../modelos/contenido/gestion-videos.interface';
 import { RespuestaSuscripcionActivaInterface, SuscripcionActivaInterface } from '../../modelos/contenido/suscripcion-activa.interface';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServicioGestionContenidoService {
 
-  url:string = "http://localhost:5000/";
-
-  constructor(private http: HttpClient) { }
+  private url_host: string | undefined;
+  private url_port: string | undefined;
+  private url: string | undefined;
+  
+  constructor(private http:HttpClient) { 
+    this.url_host = environment.API_HOST;
+    this.url_port = environment.API_PORT;
+    this.url = `${this.url_host}${this.url_port}`+"/";
+  }
 
   AgregarVideo(datos:FormData):Observable<RespuestaGestionVideosInterface>{
     let dir = this.url + "AgregarVideo";
